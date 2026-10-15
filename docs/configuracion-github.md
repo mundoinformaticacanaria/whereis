@@ -2,28 +2,17 @@
 
 Esta configuración no forma parte del contenido versionado y debe aplicarse manualmente o mediante automatización autorizada en cada repositorio destino.
 
-## Repositorio plantilla
+## Repositorio Whereis
 
-Para este repositorio de gobernanza, activar en GitHub:
+Whereis es el repositorio del producto. No se presupone que deba convertirse en repositorio plantilla. Su configuración concreta requiere decisión operativa explícita.
 
-`Settings → General → Template repository`
+## Roles y labels para Whereis — G-01 V3
 
-Así podrá usarse mediante **Use this template** para crear nuevos repositorios sin arrastrar historial de commits.
+La decisión confirmada [G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md) define **cinco roles activos iniciales**: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `PROGRAMADOR` y `QA`. Las correspondientes labels de siguiente acción son una **configuración PENDIENTE**; este documento no acredita que ya existan.
 
-## Labels recomendadas
+`ARQUITECTO`, `DEVOPS` y `COMERCIAL` quedan inactivos por defecto; no se configura ni se asigna trabajo a dichas especialidades sin decisión específica.
 
-Crear, como mínimo:
-
-- `ARQUITECTO`
-- `FUNCIONAL`
-- `COMERCIAL`
-- `TECH LEAD`
-- `QA`
-- `PROGRAMADOR`
-- `DEVOPS`
-- `PROPIETARIO`
-
-Las identidades de programadores son específicas de cada proyecto y no deben fijarse en esta plantilla.
+Las identidades ejecutoras de PROGRAMADOR, sus labels adicionales y los prefijos de rama son propios de Whereis y también siguen `PENDIENTE`. Cada issue ejecutable tendrá una única label de siguiente acción cuando esté operativa la configuración.
 
 ## Merge
 
@@ -36,7 +25,7 @@ Recomendación por defecto:
 
 ## Branch protection / rulesets
 
-Configurar cuando el proyecto lo permita:
+**PENDIENTE DE CONFIGURACIÓN / AUTORIZACIÓN OPERATIVA.** Configurar cuando el proyecto lo permita y se aprueben las reglas:
 
 - proteger `main`;
 - impedir force-push;
