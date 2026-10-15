@@ -29,7 +29,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 
 ## Cola operativa
 
-- [Issue #4 — G-01 V3](https://github.com/mundoinformaticacanaria/whereis/issues/4): formalización documental de gobernanza; siguiente acción `TECH LEAD`.
+- **Gobernanza G-01:** [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [PR #5](https://github.com/mundoinformaticacanaria/whereis/pull/5) proporcionan trazabilidad de la formalización documental; una vez integrados/cerrados no suponen nueva autorización operativa.
 - [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): decisiones funcionales con [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión por TECH LEAD.
 - **Primera issue de programación:** todavía no autorizada.
 
@@ -49,4 +49,4 @@ No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## Próximo avance
 
-TECH LEAD: cerrar la formalización documental G-01 mediante PR y comprobar que no se han activado configuraciones no aprobadas. Posteriormente, priorizar la resolución explícita de los pendientes del bootstrap antes de asignar PROGRAMADOR.
+TECH LEAD: priorizar revisión de la [PR funcional #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) y ordenar los pendientes de bootstrap para decisión del PROPIETARIO. Sin emitir la primera asignación PROGRAMADOR mientras falten las autorizaciones y gates mínimos.
