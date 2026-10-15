@@ -1,44 +1,52 @@
 # Estado del proyecto
 
-**Proyecto:** PENDIENTE DE PROYECTO  
-**Repositorio:** PENDIENTE DE PROYECTO  
-**Fecha de estado:** PENDIENTE DE PROYECTO
+**Proyecto:** Whereis  
+**Repositorio:** https://github.com/mundoinformaticacanaria/whereis  
+**Fecha de estado:** 15/10/2026
 
 ## Estado resumido
 
-PENDIENTE DE PROYECTO.
+Proyecto Android en fase de definición y bootstrap. **G-01 V3 CONFIRMADA** por el PROPIETARIO: cinco roles activos iniciales (`PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `PROGRAMADOR`, `QA`). Véanse [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [decisión G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md).
 
-Este documento debe reflejar el estado vivo y operativo del proyecto, no una historia extensa.
+La aprobación de gobernanza **no autoriza desarrollo del producto**, contratación ni infraestructura. Los roles son funciones; las identidades ejecutoras reales y disponibilidad siguen `PENDIENTE`.
 
 ## Baselines
 
-- Baseline funcional: PENDIENTE DE PROYECTO.
-- Baseline arquitectónico: PENDIENTE DE PROYECTO.
-- Estado MVP/beta: PENDIENTE DE PROYECTO.
+- **Gobernanza:** G-01 V3 `CONFIRMADA`; documentación de aplicación e implantación técnica en curso.
+- **Baseline funcional completo / alcance MVP:** `PENDIENTE`. Las decisiones D-01 y D-02 constan en [issues #1](https://github.com/mundoinformaticacanaria/whereis/issues/1) y [#2](https://github.com/mundoinformaticacanaria/whereis/issues/2), con documentación propuesta en [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión/integración; no equivalen a aprobación del baseline global.
+- **Baseline arquitectónico:** `PENDIENTE`.
+- **Estado MVP/beta:** `PENDIENTE`; implementación no autorizada.
+
+## Organización activa confirmada
+
+- `PROPIETARIO`: decide autorizaciones y materiales reservados.
+- `FUNCIONAL`: análisis funcional independiente y criterios de aceptación.
+- `TECH LEAD`: coordinación técnica, arquitectura/DevOps iniciales, asignaciones, calidad y merge.
+- `PROGRAMADOR`: desarrollo de issues autorizadas con identidad ejecutora única.
+- `QA`: evaluación independiente del implementador y dictamen previo a cualquier merge de código.
+
+`ARQUITECTO`, `DEVOPS` y `COMERCIAL` no están activados permanentemente; pueden intervenir cuando exista necesidad y autorización explícita.
 
 ## Cola operativa
 
-- Issues ejecutables: PENDIENTE DE PROYECTO.
-- PR abiertas: PENDIENTE DE PROYECTO.
-- Bloqueos: PENDIENTE DE PROYECTO.
+- [Issue #4 — G-01 V3](https://github.com/mundoinformaticacanaria/whereis/issues/4): formalización documental de gobernanza; siguiente acción `TECH LEAD`.
+- [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): decisiones funcionales con [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión por TECH LEAD.
+- **Primera issue de programación:** todavía no autorizada.
 
-## Ejecutores
+## Configuración y decisiones PENDIENTES
 
-Definir aquí las identidades reales, disponibilidad y límites operativos.
+- Identidades de ejecutores, disponibilidad, capacidad real, separación de QA y prefijos de ramas.
+- Labels operativas en GitHub, permisos y reglas de merge, protección de `main`, CI/gates concretos.
+- Zona horaria única de heartbeat, rama `ops/logs` y ficheros de log de los roles activos.
+- Objetivo y alcance definitivo del MVP, baselines funcional/arquitectónico, política de privacidad y seguridad, servicios/infraestructura, costes y proveedores.
+- Activaciones puntuales de especialistas, si se justifican.
 
-Ejemplo:
-
-- `DEV-...`: disponible/no disponible; perfil de complejidad.
-- `CODEX-...`: disponible/no disponible; perfil de complejidad.
-
-## Pendientes externos
-
-Registrar decisiones de proveedor, infraestructura, seguridad, privacidad, coste o negocio que bloqueen avances reales.
+No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## POST-MVP
 
-Registrar explícitamente capacidades fuera del alcance vigente para impedir que se conviertan accidentalmente en trabajo autorizado.
+`PENDIENTE` de clasificación por FUNCIONAL y aprobación del PROPIETARIO.
 
 ## Próximo avance
 
-Indicar el siguiente frente real y el rol que debe actuar.
+TECH LEAD: cerrar la formalización documental G-01 mediante PR y comprobar que no se han activado configuraciones no aprobadas. Posteriormente, priorizar la resolución explícita de los pendientes del bootstrap antes de asignar PROGRAMADOR.
