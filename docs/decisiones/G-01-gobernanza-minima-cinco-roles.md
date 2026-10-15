@@ -69,5 +69,5 @@ No se consideran ejecutadas ni autorizadas estas configuraciones por la aprobaci
 ## Trazabilidad
 
 - [Decisión material en issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4).
-- PR de incorporación a `main`: enlazada en la issue una vez creada.
+- [PR #5 — formalización de G-01](https://github.com/mundoinformaticacanaria/whereis/pull/5): incorporación documental a `main`.
 - Decisiones funcionales D-01/D-02 y su PR son independientes y no se modifican aquí.
