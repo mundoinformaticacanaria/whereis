@@ -1,3 +1,9 @@
+# Gobernanza específica de Whereis (G-01 V3)
+
+Roles activos confirmados por el Propietario: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `PROGRAMADOR` y `QA`. La relación de roles que sigue conserva las especialidades de referencia, pero `ARQUITECTO`, `DEVOPS` y `COMERCIAL` no son perfiles activos permanentes. Véase [G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md). `FUNCIONAL` es independiente de `TECH LEAD`; `QA` debe ser independiente del autor de cada implementación. Las configuraciones e identidades concretas aún están pendientes.
+
+---
+
 # Onboarding de roles
 
 ## Entrada común
