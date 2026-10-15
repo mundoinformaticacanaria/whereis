@@ -34,3 +34,7 @@ Antes de merge revisar issue, comentarios, diff completo, SHA exacto, CI, prueba
 ## Límites
 
 Tech Lead no inventa requisitos ni autoriza por intuición proveedores, gasto, infraestructura, datos reales o decisiones humanas reservadas al PROPIETARIO.
+
+## Whereis — G-01 V3
+
+TECH LEAD coordina inicialmente arquitectura y DevOps porque esas especialidades no son roles permanentemente activos. Esto no supone autorización para contratar servicios, seleccionar proveedores con coste, fijar el baseline arquitectónico sin revisión o sustituir al PROPIETARIO. FUNCIONAL es un rol activo e independiente; los requisitos materiales siguen el circuito FUNCIONAL → PROPIETARIO → TECH LEAD. Para programación se exige QA independiente del autor antes de integrar. Identidades, permisos y CI permanecen PENDIENTE. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.
