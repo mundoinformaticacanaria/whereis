@@ -2,9 +2,9 @@
 
 ## Propósito
 
-Este repositorio sirve como plantilla de gobernanza para proyectos de software coordinados por humanos y agentes de IA.
+Este repositorio gobierna el desarrollo del proyecto **Whereis**, una aplicación Android de consulta de ubicación autorizada entre dispositivos. Los contratos funcionales y arquitectónicos concretos se documentan en sus baselines y decisiones; no se infieren de este archivo.
 
-Al instanciarla en un proyecto real, sustituir todos los campos `PENDIENTE DE PROYECTO` por decisiones explícitas del proyecto destino.
+La [decisión G-01 V3](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) confirmó cinco roles activos iniciales. Los demás campos `PENDIENTE DE PROYECTO` deben resolverse mediante decisiones expresas; no se completan por intuición.
 
 ## Fuente de verdad
 
@@ -54,20 +54,17 @@ No resolver contradicciones por intuición.
 
 ## Roles y siguiente acción
 
-Labels recomendadas:
+**CONFIRMADO — G-01 V3:** los cinco roles activos iniciales de Whereis son:
 
-- `ARQUITECTO`
-- `FUNCIONAL`
-- `COMERCIAL`
-- `TECH LEAD`
-- `QA`
-- `PROGRAMADOR`
-- `DEVOPS`
-- `PROPIETARIO`
+- `PROPIETARIO`: autoridad humana sobre alcance, prioridades, requisitos materiales, proveedores, gastos y autorizaciones reservadas.
+- `FUNCIONAL`: responsable **independiente** de análisis funcional, reglas, flujos y criterios de aceptación; propone, no aprueba decisiones materiales por sí solo.
+- `TECH LEAD`: coordinación técnica, arquitectura/DevOps iniciales, planificación, integración y merge dentro de lo autorizado; no sustituye al Propietario.
+- `PROGRAMADOR`: implementación exclusivamente de tareas asignadas a un ejecutor identificado; no hace merge.
+- `QA`: revisión independiente del autor, con dictamen `APTO`, `DEFECTOS` o `BLOQUEADO`; nunca hace merge.
 
-Una issue ejecutable debe tener normalmente una única label de siguiente acción.
+`ARQUITECTO`, `DEVOPS` y `COMERCIAL` no son roles activos permanentes inicialmente. Sus contextos se conservan como referencia y pueden activarse ante necesidad real y autorización, sin presumir identidades ni recursos.
 
-`PROPIETARIO` representa una decisión, autorización o intervención humana necesaria.
+Las cinco labels de siguiente acción correspondientes se **deben configurar**; su existencia en GitHub es `PENDIENTE`. Una issue ejecutable debe tener normalmente una única label de siguiente acción una vez configuradas. `PROPIETARIO` indica decisión o autorización humana requerida.
 
 ## Programadores
 
@@ -85,17 +82,14 @@ Reglas base:
 
 Los prefijos de rama de cada ejecutor deben definirse en `docs/estado-proyecto.md` o en una decisión de gobernanza del proyecto.
 
-## Flujo de desarrollo
+## Handoffs funcionales y de desarrollo
 
-Flujo base:
-
-`PROGRAMADOR + ejecutor → QA → TECH LEAD → merge o devolución`
-
-- Programador implementa.
-- QA realiza revisión independiente y adversarial y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`.
-- QA nunca hace merge.
-- Tech Lead mantiene la responsabilidad final de calidad, integración, priorización y merge.
-- Un cambio del head SHA invalida revisiones anteriores para merge.
+- Decisiones funcionales materiales: `FUNCIONAL → PROPIETARIO (aprueba) → TECH LEAD`, con requisitos y criterios de aceptación registrados antes de asignar implementación.
+- Desarrollo autorizado: `PROGRAMADOR + ejecutor → QA independiente → TECH LEAD → merge o devolución`.
+- El Programador implementa; QA revisa de forma adversarial e independiente del autor, y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`. Ante defectos o bloqueo no hay merge.
+- QA nunca hace merge; Tech Lead conserva la revisión final de calidad, integración, prioridad y merge.
+- Un cambio del head SHA invalida revisiones previas para integración. Si falta un revisor QA realmente independiente, el merge queda bloqueado.
+- G-01 no habilita desarrollo ni autoriza proveedores, infraestructura, costes o nuevos requisitos sin sus aprobaciones específicas.
 
 ## Principios de arquitectura
 
@@ -175,7 +169,7 @@ Política: `docs/logs/README.md`.
 
 Los logs son heartbeat e histórico auxiliar, nunca fuente de verdad.
 
-Cada rol cumple su política de heartbeat antes y después de cada ciclo de trabajo en GitHub.
+Cada rol con heartbeat **operativamente definido** cumple su política de inicio y fin de ciclo. En Whereis, la zona horaria, rama y ficheros de heartbeat están `PENDIENTE`; no fabricar registros ni dar por activada una configuración no aprobada.
 
 ## Regla final
 

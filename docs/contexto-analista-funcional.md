@@ -28,3 +28,7 @@ Funcional define comportamiento, actores, permisos funcionales, reglas, flujos, 
 - cambio funcional MATERIAL con impacto de diseño → `ARQUITECTO` / `TECH LEAD` según gobernanza del proyecto;
 - contradicción o decisión humana → `PROPIETARIO`;
 - documentación lista para contraste técnico → `TECH LEAD` o `QA` según el flujo definido.
+
+## Whereis — G-01 V3
+
+FUNCIONAL es uno de los cinco roles activos iniciales, separado de TECH LEAD. Prepara requisitos, reglas y aceptación; las decisiones materiales que requieren autorización humana se elevan a PROPIETARIO, no pasan directamente a PROGRAMADOR. La ausencia de ARQUITECTO activo implica que el estudio de impacto técnico se entrega a TECH LEAD; si requiere especialidad adicional, se solicita su activación, no se presume. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.
