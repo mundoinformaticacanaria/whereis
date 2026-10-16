@@ -46,16 +46,16 @@ Permitir a B consultar la posición puntual del dispositivo A autorizado incluso
 - **Ubicación y permisos desactivados:** no puede prometerse una posición recién capturada.
 - **Dispositivo apagado o desconectado:** no es posible recibir una ubicación nueva remota mientras dure esa condición.
 - **Restricciones Android, aplicación detenida forzosamente o ejecución limitada:** pueden impedir o retrasar las consultas; el tratamiento exacto queda sujeto a validación técnica.
-- **Ubicación anterior:** su posible presentación diferenciada, caducidad y retención permanecen `PENDIENTE`; no se aprueban aquí.
+- **Ubicación anterior:** **D-06 / issue #12, CONFIRMADA posteriormente**, concreta que al fallar una consulta autorizada se muestra el aviso de fallo y, si existe, la última posición conocida con su fecha/hora y advertencia visible de que **no es actual**. Si nunca hubo posición válida, se muestra «Ubicación no disponible». **Caducidad y retención general** continúan `PENDIENTES`. Esta precisión mantiene la prohibición de presentar datos antiguos como actuales.
 
 ## PENDIENTE de contraste técnico y definición posterior
 
 - Versiones de Android y alcance real de ejecución con app no visible, cerrada o forzosamente detenida.
 - Permisos, requisitos de plataforma y de distribución de la aplicación.
 - Mecanismo técnico de solicitud/respuesta y requisitos de conexión, sin proveedor seleccionado.
-- Tiempo de espera, reintentos, precisión, último dato conocido, política de retención y mensajes.
+- Tiempo de espera, reintentos, precisión y mensajes de error detallados; tratamiento de **último dato conocido** ya fijado funcionalmente por **D-06**, mientras que política general de **retención** y almacenamiento siguen `PENDIENTE`.
 - Evaluación del efecto sobre batería, privacidad, seguridad y costes.
-- **D-03 a D-05:** asociación de dispositivos, autorización individual, vigencia y revocación.
+- **D-03 a D-05:** las decisiones funcionales ya constan como **CONFIRMADAS** en [D-03 #6](https://github.com/mundoinformaticacanaria/whereis/issues/6), [D-04 #8](https://github.com/mundoinformaticacanaria/whereis/issues/8) y [D-05 #10](https://github.com/mundoinformaticacanaria/whereis/issues/10); sincronización y viabilidad técnicas permanecen `PENDIENTE`.
 
 ## Impacto y límites
 
@@ -66,4 +66,6 @@ Permitir a B consultar la posición puntual del dispositivo A autorizado incluso
 
 ## Handoff
 
-`TECH LEAD` y, por implicar ciclo de vida Android, permisos y comunicación remota, `ARQUITECTO` deberán validar la viabilidad técnica antes de planificar la implementación. Esta decisión no constituye por sí sola autorización para programar.
+**TECH LEAD**, rol técnico activo según G-01 V3, debe validar la viabilidad técnica (incluidos ciclo de vida Android, permisos y comunicaciones) antes de la planificación; una especialidad adicional requerirá autorización específica. Esta decisión no constituye por sí sola autorización para programar.
+
+La descripción funcional del fallo de consulta queda trazada en [D-06 / issue #12](https://github.com/mundoinformaticacanaria/whereis/issues/12) y [PR #13](https://github.com/mundoinformaticacanaria/whereis/pull/13).
