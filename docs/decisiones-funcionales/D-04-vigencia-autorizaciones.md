@@ -5,6 +5,7 @@
 - **Estado:** **CONFIRMADO** por el PROPIETARIO respecto de la vigencia y del comportamiento ante desinstalación/reinstalación. La viabilidad y los mecanismos de aplicación remota siguen **PENDIENTES**.
 - **Issue:** [#8 — D-04](https://github.com/mundoinformaticacanaria/whereis/issues/8).
 - **PR de documentación:** [#9](https://github.com/mundoinformaticacanaria/whereis/pull/9).
+- **Decisión posterior vinculada:** [D-05 / #10](https://github.com/mundoinformaticacanaria/whereis/issues/10), que concreta revocación/reativación por interruptor sin desinstalación.
 - **Decisiones relacionadas:** [D-01/#1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02/#2](https://github.com/mundoinformaticacanaria/whereis/issues/2) y [D-03/#6](https://github.com/mundoinformaticacanaria/whereis/issues/6).
 - **Baseline funcional global y arquitectura:** PENDIENTES; esta decisión no aprueba su totalidad.
 - **Decisiones SUPERSEDED:** ninguna registrada. La propuesta de reinstalación del borrador anterior ha sido aceptada, no sustituye una decisión histórica.
@@ -52,14 +53,14 @@ Los criterios anteriores describen el resultado exigido, **no** un mecanismo de 
 - Una desinstalación no garantiza notificación remota inmediata. Puede quedar una relación obsoleta visible o registrada en otros dispositivos mientras se detecta su invalidez: no debe habilitar una nueva identidad ni garantizar nuevas posiciones.
 - Android puede restaurar datos de la app mediante backup. TECH LEAD debe definir y validar cómo impedir la restauración de IDs y permisos anteriores sin afirmar que el mecanismo ya existe.
 - Pérdida de conexión, reinicio, actualización de Whereis **sin desinstalación**, borrado de datos y restablecimiento de fábrica son situaciones distintas que requerirán definición y pruebas.
-- Estado de los vínculos antiguos que sigan mostrándose, eliminación de ubicaciones ya conocidas y retención de datos personales: PENDIENTE de decisiones posteriores.
-- La revocación explícita, su alcance temporal, garantías de aplicación y casos sin conexión se detallarán en **D-05**.
+- **D-05 CONFIRMADA posteriormente:** tras desactivar un permiso sin desinstalar, el dispositivo consultante conserva visible en Whereis la última ubicación que ya había obtenido, con fecha y hora y marcada como anterior. El tratamiento de vínculos obsoletos tras desinstalación, historiales y la retención general de datos sigue **PENDIENTE**.
+- **D-05 / issue #10:** la autorización se desactiva/reactiva mediante interruptor para un dispositivo conocido, sin nuevas solicitudes. La propagación, los cambios sin conexión y las consultas en curso siguen **PENDIENTES** de contraste técnico. Desinstalar/reinstalar es distinto y sigue exigiendo nueva vinculación.
 - Riesgo de suplantación de instalaciones/IDs antiguos; asegurar autenticidad y control de acceso es responsabilidad de diseño posterior.
 - Proveedor, arquitectura, persistencia, comunicaciones, costes, permisos de Android y tiempos de respuesta: **no decididos**.
 
 ## Fuera de alcance
 
-No se aprueban cuentas de usuario, recuperación automática, historial geográfico, proveedores, tecnologías o implementación. No se fija aquí la política de eliminación retroactiva de posiciones ya vistas o almacenadas por terceros.
+No se aprueban cuentas de usuario, recuperación automática, historial geográfico, proveedores, tecnologías o implementación. D-05 establece conservar la última ubicación ya recibida al **desactivar el interruptor** (no desinstalación), con fecha y hora; no se decide eliminación de copias externas ni política general de retención.
 
 ## Handoff
 
