@@ -6,6 +6,7 @@
 - **Issue:** [#14 — D-07](https://github.com/mundoinformaticacanaria/whereis/issues/14).
 - **Trazabilidad:** [D-01 #1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02 #2](https://github.com/mundoinformaticacanaria/whereis/issues/2), [D-03 #6](https://github.com/mundoinformaticacanaria/whereis/issues/6), [D-04 #8](https://github.com/mundoinformaticacanaria/whereis/issues/8), [D-05 #10](https://github.com/mundoinformaticacanaria/whereis/issues/10), [D-06 #12](https://github.com/mundoinformaticacanaria/whereis/issues/12).
 - **Baseline funcional global:** `PENDIENTE`; esta decisión no supone autorización de desarrollo.
+- **Ampliación posterior:** [D-08 / issue #16](https://github.com/mundoinformaticacanaria/whereis/issues/16), [PR #18](https://github.com/mundoinformaticacanaria/whereis/pull/18), incorpora el botón manual «Actualizar todos» sin cambiar la prohibición de seguimiento automático de D-07.
 - **Decisiones `SUPERSEDED`:** ninguna.
 
 ## Necesidad / origen y referencia funcional
@@ -66,7 +67,7 @@ Se describe el **contrato observable**, no una decisión sobre cómo almacenar l
 - **Diseño UX:** disposición del botón de refresco, lista de dispositivos y mapa, marcadores superpuestos, diferenciación de antigüedad, zoom/encuadre inicial, indicadores de carga/error, formatos de fecha y hora, accesibilidad.
 - **Privacidad:** tratamiento de posiciones cuando caducan, se desinstala Whereis o se borran datos; normativa, seguridad y almacenamiento/retención no definidos por D-07.
 - **Entornos sin conexión:** carga de mapa/teselas y comportamiento offline sin infraestructura.
-- **Actualización de varias ubicaciones:** no se ha aprobado botón de refresco masivo o automático ni frecuencia programada.
+- **Ampliación posterior CONFIRMADA en D-08 / issue #16:** desde el mapa inicial existirá **«Actualizar todos»**, accionado **manualmente** por el usuario, que intentará una consulta puntual por cada dispositivo con autorización activa. La opción no estaba aprobada cuando se formalizó inicialmente D-07, pero ahora **sí** lo está; **no** se habilitan actualizaciones automáticas o programadas. Concurrencia, límites, timeouts y rendimiento técnicos siguen **PENDIENTES**.
 - **Servicios opcionales:** navegación y rutas, imágenes satelitales, Street View, geocercas, historial y seguimiento en tiempo real **no aprobados para D-07**; su futuro estado MVP/POST-MVP requiere decisión adicional.
 - **Infraestructura y costes:** no hay autorización de proveedor, gasto ni despliegue.
 
