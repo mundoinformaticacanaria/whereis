@@ -1,4 +1,4 @@
-# D-08 — Mapa como pantalla inicial y acceso a la lista de dispositivos
+# D-08 — Mapa como pantalla inicial, lista de dispositivos y «Actualizar todos»
 
 - **Decisión aprobada por PROPIETARIO:** 16/10/2026.
 - **Clasificación:** `MATERIAL — FUNCIONAL`.
@@ -16,7 +16,7 @@
 - **Opción A — ELEGIDA / CONFIRMADA:** mostrar **mapa conjunto** como pantalla principal, con acceso a la **lista de dispositivos**.
 - **Opción B — NO ELEGIDA:** iniciar en la lista de dispositivos y entrar al mapa desde ella.
 
-El Propietario aprobó expresamente el 16/10/2026 la opción A, solicitó conservar **selección individual**, **actualización manual** y respeto de las **autorizaciones D-01 a D-07**, y autorizó su formalización en GitHub.
+El Propietario eligió expresamente el 16/10/2026 la **opción A**, conservando selección individual, actualización manual y autorizaciones D-01 a D-07. En el siguiente mensaje **amplió D-08** con: «**Opción A y además debe haber una opción de actualizar todos**». Esta ampliación está **CONFIRMADA**, no es una hipótesis ni implica seguimiento automático.
 
 ## Actores
 
@@ -37,6 +37,9 @@ El Propietario aprobó expresamente el 16/10/2026 la opción A, solicitó conser
 8. **Última ubicación antigua.** Si B conserva una posición previamente obtenida de A después de la desactivación, permanece visible con **fecha y hora** y señalización inequívoca de **posición anterior, no actual**, conforme a D-05.
 9. **Fallo de consulta.** Si una consulta autorizada falla, la interfaz informa del fallo y, si existe, muestra la **última ubicación conocida** con fecha, hora y advertencia; en ausencia de posición previa indica **«Ubicación no disponible»** (D-06).
 10. **Instalaciones nuevas.** La reinstalación de Whereis genera un nuevo ID sin heredar relaciones ni permisos de la anterior (D-04); D-08 no altera esa regla.
+11. **Actualizar todos (CONFIRMADO).** Además de «Actualizar ubicación» del dispositivo seleccionado, hay una acción explícita **«Actualizar todos»** en el mapa principal. Una pulsación del usuario intenta **una consulta puntual por cada dispositivo con autorización activa y válida** en ese momento. Se excluyen dispositivos solo conocidos, pendientes, con permiso desactivado, instalaciones invalidadas o con autorización no confirmada. No se activan permisos ni se inicia seguimiento continuo.
+12. **Resultados individuales.** El refresco global **no presupone que todos respondan**, ni actualiza posiciones sin respuesta. Para cada dispositivo se representa por separado la posición obtenida y su fecha/hora o el fallo y la última ubicación anterior fechada conforme a D-06; si nunca hubo posición, «Ubicación no disponible».
+13. **No implica refresco al abrir ni simultaneidad técnica.** Abrir el mapa **no** lanza «Actualizar todos». El orden, concurrencia, límites, cancelación y reintentos quedan **PENDIENTES** de diseño y validación por TECH LEAD.
 
 ## Ejemplo funcional sin datos reales
 
@@ -45,7 +48,7 @@ El dispositivo consultante B conoce tres dispositivos por ID:
 - **C:** autorización desactivada, pero B había obtenido una ubicación con anterioridad; permanece visible la **última ubicación de C con fecha y hora**, sin habilitar «Actualizar ubicación» para C.
 - **D:** dispositivo conocido sin ubicación previa. Puede aparecer en la **lista de conocidos**, pero **no** se presenta un marcador ficticio para D.
 
-Al abrir el flujo principal, B ve **el mapa conjunto** con las posiciones disponibles y puede entrar a la lista para seleccionar/gestionar dispositivos sin conferirles nuevos permisos.
+Al abrir el flujo principal, B ve **el mapa conjunto** con las posiciones disponibles y puede entrar a la lista para seleccionar/gestionar dispositivos sin conferirles nuevos permisos. Si B pulsa **«Actualizar todos»**, se intenta obtener **solo** una posición nueva de A si su autorización está activa: C queda excluido porque su permiso está desactivado y D queda excluido por no estar autorizado. Los resultados de cada dispositivo permitido son independientes.
 
 Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias ni usuarios de prueba.
 
@@ -60,6 +63,10 @@ Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias 
 - **D08-CA07 — Revocación:** B puede seguir viendo una ubicación anterior de A, si existe, con su fecha/hora después de la revocación aplicada, pero no puede obtener una nueva.
 - **D08-CA08 — Consulta fallida:** si falla la actualización, el mapa no convierte el último dato en «actual» y muestra el aviso previsto en D-06.
 - **D08-CA09 — Sin actualización automática:** abrir el mapa, entrar en la lista o cambiar de marcador no genera nuevas solicitudes de ubicación por sí solo.
+- **D08-CA10 — Botón global:** desde la vista principal se puede distinguir y pulsar **«Actualizar todos»** además del botón individual.
+- **D08-CA11 — Alcance por autorización:** el botón global intenta una consulta puntual por cada dispositivo con permiso activo y válido, **sin incluir** dispositivos solo conocidos, pendientes, revocados, con instalación inválida o autorización no confirmada; no cambia permisos.
+- **D08-CA12 — Fallo parcial:** si responde A pero C no responde, la vista refleja el dato nuevo de A y, para C, aviso de fallo con última ubicación anterior fechada, o «Ubicación no disponible» si nunca hubo una, sin atribuir a C una posición nueva.
+- **D08-CA13 — Solo por pulsación:** el botón global no se activa al abrir/mover el mapa ni induce periodicidad, historial o seguimiento continuo.
 
 ## PENDIENTE — no aprobado por D-08
 
@@ -70,7 +77,8 @@ Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias 
 - **Onboarding, primera instalación y gestión de permisos Android:** D-08 define la vista inicial del **flujo principal**; no sustituye las comprobaciones de permisos ni resuelve pantallas de primera instalación.
 - **Conectividad/offline y posición antigua:** reglas de sincronización/retención general aún pendientes en D-05/D-06.
 - **Elección técnica:** SDK/cartografía libre, fuentes de teselas, proveedor, licencias, costes, datos y arquitectura quedan en manos de evaluación del **TECH LEAD** según D-07 y gobernanza. No hay selección ni gasto aprobado.
-- **Actualización masiva del grupo, navegación, rutas, seguimiento continuo, historial geográfico:** no aprobados por esta decisión.
+- **Operativa técnica de «Actualizar todos»:** concurrencia frente a secuenciación, límite de consultas, plazos, cancelación, tratamiento de peticiones en vuelo, carga y rendimiento bajo Android: **PENDIENTE** de TECH LEAD. La **acción manual global sí está aprobada**.
+- **Navegación, rutas, seguimiento continuo, historial geográfico y refrescos automáticos/periódicos:** no aprobados por esta decisión.
 
 ## Impacto y verificación de coherencia
 
@@ -79,7 +87,7 @@ Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias 
 - **Seguridad y arquitectura:** selección, renderización y comunicaciones deben respetar autorización activa y límites de Android sin imponer implementación.
 - **Costes:** `PENDIENTE`.
 
-El contrato de D-07 sigue `CONFIRMADO`, y D-08 **solo añade** la organización de la vista principal y el acceso a lista.
+El contrato de D-07 sigue `CONFIRMADO`, y D-08 **añade** la vista inicial, acceso a lista y **actualización manual de todos los dispositivos autorizados**. D-07 solo prohibía consultas a todos **por el hecho de abrir el mapa**, no una solicitud conjunta iniciada expresamente por el usuario.
 
 ## Handoff
 
