@@ -30,6 +30,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 
 ## Cola operativa
 
+- **Gobernanza G-02:** [issue #26](https://github.com/mundoinformaticacanaria/whereis/issues/26) y [PR #27](https://github.com/mundoinformaticacanaria/whereis/pull/27) documentan la orquestación sin autorizar todavía desarrollo. La verificación de accesos, QA y labels es un pendiente operativo separado.
 - **Gobernanza G-01:** [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [PR #5](https://github.com/mundoinformaticacanaria/whereis/pull/5) proporcionan trazabilidad de la formalización documental; una vez integrados/cerrados no suponen nueva autorización operativa.
 - [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): decisiones funcionales con [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión por TECH LEAD.
 - **Primera issue de programación:** todavía no autorizada.
