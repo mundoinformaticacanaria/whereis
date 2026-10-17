@@ -1,51 +1,44 @@
-# Project AI Governance Template
+# Whereis
 
-Plantilla reusable de gobernanza para proyectos de software coordinados con agentes de IA y humanos.
+Proyecto Android para compartir y consultar ubicaciones de dispositivos autorizados. **Fase actual: definición funcional, seguridad y arquitectura; desarrollo del producto todavía no autorizado.**
 
-## Propósito
+GitHub es la fuente de verdad: [repositorio](https://github.com/mundoinformaticacanaria/whereis). Las issues completas (incluidos comentarios) y documentos vigentes de `main` prevalecen sobre chats, notas locales y ejemplos.
 
-Este repositorio define reglas operativas, roles, handoffs, calidad, observabilidad y estructura documental reutilizables entre proyectos. No contiene requisitos de negocio ni código de producto.
+## Primeros pasos para cualquier agente
 
-## Cómo usarla
+1. Lee [AGENTS.md](AGENTS.md), [estado del proyecto](docs/estado-proyecto.md) y [criterios de desarrollo](docs/criterios-desarrollo.md).
+2. Lee el [playbook de orquestación](docs/orquestacion/README.md) y [G-02](docs/decisiones/G-02-orquestacion-qwen-codex-chatgpt.md).
+3. Lee tu documento [contexto de rol](docs/onboarding-roles.md) y todas las issues/PR relacionadas con la tarea.
+4. Ejecuta únicamente la siguiente acción autorizada; si faltan permiso, contexto, decisiones, accesos o pruebas, informa `BLOQUEADO` a TECH LEAD.
 
-1. Crear un repositorio nuevo para el proyecto.
-2. Copiar esta estructura como punto de partida.
-3. Completar los campos marcados como `PENDIENTE DE PROYECTO`.
-4. Definir y aprobar el baseline funcional y arquitectónico antes de autorizar desarrollo.
-5. Crear las labels e identidades de ejecutores realmente disponibles.
-6. No copiar automáticamente reglas específicas de otro proyecto.
+## Equipo y cola
 
-Para proyectos nuevos y para adaptar proyectos ya existentes, seguir `docs/guia-adopcion-proyectos.md`.
+| Rol (label exacta) | Ejecuta |
+|---|---|
+| PROPIETARIO | Persona propietaria |
+| FUNCIONAL | ChatGPT conversacional |
+| TECH LEAD o issue sin label de rol | ChatGPT Tech Lead activo |
+| ARQUITECTO | Codex |
+| PROGRAMADOR | Qwen Linux o Codex según campo `Ejecutor autorizado` de la issue |
+| QA | Codex o ChatGPT **independiente del autor** |
 
-## Principio central
+**No se asignan issues a modelos mediante labels propias.** Cada issue ejecutable tiene una sola label de siguiente rol. En `PROGRAMADOR` se requiere `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX`. Sin labels de rol = responsabilidad del Tech Lead.
 
-GitHub es la fuente de verdad del proyecto. Conversaciones, prompts, recuerdos, logs y herramientas auxiliares nunca prevalecen sobre el estado vivo del repositorio.
+## Guías listas para entregar
 
-## Estructura
+- [Qwen en servidor Linux](docs/orquestacion/qwen-linux.md)
+- [Codex Arquitecto / Programador / QA de Qwen](docs/orquestacion/codex.md)
+- [Chats ChatGPT Funcional / Tech Lead / QA](docs/orquestacion/chatgpt-roles.md)
 
-- `AGENTS.md`: reglas operativas globales.
-- `docs/estado-proyecto.md`: estado vivo y siguiente avance.
-- `docs/criterios-desarrollo.md`: criterios permanentes de calidad y ejecución.
-- `docs/arquitectura.md`: baseline arquitectónico del proyecto.
-- `docs/onboarding-roles.md`: entrada rápida para agentes/roles.
-- `docs/contexto-*.md`: responsabilidades persistentes por rol.
-- `docs/logs/README.md`: política de heartbeat.
-- `docs/guia-adopcion-proyectos.md`: procedimiento para proyectos nuevos y proyectos ya avanzados.
-- `docs/decisiones/`: decisiones materiales de arquitectura/gobernanza.
-- `docs/decisiones-funcionales/`: decisiones funcionales materiales.
+## Desarrollo y calidad
 
-## Antes de empezar un proyecto real
+El circuito técnico es `TECH LEAD → PROGRAMADOR → QA independiente → TECH LEAD`. El Programador no hace merge ni ocupa otra tarea por iniciativa propia. QA debe verificar la PR y el commit exacto y devolver `APTO`, `DEFECTOS` o `BLOQUEADO`. Para código Codex, QA debe ser un chat ChatGPT independiente, no el Codex que programó.
 
-No autorizar implementación hasta que estén definidos, como mínimo:
+**No desarrollar** antes de aprobar el baseline funcional y arquitectónico del incremento, resolver bloqueos de seguridad/privacidad (incluidos [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24)) y completar los gates necesarios del [bootstrap](docs/bootstrap-proyecto.md).
 
-- objetivo y alcance MVP;
-- actores y responsabilidades;
-- baseline funcional;
-- baseline arquitectónico;
-- clasificación de trabajo y flujo de handoffs;
-- gates de calidad;
-- identidades de programadores disponibles;
-- tratamiento de seguridad, privacidad, costes, proveedores e infraestructura;
-- política de logs/heartbeat.
+## Referencias
 
-Esta plantilla debe adaptarse de forma explícita. No se considera correcto usarla sin revisar y eliminar reglas que no apliquen al proyecto destino.
+- [G-01 (histórica)](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) y [G-02 (orquestación vigente)](docs/decisiones/G-02-orquestacion-qwen-codex-chatgpt.md).
+- [Arquitectura](docs/arquitectura.md) — pendiente de baseline aprobado.
+- [Decisiones funcionales](docs/decisiones-funcionales/) — revisar issues y PR abiertas antes de asumir integración.
+- [Configuración GitHub](docs/configuracion-github.md) — accesos, labels, protecciones, CI y logs se verifican por separado; ningún secreto en el repositorio.

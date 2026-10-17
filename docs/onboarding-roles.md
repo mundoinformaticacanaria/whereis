@@ -2,7 +2,7 @@
 
 ## Gobernanza específica de Whereis (G-01 V3)
 
-Roles activos confirmados por el Propietario: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `PROGRAMADOR` y `QA`. La relación de roles que sigue conserva las especialidades de referencia, pero `ARQUITECTO`, `DEVOPS` y `COMERCIAL` no son perfiles activos permanentes. Véase [G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md). `FUNCIONAL` es independiente de `TECH LEAD`; `QA` debe ser independiente del autor de cada implementación. Las configuraciones e identidades concretas aún están pendientes.
+G-01 confirmó cinco roles; la [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md) activa además `ARQUITECTO` (Codex). Roles operativos actuales: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`. Las especialidades `DEVOPS` y `COMERCIAL` no son perfiles activos permanentes. Véase [G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md). `FUNCIONAL` es independiente de `TECH LEAD`; `QA` debe ser independiente del autor de cada implementación. Las configuraciones e identidades concretas aún están pendientes.
 
 ---
 
@@ -57,3 +57,12 @@ Decide lo que requiere autoridad humana: alcance, prioridades, autorizaciones, g
 ## Regla de handoff
 
 Una issue debe indicar quién tiene la siguiente acción. Un rol no continúa por iniciativa propia fuera de su responsabilidad.
+
+## Acceso rápido al contexto por ejecutor
+
+- [Playbook de labels, asignaciones y handoffs](orquestacion/README.md)
+- [Qwen Linux](orquestacion/qwen-linux.md) — PROGRAMADOR cuando `Ejecutor autorizado: QWEN-LINUX`.
+- [Codex](orquestacion/codex.md) — ARQUITECTO, PROGRAMADOR cuando `Ejecutor autorizado: CODEX`, o QA independiente de Qwen.
+- [Chats ChatGPT](orquestacion/chatgpt-roles.md) — FUNCIONAL, TECH LEAD y QA independiente.
+
+**Sin label de rol, la issue pertenece a TECH LEAD.** En código creado por Codex, QA debe ser independiente y no ejecutarse por el Codex autor. El acceso a GitHub, las credenciales y la disponibilidad se verifican aparte, sin poner secretos en el repositorio.

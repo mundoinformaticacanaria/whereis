@@ -6,13 +6,18 @@ Esta configuración no forma parte del contenido versionado y debe aplicarse man
 
 Whereis es el repositorio del producto. No se presupone que deba convertirse en repositorio plantilla. Su configuración concreta requiere decisión operativa explícita.
 
-## Roles y labels para Whereis — G-01 V3
+## Labels de siguiente acción — G-02
 
-La decisión confirmada [G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md) define **cinco roles activos iniciales**: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `PROGRAMADOR` y `QA`. Las correspondientes labels de siguiente acción son una **configuración PENDIENTE**; este documento no acredita que ya existan.
+Labels de **roles** aprobados: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`.
 
-`ARQUITECTO`, `DEVOPS` y `COMERCIAL` quedan inactivos por defecto; no se configura ni se asigna trabajo a dichas especialidades sin decisión específica.
+- Una issue con **cero labels de rol** es propiedad de TECH LEAD; la label `TECH LEAD` expresa lo mismo de forma opcional.
+- Para cada issue ejecutable, solo una label de rol; no añadir labels de modelos, identidades o estados como mecanismo de asignación.
+- Con label `PROGRAMADOR`, el campo del cuerpo `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX` determina inequívocamente el ejecutor.
+- `DEVOPS` y `COMERCIAL` no son roles activos. Si existen sus labels antiguas, no asignar nuevas tareas sin aprobación.
+- La existencia/configuración completa de las labels de GitHub debe verificarse: algunas constan ya en issues actuales, pero la herramienta disponible no puede crear o inventariar labels globales. Su configuración sigue PENDIENTE de completar y confirmar.
+- Prefijos de ramas: `qwen/<issue>-<slug>`, `codex/<issue>-<slug>`; propuestas de Arquitecto `arquitectura/<issue>-<slug>`. No renombrar las ramas funcionales existentes.
 
-Las identidades ejecutoras de PROGRAMADOR, sus labels adicionales y los prefijos de rama son propios de Whereis y también siguen `PENDIENTE`. Cada issue ejecutable tendrá una única label de siguiente acción cuando esté operativa la configuración.
+Ver [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md) y [orquestación](orquestacion/README.md).
 
 ## Merge
 

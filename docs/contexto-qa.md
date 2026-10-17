@@ -56,4 +56,4 @@ Después devuelve la siguiente acción a `TECH LEAD` o al rol indicado por la go
 
 ## Whereis — G-01 V3
 
-QA es uno de los cinco roles activos y debe ser **independiente del ejecutor que implementó la entrega**. Si no existe un revisor independiente disponible, el handoff queda bloqueado y no se emite APTO por autorrevisión. No se modifican estos controles por reducción del equipo. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.
+QA es rol activo confirmado por G-01/G-02 y debe ser **independiente del ejecutor que implementó la entrega**. Para código Qwen, QA puede ser CODEX en función revisora o un chat ChatGPT independiente; para código CODEX, QA será un chat ChatGPT independiente, que no haya implementado el mismo cambio. Si no existe un revisor independiente disponible, el handoff queda bloqueado y no se emite APTO por autorrevisión. No se modifican estos controles por reducción del equipo. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.

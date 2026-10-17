@@ -8,9 +8,9 @@ Implementar únicamente el trabajo autorizado por la issue asignada.
 
 Una tarea está asignada cuando existe:
 
-`PROGRAMADOR + exactamente una identidad ejecutora`.
+`PROGRAMADOR` (label) + `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX` (campo de la issue, exactamente uno).
 
-La identidad concreta y su prefijo de rama son **PENDIENTE DE PROYECTO**.
+Identidades lógicas autorizables: `QWEN-LINUX` y `CODEX`, según [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md). Para asignar una issue: label `PROGRAMADOR` y **exactamente un campo `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX`**. Las identidades de cuenta y conectividad real a GitHub siguen por verificar. Prefijos: `qwen/<issue>-<slug>` y `codex/<issue>-<slug>`.
 
 ## Antes de programar
 

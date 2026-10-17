@@ -31,4 +31,4 @@ Funcional define comportamiento, actores, permisos funcionales, reglas, flujos, 
 
 ## Whereis — G-01 V3
 
-FUNCIONAL es uno de los cinco roles activos iniciales, separado de TECH LEAD. Prepara requisitos, reglas y aceptación; las decisiones materiales que requieren autorización humana se elevan a PROPIETARIO, no pasan directamente a PROGRAMADOR. La ausencia de ARQUITECTO activo implica que el estudio de impacto técnico se entrega a TECH LEAD; si requiere especialidad adicional, se solicita su activación, no se presume. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.
+FUNCIONAL es uno de los cinco roles activos iniciales, separado de TECH LEAD. Prepara requisitos, reglas y aceptación; las decisiones materiales que requieren autorización humana se elevan a PROPIETARIO, no pasan directamente a PROGRAMADOR. G-02 activa `ARQUITECTO` (Codex), que revisa el impacto técnico cuando la issue lo requiera, sin sustituir la aprobación humana. FUNCIONAL se ejecuta en chat ChatGPT conversacional con acceso al GitHub actual. Véase `docs/decisiones/G-01-gobernanza-minima-cinco-roles.md`.
