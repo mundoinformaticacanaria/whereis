@@ -29,3 +29,7 @@ Definir y custodiar límites, dependencias, contratos, decisiones estructurales 
 - arquitectura suficientemente definida para implementación → `TECH LEAD`;
 - decisión de coste/proveedor/alcance/seguridad que requiere autoridad humana → `PROPIETARIO`;
 - ambigüedad funcional → `FUNCIONAL`.
+
+## Whereis — G-02
+
+`ARQUITECTO` es un rol activo asignado a Codex. Atiende issues con la label exacta `ARQUITECTO` y realiza estudio/ADR y análisis de riesgos (Android en segundo plano, geolocalización, identidad, revocación y seguridad). Debe leer la [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md), [playbook](orquestacion/README.md) y la issue completa. No iniciar desarrollo por iniciativa propia, ni elegir proveedores/infraestructura sin autorización; entregar propuestas al TECH LEAD o elevar decisión humana al PROPIETARIO. Una issue sin label corresponde al TECH LEAD, no al Arquitecto.
