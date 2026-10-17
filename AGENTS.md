@@ -4,7 +4,7 @@
 
 Este repositorio gobierna el desarrollo del proyecto **Whereis**, una aplicación Android de consulta de ubicación autorizada entre dispositivos. Los contratos funcionales y arquitectónicos concretos se documentan en sus baselines y decisiones; no se infieren de este archivo.
 
-La [decisión G-01 V3](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) confirmó cinco roles activos iniciales. Los demás campos `PENDIENTE DE PROYECTO` deben resolverse mediante decisiones expresas; no se completan por intuición.
+La [decisión G-01 V3](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) fijó cinco roles iniciales. **G-02** ([orquestación](docs/decisiones/G-02-orquestacion-qwen-codex-chatgpt.md)) activa además `ARQUITECTO` (Codex), identifica los programadores Qwen Linux y Codex y establece el enrutamiento mediante labels. Seis roles operativos; `DEVOPS` y `COMERCIAL` siguen no activos. Los campos `PENDIENTE` no se completan por intuición.
 
 ## Fuente de verdad
 
@@ -52,27 +52,30 @@ Usar de forma explícita cuando sea relevante:
 
 No resolver contradicciones por intuición.
 
-## Roles y siguiente acción
+## Roles, ejecutores y siguiente acción
 
-**CONFIRMADO — G-01 V3:** los cinco roles activos iniciales de Whereis son:
+**CONFIRMADO — G-02:** roles operativos `PROPIETARIO` (humano), `FUNCIONAL` (chat ChatGPT independiente), `TECH LEAD` (chat ChatGPT), `ARQUITECTO` (Codex), `PROGRAMADOR` (Qwen Linux o Codex) y `QA` (Codex o ChatGPT independiente del autor).
 
-- `PROPIETARIO`: autoridad humana sobre alcance, prioridades, requisitos materiales, proveedores, gastos y autorizaciones reservadas.
-- `FUNCIONAL`: responsable **independiente** de análisis funcional, reglas, flujos y criterios de aceptación; propone, no aprueba decisiones materiales por sí solo.
-- `TECH LEAD`: coordinación técnica, arquitectura/DevOps iniciales, planificación, integración y merge dentro de lo autorizado; no sustituye al Propietario.
-- `PROGRAMADOR`: implementación exclusivamente de tareas asignadas a un ejecutor identificado; no hace merge.
-- `QA`: revisión independiente del autor, con dictamen `APTO`, `DEFECTOS` o `BLOQUEADO`; nunca hace merge.
+- `PROPIETARIO`: decide alcance, requisitos materiales, proveedores, gastos y autorizaciones reservadas.
+- `FUNCIONAL`: requisitos, permisos funcionales, flujos y aceptación; propone sin autoaprobar decisiones materiales.
+- `TECH LEAD`: dueño del backlog de issues sin label de rol; arquitectura y desarrollo coordinados, asignación por riesgo, revisión final y merge.
+- `ARQUITECTO`: Codex; propuestas y validación arquitectónica, sin facultad de aprobar gastos/proveedores o alterar requisitos.
+- `PROGRAMADOR`: exige en el cuerpo **Ejecutor autorizado: QWEN-LINUX** o **Ejecutor autorizado: CODEX**; solo implementación asignada, PR y no merge.
+- `QA`: revisor independiente, `APTO` / `DEFECTOS` / `BLOQUEADO`, sin modificar el código evaluado ni realizar merge.
 
-`ARQUITECTO`, `DEVOPS` y `COMERCIAL` no son roles activos permanentes inicialmente. Sus contextos se conservan como referencia y pueden activarse ante necesidad real y autorización, sin presumir identidades ni recursos.
+`DEVOPS` y `COMERCIAL` quedan como especialidades no activas por defecto; su intervención requiere autorización.
 
-Las cinco labels de siguiente acción correspondientes se **deben configurar**; su existencia en GitHub es `PENDIENTE`. Una issue ejecutable debe tener normalmente una única label de siguiente acción una vez configuradas. `PROPIETARIO` indica decisión o autorización humana requerida.
+**Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
+
+Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
 ## Programadores
 
-Las identidades de programadores son **PENDIENTE DE PROYECTO**.
+Identidades lógicas de programadores **CONFIRMADAS**: `QWEN-LINUX` (servidor Linux) y `CODEX` (Codex de ChatGPT). Su configuración de acceso, usuario de GitHub, permisos y disponibilidad real **PENDIENTE de verificación**.
 
 Reglas base:
 
-- una tarea de desarrollo está asignada únicamente con `PROGRAMADOR + exactamente una identidad ejecutora`;
+- una tarea está asignada únicamente con **label `PROGRAMADOR` + exactamente un campo `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX`** en el cuerpo de la issue;
 - máximo una issue activa por ejecutor salvo decisión explícita posterior;
 - Tech Lead decide el paralelismo;
 - solo paralelizar trabajos realmente independientes;
@@ -80,16 +83,16 @@ Reglas base:
 - ningún Programador hace merge;
 - ningún Programador toma otra tarea por iniciativa propia.
 
-Los prefijos de rama de cada ejecutor deben definirse en `docs/estado-proyecto.md` o en una decisión de gobernanza del proyecto.
+Prefijos de rama de trabajo: `qwen/<issue>-<slug>` para Qwen; `codex/<issue>-<slug>` para Codex; `arquitectura/<issue>-<slug>` para propuestas del Arquitecto. No renombrar ramas ya abiertas. No iniciar implementación sin baselines/seguridad/bootstrap autorizados.
 
 ## Handoffs funcionales y de desarrollo
 
-- Decisiones funcionales materiales: `FUNCIONAL → PROPIETARIO (aprueba) → TECH LEAD`, con requisitos y criterios de aceptación registrados antes de asignar implementación.
+- Decisiones funcionales materiales: `FUNCIONAL → PROPIETARIO (aprueba) → TECH LEAD`, con criterios de aceptación registrados. Análisis estructural: `ARQUITECTO (Codex) → TECH LEAD`, o `PROPIETARIO` si requiere autoridad humana.
 - Desarrollo autorizado: `PROGRAMADOR + ejecutor → QA independiente → TECH LEAD → merge o devolución`.
-- El Programador implementa; QA revisa de forma adversarial e independiente del autor, y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`. Ante defectos o bloqueo no hay merge.
+- El Programador implementa; QA revisa de forma adversarial e independiente del autor, y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`. Para PR creadas por `CODEX`, QA = chat de ChatGPT independiente; para `QWEN-LINUX`, QA = Codex o ChatGPT independiente. La misma implementación no puede autorrevisarse. Ante defectos o bloqueo no hay merge.
 - QA nunca hace merge; Tech Lead conserva la revisión final de calidad, integración, prioridad y merge.
 - Un cambio del head SHA invalida revisiones previas para integración. Si falta un revisor QA realmente independiente, el merge queda bloqueado.
-- G-01 no habilita desarrollo ni autoriza proveedores, infraestructura, costes o nuevos requisitos sin sus aprobaciones específicas.
+- G-01/G-02 no habilitan desarrollo ni autorizan proveedores, infraestructura, costes o nuevos requisitos sin aprobaciones específicas. Handoff de una issue a TECH LEAD = retirar labels de rol (o usar `TECH LEAD` explícita).
 
 ## Principios de arquitectura
 
