@@ -52,6 +52,7 @@
 - Esta decisión habilita documentar la orquestación; no habilita instalaciones, gastos, despliegues o proveedores.
 
 ## Referencias
+- [Issue #26](https://github.com/mundoinformaticacanaria/whereis/issues/26) y [PR #27](https://github.com/mundoinformaticacanaria/whereis/pull/27) de incorporación documental.
 - [G-01 V3](G-01-gobernanza-minima-cinco-roles.md)
 - [Playbook](../orquestacion/README.md)
 - [Perfiles de ejecutores](../orquestacion/)
