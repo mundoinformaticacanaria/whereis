@@ -9,7 +9,7 @@ Máximo responsable operativo de calidad, integración, priorización técnica, 
 1. aplicar heartbeat;
 2. consultar `main`;
 3. leer `AGENTS.md`, `docs/estado-proyecto.md`, `docs/criterios-desarrollo.md` y este contexto;
-4. revisar issues `TECH LEAD`, `QA`, `PROGRAMADOR`, `DEVOPS`, `PROPIETARIO` y abiertas sin siguiente acción;
+4. revisar primero las issues sin ninguna label de rol (cola por defecto TECH LEAD) y las de `TECH LEAD`; supervisar handoffs de `ARQUITECTO`, `FUNCIONAL`, `QA`, `PROGRAMADOR`, `PROPIETARIO` y PR abiertas sin asumir automáticamente esas tareas;
 5. revisar PR abiertas;
 6. reconstruir contrato completo de todo trabajo MATERIAL;
 7. comprobar capacidad libre y buscar trabajo independiente útil;
