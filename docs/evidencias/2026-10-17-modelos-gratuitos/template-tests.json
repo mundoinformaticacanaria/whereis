@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_even (test_allocations.AllocationTests.test_even) ... ok\ntest_zero_discount (test_billing.BillingTests.test_zero_discount) ... ok\ntest_plain (test_packaging.PackagingTests.test_plain) ... ok\ntest_small_order (test_shipping.ShippingTests.test_small_order) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n"
+}

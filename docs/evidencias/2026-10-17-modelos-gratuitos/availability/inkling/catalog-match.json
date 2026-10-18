@@ -1,0 +1,23 @@
+{
+  "found": true,
+  "model": "thinkingmachines/inkling:free",
+  "pricing": {
+    "prompt": "0",
+    "completion": "0"
+  },
+  "context_length": 1048576,
+  "supported_parameters": [
+    "frequency_penalty",
+    "include_reasoning",
+    "max_tokens",
+    "presence_penalty",
+    "reasoning",
+    "reasoning_effort",
+    "seed",
+    "stop",
+    "temperature",
+    "tools",
+    "top_p"
+  ],
+  "expiration_date": null
+}
