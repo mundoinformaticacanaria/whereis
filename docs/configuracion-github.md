@@ -12,10 +12,10 @@ Labels de **roles** aprobados: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITE
 
 - Una issue con **cero labels de rol** es propiedad de TECH LEAD; la label `TECH LEAD` expresa lo mismo de forma opcional.
 - Para cada issue ejecutable, solo una label de rol; no añadir labels de modelos, identidades o estados como mecanismo de asignación.
-- Con label `PROGRAMADOR`, el campo del cuerpo `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX` determina inequívocamente el ejecutor.
+- Con label `PROGRAMADOR`, el campo del cuerpo `Ejecutor autorizado: PROGRAMADOR-LINUX` o `Ejecutor autorizado: CODEX` determina inequívocamente el ejecutor.
 - `DEVOPS` y `COMERCIAL` no son roles activos. Si existen sus labels antiguas, no asignar nuevas tareas sin aprobación.
 - La existencia/configuración completa de las labels de GitHub debe verificarse: algunas constan ya en issues actuales, pero la herramienta disponible no puede crear o inventariar labels globales. Su configuración sigue PENDIENTE de completar y confirmar.
-- Prefijos de ramas: `qwen/<issue>-<slug>`, `codex/<issue>-<slug>`; propuestas de Arquitecto `arquitectura/<issue>-<slug>`. No renombrar las ramas funcionales existentes.
+- Prefijos de ramas: `programador-linux/<issue>-<slug>`, `codex/<issue>-<slug>`; propuestas de Arquitecto `arquitectura/<issue>-<slug>`. No renombrar las ramas funcionales existentes.
 
 Ver [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md) y [orquestación](orquestacion/README.md).
 
@@ -27,6 +27,14 @@ Recomendación por defecto:
 - evitar merge directo de Programadores;
 - exigir revisión Tech Lead antes de integrar código;
 - mantener PR pequeñas y vinculadas a issue.
+
+## Estado verificado a 18/10/2026
+
+- `main` figura **sin protección** y no hay rulesets activos.
+- No existe `.github/workflows` en `main`; no hay CI operativo acreditado.
+- La configuración completa de labels sigue pendiente de inventario/verificación global; se observan al menos `PROPIETARIO` y `TECH LEAD` en issues, pero no se da por confirmada la lista completa.
+- No crear labels de identidad/modelo. `PROGRAMADOR-LINUX` se expresa en el cuerpo de la issue, no como label.
+- Estos pendientes mantienen bloqueada la primera asignación `PROGRAMADOR` junto con baseline y seguridad #24.
 
 ## Branch protection / rulesets
 

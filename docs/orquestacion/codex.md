@@ -17,7 +17,7 @@
 - Implementar solo la issue en rama `codex/<issue>-<slug>`; ejecutar gates pertinentes, vincular PR y documentar SHA, comandos/tests, riesgos y dependencias.
 - Devolver a QA y detenerse. **Codex que escribió el código no es revisor QA válido de su propia entrega**, aunque se cambie de prompt o sesión.
 
-## Cuando se solicite revisión QA de código de Qwen
+## Cuando se solicite revisión QA de código de PROGRAMADOR-LINUX
 
 - Usar un contexto aislado con función `QA`, leer `docs/contexto-qa.md`; no alterar la rama revisada ni resolver defectos implementándolos en la misma revisión.
 - Dictaminar `APTO`, `DEFECTOS` o `BLOQUEADO`, citando issue, commit SHA, diff, CI y pruebas.
