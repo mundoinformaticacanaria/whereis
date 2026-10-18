@@ -61,8 +61,8 @@ Una issue debe indicar quién tiene la siguiente acción. Un rol no continúa po
 ## Acceso rápido al contexto por ejecutor
 
 - [Playbook de labels, asignaciones y handoffs](orquestacion/README.md)
-- [Qwen Linux](orquestacion/qwen-linux.md) — PROGRAMADOR cuando `Ejecutor autorizado: QWEN-LINUX`.
-- [Codex](orquestacion/codex.md) — ARQUITECTO, PROGRAMADOR cuando `Ejecutor autorizado: CODEX`, o QA independiente de Qwen.
+- [PROGRAMADOR-LINUX](orquestacion/programador-linux.md) — PROGRAMADOR cuando `Ejecutor autorizado: PROGRAMADOR-LINUX`; modelo configurable.
+- [Codex](orquestacion/codex.md) — ARQUITECTO, PROGRAMADOR cuando `Ejecutor autorizado: CODEX`, o QA independiente de PROGRAMADOR-LINUX.
 - [Chats ChatGPT](orquestacion/chatgpt-roles.md) — FUNCIONAL, TECH LEAD y QA independiente.
 
 **Sin label de rol, la issue pertenece a TECH LEAD.** En código creado por Codex, QA debe ser independiente y no ejecutarse por el Codex autor. El acceso a GitHub, las credenciales y la disponibilidad se verifican aparte, sin poner secretos en el repositorio.

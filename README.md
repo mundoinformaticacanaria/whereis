@@ -19,15 +19,15 @@ GitHub es la fuente de verdad: [repositorio](https://github.com/mundoinformatica
 | FUNCIONAL | ChatGPT conversacional |
 | TECH LEAD o issue sin label de rol | ChatGPT Tech Lead activo |
 | ARQUITECTO | Codex |
-| PROGRAMADOR | Qwen Linux o Codex según campo `Ejecutor autorizado` de la issue |
+| PROGRAMADOR | PROGRAMADOR-LINUX o CODEX según campo `Ejecutor autorizado` de la issue |
 | QA | Codex o ChatGPT **independiente del autor** |
 
-**No se asignan issues a modelos mediante labels propias.** Cada issue ejecutable tiene una sola label de siguiente rol. En `PROGRAMADOR` se requiere `Ejecutor autorizado: QWEN-LINUX` o `Ejecutor autorizado: CODEX`. Sin labels de rol = responsabilidad del Tech Lead.
+**No se asignan issues a modelos mediante labels propias.** Cada issue ejecutable tiene una sola label de siguiente rol. En `PROGRAMADOR` se requiere `Ejecutor autorizado: PROGRAMADOR-LINUX` o `Ejecutor autorizado: CODEX`. Sin labels de rol = responsabilidad del Tech Lead.
 
 ## Guías listas para entregar
 
-- [Qwen en servidor Linux](docs/orquestacion/qwen-linux.md)
-- [Codex Arquitecto / Programador / QA de Qwen](docs/orquestacion/codex.md)
+- [PROGRAMADOR-LINUX](docs/orquestacion/programador-linux.md) — ejecutor Linux con modelo configurable
+- [Codex Arquitecto / Programador / QA de PROGRAMADOR-LINUX](docs/orquestacion/codex.md)
 - [Chats ChatGPT Funcional / Tech Lead / QA](docs/orquestacion/chatgpt-roles.md)
 
 ## Desarrollo y calidad
