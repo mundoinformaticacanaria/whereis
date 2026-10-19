@@ -81,3 +81,23 @@ Reconocer dispositivos mediante su ID fijo Whereis, independientemente de conced
 ## Handoff
 
 **TECH LEAD** revisa compatibilidad técnica, seguridad, límites Android y la PR #7 sobre su head SHA actual; después corresponde integración conforme a G-01 V3. **QA** será independiente para implementación futura. El cambio documental **no autoriza desarrollo**.
+
+## Ampliación posterior CONFIRMADA — D-09 y SEG-02 (17 y 19/10/2026)
+
+**La issue y sus comentarios son el contrato vivo.** Esta ampliación prevalece ante frases del flujo original de D-03 incompatibles con las decisiones posteriores; no reemplaza los requisitos de autorización individual.
+
+1. **Reconocimiento asimétrico:** el solicitante B debe conocer/verificar el ID de A antes de añadirlo a su lista y solicitar la ubicación. **A NO necesita conocer previamente a B para recibir la solicitud.** Una petición de B desconocido aparece en «Solicitudes / Recibidas», sin añadir B a conocidos de A.
+2. **Aceptar una solicitud no activa el acceso:** A puede aceptar, rechazar o bloquear la petición. **Aceptar añade B a conocidos de A, pero mantiene el interruptor de autorización desactivado** hasta que A lo active expresamente. B ve «Dispositivo conocido, sin autorización» y no puede obtener una nueva ubicación. El rechazo no incorpora B a conocidos.
+3. **Caducidad/reintentos:** las peticiones caducan **24 horas desde su envío**. Una pendiente y realmente recibida por A (disponible en su app aunque no haya sido leída) no se duplica; tras rechazo/caducidad se puede volver a solicitar, salvo bloqueo. Si no hay confirmación de recepción, permitir reintentar sin crear duplicados. Sin historial visible de rechazadas/caducadas. Bandejas «Enviadas / Recibidas» conforme a [D-09 #19](https://github.com/mundoinformaticacanaria/whereis/issues/19).
+4. **Bloqueo y validación:** un ID puede bloquearse preventivamente tras verificar su existencia, con confirmación. Bloquear impide nuevas solicitudes y revoca permisos efectivos; desbloquear sin confirmación **no** reautoriza. Con ID inexistente «ID no encontrado»; sin Internet «No se pudo verificar el ID», sin alta provisional ni bloqueo pendiente. Las reglas UX detalladas figuran en D-09.
+5. **Activar/revocar interruptor:** no exige confirmación adicional ni crea nuevas solicitudes. No hay notificaciones por autorización/revocación ordinaria ni por consulta exitosa (sin perjuicio de los avisos excepcionales autorizados en [D-12 #22](https://github.com/mundoinformaticacanaria/whereis/issues/22)).
+6. **SEG-02 CONFIRMADA por el PROPIETARIO:** conocer/copiar un ID o QR **no constituye prueba de identidad**; antes de devolver una nueva ubicación deben verificarse la instalación solicitante y la autorización direccional vigente. Rechazar suplantación y aplicar defensas anti-enumeración/antiabuso. **Mecanismo criptográfico, umbrales y compatibilidad Android PENDIENTES** de evaluación TECH LEAD / ARQUITECTO; cualquier alteración material de política de reintentos se eleva a PROPIETARIO. [Issue #24](https://github.com/mundoinformaticacanaria/whereis/issues/24).
+
+### Criterios complementarios verificables
+
+- **D03-CA10:** B solicita A; A no conoce B; A puede ver la solicitud sin que B pase automáticamente a conocidos ni obtenga acceso.
+- **D03-CA11:** A acepta a B desconocido; B se añade como conocido pero sigue sin autorización hasta la activación explícita del interruptor de A.
+- **D03-CA12:** dos reintentos de una misma solicitud no producen dos pendientes; una caduca 24 horas después del envío, y una rechazada/caducada puede reenviarse salvo bloqueo.
+- **D03-CA13:** copiar el ID de B en C no concede a C el permiso que A otorgó a B; una prueba de identidad o autorización no verificable impide obtener nueva ubicación.
+
+**PENDIENTE:** contratos técnicos exactos de entrega/acuse, identidad, defensa antiabuso y revocación remota; ninguna decisión de arquitectura, proveedor, coste ni desarrollo se presume. **Siguiente acción: TECH LEAD** para conciliación de [PR #7](https://github.com/mundoinformaticacanaria/whereis/pull/7) con [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25), revisión documental e integración. El baseline sigue PENDIENTE.
