@@ -68,3 +68,20 @@ No se aprueban cuentas de usuario, recuperación automática, historial geográf
 - **FUNCIONAL:** decisión registrada en [issue #8](https://github.com/mundoinformaticacanaria/whereis/issues/8) y propuesta de documento revisada en PR #9.
 - **TECH LEAD:** siguiente acción de revisión documental e integración conforme a G-01 V3, y evaluación posterior de garantías técnicas; no equivale a autorización de programación.
 - **QA:** independencia de revisión para entregas de código cuando exista implementación autorizada.
+
+## Ampliación posterior CONFIRMADA — reinstalación, backups y última ubicación (17–19/10/2026)
+
+**El PROPIETARIO aprobó expresamente el 19/10/2026 la opción A de SEG-04:** tras desinstalar y reinstalar Whereis, **la instalación nueva no restaura ubicaciones antiguas ni autorizaciones anteriores de copias de seguridad**. Esta decisión amplía D-04, que ya prohibía heredar el ID y los permisos. [Decisión SEG-04 en #24](https://github.com/mundoinformaticacanaria/whereis/issues/24#issuecomment-6276866404).
+
+1. La reinstalación **de A o B** constituye una nueva instalación con **nuevo ID**. Una restauración Android, una copia local o la recuperación de datos de la instalación antigua **no debe hacer reaparecer en esa nueva instalación las ubicaciones previamente almacenadas ni los permisos concedidos/recibidos**. La vinculación y autorización deben efectuarse de nuevo.
+2. **Distinguir conservar última posición en otro dispositivo que sigue instalado:** si A es desinstalado, B que **no** se ha desinstalado puede conservar en su propia app la última ubicación de A obtenida legítimamente y **marcada anterior con fecha/hora**, mientras no se elimine el contacto, conforme a [D-10 #20](https://github.com/mundoinformaticacanaria/whereis/issues/20). B **no** obtiene nuevas ubicaciones del ID anterior. Esto **no** significa recuperar esa ubicación si es B quien desinstala/reinstala.
+3. Solo conservar la **última** posición obtenida, sin historial ni vencimiento automático por decisión funcional D-10; el plazo legal final y la eliminación efectiva en distintas copias/sistemas siguen **PENDIENTES de revisión y aprobación**. Una baja remota no se declara detectada instantáneamente.
+4. [SEG-01/SEG-02 de #24](https://github.com/mundoinformaticacanaria/whereis/issues/24): si la autorización o identidad de instalación no puede verificarse, ninguna consulta nueva entrega posición; conocer el ID antiguo no permite suplantación.
+
+### Criterios complementarios verificables
+
+- **D04-CA09:** después de reinstalar B, aun con restauración Android, la instalación nueva tiene ID distinto y **no muestra ubicaciones antiguas ni recupera permisos previos**.
+- **D04-CA10:** después de reinstalar A, B que sigue instalado conserva, si existía, **solo la última posición legítima de A como anterior fechada**, pero nunca obtiene una posición nueva del ID anterior.
+- **D04-CA11:** una autorización no verificable, una suplantación del ID o una restauración de datos antiguos no produce una ubicación nueva ni reautoriza relaciones previas.
+
+**Sigue PENDIENTE:** prueba técnica de protección frente a restauración automática de Android, reconciliación sin conexión, política legal de conservación/borrado de datos de menores, almacenamiento remoto, costos y proveedor. **Siguiente acción: TECH LEAD** para revisar PR #9 con [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25), [#20](https://github.com/mundoinformaticacanaria/whereis/issues/20) y #24. No se autoriza programación ni se aprueba el baseline MVP global.
