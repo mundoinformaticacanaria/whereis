@@ -27,19 +27,19 @@ El Propietario eligió expresamente el 16/10/2026 la **opción A**, conservando 
 
 ## Contrato funcional CONFIRMADO
 
-1. **Mapa de inicio.** La vista de entrada de la funcionalidad principal de Whereis es el **mapa callejero interactivo conjunto** aprobado en D-07. La lista de dispositivos no reemplaza esa pantalla inicial.
-2. **Acceso a dispositivos.** Desde el mapa inicial se puede **acceder fácilmente a una lista de dispositivos conocidos**, incluidos los que no tienen posición disponible.
+1. **Mapa de inicio y distribución (D-11 / #21 CONFIRMADO).** Vista principal **dividida**, mapa conjunto arriba y lista debajo; ambos visibles en la vista normal. Solo el mapa puede maximizarse ocultando la lista; esta no sustituye la vista cartográfica ni requiere pantalla separada.
+2. **Lista (D-11).** Lista inferior de conocidos, incluso sin ubicación, ordenada por alias/ID y con búsqueda incremental y filtros Todos/Autorizados/No autorizados/Pendientes. Cuando el mapa está maximizado, restaurar división devuelve la lista.
 3. **Representación en mapa.** Las ubicaciones ya obtenidas legítimamente de distintos dispositivos pueden mostrarse en **un mismo mapa**, con **marcadores distinguibles** por dispositivo. Estar en la lista de conocidos, por sí solo, no genera un marcador ni habilita consulta.
-4. **Selección individual.** Se puede **seleccionar un dispositivo concreto** y consultar la información disponible de ese dispositivo (identificación y, si existe, **fecha y hora de la posición** y estado de antigüedad).
+4. **Selección y ficha (D-11).** Pulsar en lista **solo selecciona**, sin recentrar ni abrir ficha. La acción «Whereis» centra la última posición ya conocida sin obtener otra. Pulsar marcador abre ficha inferior **modal**, sincroniza lista y bloquea interacción con controles situados detrás; al cerrar la ficha permanece selección. Los marcadores usan foto opcional o número, borde de color y agrupaciones expandibles.
 5. **Actualización manual.** La acción **«Actualizar ubicación»** se refiere **al dispositivo seleccionado**. Si B tiene autorización activa de A, puede intentar una **consulta puntual** de A; no se inician solicitudes a otros dispositivos por selección o apertura de pantalla.
 6. **Sin seguimiento continuo.** Entrar al mapa, desplazarse, hacer zoom o consultar la lista **no inicia seguimiento en tiempo real ni consultas de ubicación periódicas automáticas** (D-01, D-07).
 7. **Sin permisos.** Si un dispositivo está simplemente registrado como conocido y no ha autorizado B, no se permite a B consultar nuevas ubicaciones (D-03). Si A ha desactivado el permiso de B, no se permiten nuevas consultas (D-05).
-8. **Última ubicación antigua.** Si B conserva una posición previamente obtenida de A después de la desactivación, permanece visible con **fecha y hora** y señalización inequívoca de **posición anterior, no actual**, conforme a D-05.
+8. **Última ubicación y bloqueo (D-09/D-10).** Tras **desactivación ordinaria**, la última posición legítima anterior permanece visible y fechada si no hay bloqueo/eliminación. El **bloqueo** puede ocultar el marcador previo sin borrar la posición; la **eliminación** confirmada borra la ubicación y personalización en el consultante. No equiparar bloqueo con simple desactivación.
 9. **Fallo de consulta.** Si una consulta autorizada falla, la interfaz informa del fallo y, si existe, muestra la **última ubicación conocida** con fecha, hora y advertencia; en ausencia de posición previa indica **«Ubicación no disponible»** (D-06).
-10. **Instalaciones nuevas.** La reinstalación de Whereis genera un nuevo ID sin heredar relaciones ni permisos de la anterior (D-04); D-08 no altera esa regla.
-11. **Actualizar todos (CONFIRMADO).** Además de «Actualizar ubicación» del dispositivo seleccionado, hay una acción explícita **«Actualizar todos»** en el mapa principal. Una pulsación del usuario intenta **una consulta puntual por cada dispositivo con autorización activa y válida** en ese momento. Se excluyen dispositivos solo conocidos, pendientes, con permiso desactivado, instalaciones invalidadas o con autorización no confirmada. No se activan permisos ni se inicia seguimiento continuo.
-12. **Resultados individuales.** El refresco global **no presupone que todos respondan**, ni actualiza posiciones sin respuesta. Para cada dispositivo se representa por separado la posición obtenida y su fecha/hora o el fallo y la última ubicación anterior fechada conforme a D-06; si nunca hubo posición, «Ubicación no disponible».
-13. **No implica refresco al abrir ni simultaneidad técnica.** Abrir el mapa **no** lanza «Actualizar todos». El orden, concurrencia, límites, cancelación y reintentos quedan **PENDIENTES** de diseño y validación por TECH LEAD.
+10. **Instalaciones nuevas (D-04/SEG-04).** La reinstalación produce nuevo ID sin recuperar ubicaciones ni autorizaciones anteriores desde backup. Un consultante no reinstalado puede conservar una última posición legítima de emisor desinstalado (D-10), sin consultar el ID antiguo.
+11. **Actualizar todos (D-12/SEG-01/02 CONFIRMADOS).** «Actualizar todos» inicia manualmente una consulta puntual por destino elegible con identidad de instalación **y autorización direccional vigente verificables**. Excluye no autorizados, bloqueados, revocados, instalaciones inválidas y estados no verificables. Si no hay elegibles, queda visible deshabilitado. No duplica un destino que ya se esté actualizando; incorpora los restantes y no concede permisos.
+12. **Resultados y resumen (D-12).** Se informa por destino «Actualizando/Actualizado/Error» y resumen final de éxitos/errores. Un éxito individual centra la nueva posición; actualizar varios/todos **no mueve el mapa**. Ante fallo, última ubicación legítima anterior con hora y aviso o «Ubicación no disponible», sin mostrar marcadores ocultos por bloqueo/eliminación.
+13. **Sin refresco automático ni duplicados (D-12).** Abrir el mapa no lanza «Actualizar todos». Se permiten consultas a distintos destinos sin duplicar una en curso al mismo ID. Sin Internet local, banner persistente, botones deshabilitados, **sin cola automática ni reintentos al reconectar**; solo reintento manual. No se cancela manualmente una consulta iniciada: finaliza por resultado o timeout. **PENDIENTE técnico:** límites, timeout, mecanismo de concurrencia y rendimiento Android.
 
 ## Ejemplo funcional sin datos reales
 
@@ -60,7 +60,7 @@ Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias 
 - **D08-CA04 — Selección:** al seleccionar A se presentan la identificación del dispositivo y la fecha/hora de la última posición disponible, rotulada como anterior cuando lo es.
 - **D08-CA05 — Refresco manual individual:** pulsar «Actualizar ubicación» para A autorizado intenta consultar una posición puntual de **A**, no de C; el mapa no dispara rastreo continuo por estar abierto.
 - **D08-CA06 — Dispositivo conocido no autorizado:** el hecho de aparecer en la lista no habilita consultas ni marcadores de posición sin datos legítimos.
-- **D08-CA07 — Revocación:** B puede seguir viendo una ubicación anterior de A, si existe, con su fecha/hora después de la revocación aplicada, pero no puede obtener una nueva.
+- **D08-CA07 — Revocación:** tras desactivación ordinaria puede seguir viendo última ubicación legítima anterior fechada; tras bloqueo el marcador se oculta, y tras eliminación se borra ubicación/personalización; en ninguno de esos estados se obtiene nueva posición sin autorización verificable.
 - **D08-CA08 — Consulta fallida:** si falla la actualización, el mapa no convierte el último dato en «actual» y muestra el aviso previsto en D-06.
 - **D08-CA09 — Sin actualización automática:** abrir el mapa, entrar en la lista o cambiar de marcador no genera nuevas solicitudes de ubicación por sí solo.
 - **D08-CA10 — Botón global:** desde la vista principal se puede distinguir y pulsar **«Actualizar todos»** además del botón individual.
@@ -68,17 +68,21 @@ Los nombres A/B/C/D son ilustrativos, **no** IDs reales, etiquetas obligatorias 
 - **D08-CA12 — Fallo parcial:** si responde A pero C no responde, la vista refleja el dato nuevo de A y, para C, aviso de fallo con última ubicación anterior fechada, o «Ubicación no disponible» si nunca hubo una, sin atribuir a C una posición nueva.
 - **D08-CA13 — Solo por pulsación:** el botón global no se activa al abrir/mover el mapa ni induce periodicidad, historial o seguimiento continuo.
 
-## PENDIENTE — no aprobado por D-08
+## Estados ya resueltos y pendientes reales (decisiones posteriores)
 
-- **Navegación exacta:** si se usa una barra inferior con pestañas, un botón, un menú lateral u otra disposición para ir a la lista de dispositivos. Las maquetas previas eran ilustrativas.
-- **Diseño de pantallas secundarias:** agrupación de permisos, solicitudes, dispositivo propio/QR, ajustes, orden de listas, filtros, favoritos, alias y etiquetas visuales.
-- **Encuadre inicial del mapa:** centro, zoom inicial, comportamiento si no hay posiciones, persistencia de la última vista.
-- **Estados de carga, accesibilidad e interacción:** comportamiento exacto de selección en mapa/lista, superposición de marcadores, errores, información contextual.
-- **Onboarding, primera instalación y gestión de permisos Android:** D-08 define la vista inicial del **flujo principal**; no sustituye las comprobaciones de permisos ni resuelve pantallas de primera instalación.
-- **Conectividad/offline y posición antigua:** reglas de sincronización/retención general aún pendientes en D-05/D-06.
-- **Elección técnica:** SDK/cartografía libre, fuentes de teselas, proveedor, licencias, costes, datos y arquitectura quedan en manos de evaluación del **TECH LEAD** según D-07 y gobernanza. No hay selección ni gasto aprobado.
-- **Operativa técnica de «Actualizar todos»:** concurrencia frente a secuenciación, límite de consultas, plazos, cancelación, tratamiento de peticiones en vuelo, carga y rendimiento bajo Android: **PENDIENTE** de TECH LEAD. La **acción manual global sí está aprobada**.
-- **Navegación, rutas, seguimiento continuo, historial geográfico y refrescos automáticos/periódicos:** no aprobados por esta decisión.
+**CONFIRMADO por D-09 a D-13 / issues #19–#23:** pantalla principal mapa arriba y lista abajo (solo mapa maximizable), alias/ID ordenados, filtros y búsqueda, selección desde lista sin recentrar, «Whereis» que solo centra, ficha modal al tocar marcador, foto o número y borde de color, agrupación expandible; estado por destino y resumen de «Actualizar todos», sin peticiones duplicadas ni reintentos automáticos. En ausencia de posiciones se enfoca ubicación propia cuando Android la permita, sin inventarla. La fecha y hora se muestran siempre en formato DD/MM/AAAA HH:mm:ss y zona local del consultante (D-13); solo se conserva una última ubicación legítima según D-10.
+
+**CONFIRMADO por SEG-01/SEG-02 / #24:** si identidad de instalación o autorización direccional vigente no son verificables, no se entrega posición nueva aunque el estado local parezca autorizado. Las peticiones no se encolan automáticamente por desconexión. **SEG-04:** nueva instalación no restaura ID/ubicaciones/permisos desde copia; otra instalación consultante no reinstalada puede conservar última ubicación legítima anterior del emisor.
+
+**PENDIENTE técnico, legal o de diseño no resuelto:** versión/permisos Android y mecanismos de sincronización/concurrencia, timeout y límites, accesibilidad, tamaño de controles, detalle visual de pantallas secundarias, persistencia opcional del encuadre, retención conforme a ley y borrado verificable, protección de menores, cartografía/teselas/geocodificación y sus licencias/costes. No se presupone proveedor ni infraestructura. Baseline funcional global e implementación siguen PENDIENTES.
+
+## Aceptación complementaria de ampliaciones confirmadas
+
+- **D08-CA14 (D-11):** vista dividida mapa superior/lista inferior; solo mapa maximizable, lista seleccionable sin abrir ficha, tocar marcador abre ficha modal.
+- **D08-CA15 (D-12):** con A ya consultándose, «Actualizar todos» no repite A e intenta otros elegibles, muestra estados separados y resumen final sin mover el mapa.
+- **D08-CA16 (D-12):** sin Internet consultante, botón deshabilitado y aviso persistente; tras reconexión no se solicita ninguna ubicación hasta una pulsación nueva.
+- **D08-CA17 (D-09/D-10):** desactivación común conserva posición previa marcada como anterior; bloqueo oculta marcador y eliminación borra posición/personalización.
+- **D08-CA18 (D-13/SEG-01/02):** hora exacta local DD/MM/AAAA HH:mm:ss; sin prueba verificable de identidad y permiso activo no se obtiene nueva posición.
 
 ## Impacto y verificación de coherencia
 
@@ -93,6 +97,6 @@ El contrato de D-07 sigue `CONFIRMADO`, y D-08 **añade** la vista inicial, acce
 
 - **PROPIETARIO:** opción A CONFIRMADA el 16/10/2026.
 - **FUNCIONAL:** issue y documento de especificación en PR para revisión.
-- **TECH LEAD:** siguiente responsable de revisión de criterios e integración documental conforme a G-01 V3; validación técnica posterior sin elegir proveedores no autorizados.
+- **TECH LEAD:** siguiente responsable de revisión documental conforme a G-02 vigente, con apoyo de ARQUITECTO activo para evaluar Android y seguridad; sin autorización de proveedores, gastos ni implementación.
 - **QA:** mantiene independencia en futuras implementaciones.
 - **Baseline funcional global / autorización de desarrollo:** `PENDIENTE`.
