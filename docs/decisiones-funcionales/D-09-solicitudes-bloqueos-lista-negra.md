@@ -30,6 +30,12 @@
 - D09-CA06: sin Internet o ID inexistente no se crea bloqueo ni alta provisional.
 - D09-CA07: no hay notificaciones por consulta ordinaria/activación/revocación, ni historial de consultas visible.
 
+## Actualización SEG y decisión material aún abierta (19–23/10/2026)
+
+**SEG-01/SEG-02 CONFIRMADOS en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24):** el conocimiento de ID/QR no acredita identidad; ninguna ubicación nueva se entrega sin prueba válida de **instalación auténtica y autorización direccional vigente**, incluidas solicitudes concurrentes, desconexión o revocación. Se requiere proteger el flujo frente a suplantación, enumeración y abuso; la tecnología y mecanismos concretos siguen PENDIENTES. No equiparar acuse de solicitud con autorización.
+
+**CONFLICTO PENDIENTE de PROPIETARIO:** el texto **«ID no encontrado»**, confirmado por D-09, podría revelar existencia de IDs ante consultas no autenticadas; el TECH LEAD ha elevado alternativas **A (conservar mensaje y aceptar riesgo residual mitigado)** / **B (respuesta indistinguible y modificar D-09)** en #24. **Esta documentación no elige A/B, no altera el mensaje ni aprueba excepciones a SEG-02.** Eliminar o cambiar esa regla requiere decisión material expresa.
+
 ## PENDIENTE / Riesgos
 Identificación auténtica del emisor, protección frente a enumeración de IDs, abuso de solicitudes y respuestas a IDs, garantías de acuse; conciliación de estados offline/concurrencia; posible diferencia entre rechazo y desbloqueo. No se garantiza revocación instantánea sin conectividad. Legislación/seguridad de menores no se excluye por priorizar su protección.
 
