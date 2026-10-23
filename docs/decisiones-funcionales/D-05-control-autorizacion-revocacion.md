@@ -13,7 +13,7 @@
 Permitir al dispositivo que comparte su ubicación controlar fácilmente, de modo individual y reversible, qué dispositivos conocidos pueden consultar posiciones puntuales, sin inundar bandejas con solicitudes. Mantener la última ubicación conocida en el consultante tras retirar el permiso, con indicación fiable de antigüedad.
 
 - **A:** dispositivo que comparte su ubicación y gestiona el permiso.
-- **B:** dispositivo que desea consultar A; previamente conocido por QR o ID y con primera solicitud realizada según D-03.
+- **B:** dispositivo que desea consultar A; puede iniciar una primera solicitud incluso si A todavía no conoce a B (**D-09 / #19**). Aceptar esa solicitud incorpora B a conocidos, **sin autorizar ubicación**; solo la activación expresa del interruptor individual permite una consulta posterior, sujeta a SEG-01/SEG-02.
 - **C:** otro dispositivo autorizado por A que no debe verse afectado por la decisión sobre B.
 
 ## Confirmación del PROPIETARIO — 16/10/2026
@@ -33,9 +33,9 @@ Permitir al dispositivo que comparte su ubicación controlar fácilmente, de mod
 |---|---|---|---|
 | No | No concedido | No | Sin posición facilitada |
 | Sí, solicitud inicial pendiente | Desactivado | No | Sin nueva ubicación |
-| Sí | Activado y efectivo | Puede consultar puntualmente si Android y conexión lo permiten | Resultado nuevo, cuando exista; identificado por fecha y hora |
+| Sí | Activado, con identidad de instalación y permiso direccional vigentes **verificados** | Puede consultar puntualmente si Android y conexión lo permiten | Resultado nuevo, cuando exista; identificado por fecha y hora |
 | Sí | Desactivado y aplicado | **No** | **Última ubicación obtenida, fecha y hora, claramente marcada como anterior** |
-| Nueva instalación por reinstalación | Sin vinculaciones heredadas (D-04) | No, hasta nueva vinculación | No se restauran autorizaciones anteriores |
+| Nueva instalación por reinstalación | Sin vinculaciones heredadas (D-04/SEG-04) | No, hasta nueva vinculación | **En la nueva instalación no se restauran ni ubicación anterior, ni ID ni autorizaciones desde backup** |
 
 La tabla es ilustrativa de **estados funcionales**, no define una arquitectura de sincronización ni promete que todas las operaciones sean instantáneas.
 
@@ -55,22 +55,33 @@ La tabla es ilustrativa de **estados funcionales**, no define una arquitectura d
 
 - Conocer el ID Whereis, estar registrado como «conocido» o haber recibido una notificación **no equivale a consentimiento**.
 - Para una consulta se requieren autorización activa y válida del emisor, autenticidad técnica y los permisos Android aplicables; el mecanismo concreto no está elegido.
-- Conservar la última ubicación anterior **no** obliga a conservar historial de posiciones, ni autoriza retención indefinida de un historial no definido.
+- **D-10 / #20 CONFIRMADO:** dentro de Whereis se conserva **solo la última ubicación legítima**, no un historial; no hay caducidad funcional automática hasta eliminación del dispositivo. Los límites legales de conservación, el almacenamiento y borrado efectivo de copias externas siguen **PENDIENTES** de estudio (#24).
 - Se conserva la última posición **dentro de Whereis**; capturas o copias realizadas por un tercero fuera de la app no pueden retirarse desde el interruptor.
-- No se promete eliminación o conservación de esa posición al **desinstalar**, porque D-04 fija la eliminación de relaciones, no la política de posiciones ya entregadas.
+- **D-10 / #20 y SEG-04 / #24 CONFIRMADOS:** si A se desinstala pero B sigue instalado, B puede conservar la última ubicación legítima anterior fechada hasta eliminación según D-10. Si **B se reinstala**, su nueva instalación **no recupera** posiciones, ID ni permisos de su instalación anterior, incluso desde backup. No se promete detección remota inmediata ni borrado físico universal de copias externas.
 - Cuando B intenta «Actualizar ubicación» tras una desactivación efectiva, Whereis debe impedir obtener nuevas coordenadas. El estado y mensaje preciso de UI siguen pendientes.
+
+
+## Conciliación cronológica — decisiones posteriores CONFIRMADAS (17–19/10/2026)
+
+Esta ampliación no reescribe la aprobación de D-05 del 16/10/2026; aplica reglas posteriores del mismo PROPIETARIO:
+
+- **D-09 / [#19](https://github.com/mundoinformaticacanaria/whereis/issues/19):** una solicitud puede llegar desde B desconocido; aceptarla **solo** lo añade a conocidos. El bloqueo (con confirmación) revoca la autorización, cancela solicitudes pendientes e impide solicitudes y consultas nuevas; **desbloquear no reactiva** permiso, a diferencia de volver a encender el interruptor de un conocido no bloqueado. Mientras A mantiene B bloqueado, no aparece el marcador antiguo de B en el mapa de A; el dispositivo B informado de su propio bloqueo oculta el marcador anterior de A conforme a la respuesta recibida. No equiparar bloqueo con simple desactivación.
+- **SEG-01 y SEG-02 / [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24):** aunque el interruptor figure «activado» localmente, **sin prueba verificable de identidad de instalación y autorización direccional activa/vigente no se entrega ubicación nueva** (fail-closed). Esto incluye estados de desconexión, desinstalación, revocación y solicitudes concurrentes. La prueba técnica, el orden de aplicación y la autenticidad remota permanecen **PENDIENTES** de ARCHITECTO/TECH LEAD; ningún cambio visual local acredita revocación instantánea.
+- **D-10 / [#20](https://github.com/mundoinformaticacanaria/whereis/issues/20) y SEG-04 / #24:** una sola posición previa legítima, siempre fechada como anterior después de revocar; eliminación del conocido borra esa posición y su personalización en el consultante, con confirmación. La nueva instalación no recupera ubicaciones ni permisos desde backup; el consultante que **no** se reinstaló puede conservar la última posición del emisor desinstalado. Retención legal y borrado universal **PENDIENTES**.
+
+**Aceptación adicional:** (a) B desconocido aceptado no accede a ubicación antes de activar interruptor; (b) B bloqueado no accede y, tras desbloqueo, sigue sin permiso; (c) interruptor activo pero identidad/autorización no verificable no produce posición nueva; (d) reinstalar B no restaura ningún dato y desinstalar A no borra por sí solo la última posición legítima de B no reinstalado.
 
 ## Incidencias y situaciones pendientes
 
 1. **Sin conexión o sincronización incompleta:** cuando A pulsa desactivar/activar sin conexión o mientras existen peticiones concurrentes, **qué significa «efectivo»**, qué se muestra en cada dispositivo, reintentos y medidas de seguridad exigen definición. No se presupone revocación remota inmediata ni que una interfaz local sea prueba de propagación.
 2. **Permisos Android:** tratamiento exacto ante denegación de ubicación, permisos de segundo plano y restricciones por versión de Android; los permisos de notificaciones y lectura de QR se someten a contraste técnico.
-3. **Última ubicación:** retención global de posiciones, escenarios sin posición previa, error por falta de fecha y sincronización del reloj siguen pendientes.
+3. **Última ubicación:** la regla funcional está CONFIRMADA por D-10 (solo una última ubicación, sin caducidad funcional automática); **PENDIENTES** de validación la limitación legal del plazo, ubicación/cifrado del dato, copias externas, borrado efectivo y tratamiento técnico de relojes/fechas. Sin posición legítima previa: «Ubicación no disponible» (D-06).
 4. **Peticiones antiguas y abuso:** protección ante repetición de solicitudes iniciales, bloqueo de consultas pendientes en carrera con una desactivación, autenticidad y validación anti-suplantación.
-5. **Desinstalación:** efectos en dispositivos remotos y posiciones previas según D-04; detección instantánea no garantizada.
+5. **Desinstalación:** distinción funcional CONFIRMADA por D-10/SEG-04 entre A desinstalado y B consultante reinstalado; mecanismos de detección remota y recuperación/borrado real aún PENDIENTES. No afirmar sincronización instantánea.
 6. **Tecnología, proveedor, almacenamiento y costes:** no aprobados.
 
 ## Trazabilidad y handoff
 
 - El paso «registrar por QR/ID → solicitud inicial con notificación → interruptor» queda documentado en [D-03 / issue #6](https://github.com/mundoinformaticacanaria/whereis/issues/6).
 - La vigencia sin caducidad, nuevo ID al reinstalar y no restaurar permisos se mantienen en [D-04 / issue #8](https://github.com/mundoinformaticacanaria/whereis/issues/8).
-- **Siguiente acción:** TECH LEAD revisa y propone integración del documento, contrasta viabilidad Android y seguridad con G-01 V3. QA mantiene revisión independiente de futuras implementaciones. No hay autorización de desarrollo.
+- **Siguiente acción:** TECH LEAD revisa e integra documentalmente bajo **G-02 vigente**, coordinando con **ARQUITECTO (Codex) ya activo** validación de Android, identidad, revocación y menores sin aprobación material implícita. QA mantiene independencia. Baseline funcional global y desarrollo siguen **PENDIENTES**; **NO ASIGNAR PROGRAMADOR**.
