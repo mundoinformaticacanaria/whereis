@@ -1,7 +1,7 @@
 # D-02 — Consulta puntual con Whereis no visible en el dispositivo emisor
 
 - **Fecha de aprobación del Propietario:** 15/10/2026.
-- **Estado de la decisión funcional:** `CONFIRMADO` por aprobación expresa del Propietario; incorporación a `main` pendiente de revisión/merge.
+- **Estado de la decisión funcional:** `CONFIRMADO` por aprobación expresa del PROPIETARIO; documento integrado en `main` mediante [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) (23/10/2026). Viabilidad Android y baseline global siguen `PENDIENTE`.
 - **Clasificación:** `MATERIAL`.
 - **Fuente de trazabilidad:** [Issue #2](https://github.com/mundoinformaticacanaria/whereis/issues/2), relacionada con [D-01 / Issue #1](https://github.com/mundoinformaticacanaria/whereis/issues/1).
 - **Origen:** aprobación explícita del Propietario en la conversación del 15/10/2026.
