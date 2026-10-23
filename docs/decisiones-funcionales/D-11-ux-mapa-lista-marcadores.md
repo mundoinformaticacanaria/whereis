@@ -28,5 +28,9 @@
 - D11-CA05: agrupaciones desplegadas/reagrupadas según reglas y mantención al cerrar ficha.
 - D11-CA06: sin ubicación no hay marcador, pero sí operación «Actualizar ubicación» manual si autorizado; ubicación propia solo si Android permite obtenerla.
 
+## Trazabilidad de identidad y datos disponibles (CONFIRMADO)
+
+El mapa muestra únicamente posiciones obtenidas legítimamente. **SEG-01/SEG-02 / [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24)** exigen denegar cualquier **ubicación nueva** sin verificación real de identidad de instalación y autorización vigente; pulsar «Whereis» solo centra una posición previa, nunca sortea esa comprobación ni genera ubicación. **D-09/#19** oculta marcadores bloqueados, y **D-10/#20** elimina ubicación/personalización al borrar un contacto; una posición antigua legítima debe distinguirse como anterior. **D-13/#23** fija DD/MM/AAAA HH:mm:ss en zona del consultante. UX de mapa/galería sujeto a salvaguardas de protección de datos de menores pendientes (SEG-03).
+
 ## PENDIENTE / validación
 Accesibilidad, legibilidad de números/fotos pequeñas y colores, pantallas pequeñas, coste de mapas, cartografía abierta, posición de controles y factibilidad del overlay. No elegir biblioteca/proveedor. Handoff **TECH LEAD**; relacionadas D-07 #14 y D-08 #16.
