@@ -2,7 +2,7 @@
 
 - **Proyecto:** Whereis
 - **Repositorio:** https://github.com/mundoinformaticacanaria/whereis
-- **Fecha de estado:** 18/10/2026
+- **Fecha de estado:** 23/10/2026
 
 ## Estado resumido
 
@@ -13,7 +13,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 ## Baselines
 
 - **Gobernanza:** G-01 V3 y G-02 `CONFIRMADAS` en su alcance. Política de roles y orquestación en [playbook](orquestacion/README.md); configuración técnica de acceso/labels/CI aún `PENDIENTE`.
-- **Baseline funcional completo / alcance MVP:** `PENDIENTE`. Las decisiones D-01 y D-02 constan en [issues #1](https://github.com/mundoinformaticacanaria/whereis/issues/1) y [#2](https://github.com/mundoinformaticacanaria/whereis/issues/2), con documentación propuesta en [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión/integración; no equivalen a aprobación del baseline global.
+- **Baseline funcional completo / alcance MVP:** `PENDIENTE`. D-01/D-02 están integradas documentalmente por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) en `main@97a29e450fee24887f785e73f5222a35b2605369` (23/10/2026); D-03/D-04 también constan en `main`. D-05/D-06/D-07/D-08 siguen en [PR #11](https://github.com/mundoinformaticacanaria/whereis/pull/11), [#13](https://github.com/mundoinformaticacanaria/whereis/pull/13), [#15](https://github.com/mundoinformaticacanaria/whereis/pull/15) y [#18](https://github.com/mundoinformaticacanaria/whereis/pull/18), devueltas a FUNCIONAL para conciliación; D-09–D-13 están en [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25) en borrador y devuelta a FUNCIONAL. Ninguna integración aislada aprueba el baseline global.
 - **Baseline arquitectónico:** `PENDIENTE`.
 - **Estado MVP/beta:** `PENDIENTE`; implementación no autorizada.
 
@@ -32,14 +32,14 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 
 - **Gobernanza G-02:** [issue #26](https://github.com/mundoinformaticacanaria/whereis/issues/26) y [PR #27](https://github.com/mundoinformaticacanaria/whereis/pull/27) documentan la decisión original; [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28) mantiene la enmienda `PROGRAMADOR-LINUX` y los bloqueos operativos vivos. No autoriza desarrollo.
 - **Gobernanza G-01:** [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [PR #5](https://github.com/mundoinformaticacanaria/whereis/pull/5) proporcionan trazabilidad de la formalización documental; una vez integrados/cerrados no suponen nueva autorización operativa.
-- [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): decisiones funcionales con [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) pendiente de revisión por TECH LEAD.
+- [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): documentación integrada por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) el 23/10/2026; sin aprobación de baseline global.
 - **Primera issue de programación:** todavía no autorizada.
 
 ## Configuración y decisiones PENDIENTES
 
 - Autenticación y usuario GitHub de PROGRAMADOR-LINUX desde Linux; ruta/comando/instalación reales; acceso y disponibilidad de Codex; separación de QA en la práctica. Convenciones de ramas decididas en G-02: `programador-linux/<issue>-<slug>`, `codex/<issue>-<slug>` y `arquitectura/<issue>-<slug>`.
-- Labels operativas en GitHub, permisos y reglas de merge. A 18/10/2026 `main` figura sin protección/ruleset y no existe `.github/workflows`; CI/gates concretos siguen PENDIENTES.
-- Zona horaria única de heartbeat, rama `ops/logs` y ficheros de log de los roles activos.
+- Labels operativas en GitHub, permisos y reglas de merge. **Verificado el 23/10/2026:** `main` no está protegida; la consulta de rulesets devuelve lista vacía; no existe `.github/workflows` en `main` y el commit de `main` no registra checks. La lectura de branch protection específica devuelve 403 por permisos del conector; no equivale a prueba de una configuración oculta. El inventario global de labels no es accesible mediante el conector y sigue PENDIENTE.
+- Zona horaria única de heartbeat, rama `ops/logs` y ficheros de log de los roles activos. **Verificado el 23/10/2026:** la rama `ops/logs` no existe y `docs/logs` solo contiene `README.md`; no fabricar heartbeat ni darlo por operativo.
 - Objetivo y alcance definitivo del MVP, baselines funcional/arquitectónico, política de privacidad y seguridad, servicios/infraestructura, costes y proveedores.
 - Activaciones puntuales de especialistas, si se justifican.
 
@@ -51,4 +51,4 @@ No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## Próximo avance
 
-TECH LEAD: revisar las PR funcionales abiertas (#3, #7, #9, #11, #13, #15, #18, #25), resolver contradicciones y priorizar [seguridad/menores #24](https://github.com/mundoinformaticacanaria/whereis/issues/24). Verificar labels/identidades/accesos antes del primer handoff a PROGRAMADOR-LINUX o CODEX. Sin emitir la primera asignación PROGRAMADOR mientras falten baselines, autorizaciones y gates mínimos.
+**FUNCIONAL:** corregir los HEAD de PR #11/#13/#15/#18/#25 conforme a revisiones de TECH LEAD y devolverlos para revalidación. **PROPIETARIO:** decidir el conflicto D-09/SEG-02 documentado en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), actualmente con label `PROPIETARIO`. **TECH LEAD:** seguir #28, verificar configuración real de GitHub y coordinar viabilidad sin asignar `PROGRAMADOR` ni activar el timer Linux mientras falten baselines, seguridad y gates.
