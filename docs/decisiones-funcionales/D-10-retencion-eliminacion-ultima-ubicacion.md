@@ -25,6 +25,12 @@
 - D10-CA04: eliminación confirmada borra última ubicación y personalización del consultante; cancelación no borra.
 - D10-CA05: instalación anterior confirmada aparece tachada y no puede recibir consultas.
 
+## Precisiones posteriores de seguridad y reinstalación (CONFIRMADAS)
+
+- **SEG-01/SEG-02 / [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24):** la existencia de una última posición conservada no permite nuevas consultas sin comprobar identidad auténtica de la instalación y autorización direccional vigente; si la verificación falla, solo se muestra esa última posición legítima donde D-09 permita visualizarla.
+- **SEG-04 / #24:** desinstalar/reinstalar el **consultante** genera nuevo ID y no recupera posiciones anteriores ni permisos desde backup. Desinstalar únicamente el **emisor** no elimina automáticamente la posición previamente obtenida y legítimamente conservada en un consultante no reinstalado.
+- **SEG-03 / #24:** sin modo familiar especial de momento, pero tratamiento y plazo de retención de datos de menores y borrado verificable **PENDIENTES** de validación jurídica; no afirmar borrado físico universal.
+
 ## PENDIENTE / riesgos
 Ubicación real del almacenamiento, borrado en otras copias/dispositivos, periodos máximos exigibles, ejercicio de derechos, recuperación y sincronización offline. La regla de retención no legitima almacenar indefinidamente datos personales contra obligaciones aplicables; se requiere revisión de privacidad y diseño de eliminación verificable. No autoriza historiado ni almacenamiento en servidores concretos.
 
