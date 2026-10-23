@@ -30,5 +30,11 @@
 - D12-CA06: denegación permisos degrada operaciones dependientes sin cerrar app; reintentar diálogo o abrir Ajustes conforme al sistema.
 - D12-CA07: las consultas/remociones ordinarias de autorización no envían notificaciones.
 
+## Precedencia de seguridad y copia tras reinstalación
+
+**SEG-01/SEG-02 CONFIRMADOS por [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24):** aun con interruptor aparentemente activo o ubicación anterior en caché, una posición **nueva** exige verificar identidad auténtica de instalación y autorización direccional vigente; ante ausencia/fallo de verificación por caída de red o concurrencia, se **deniega** el dato nuevo y solo queda última posición legítima fechada donde D-09/D-10 permitan verla. No prometer revocación remota instantánea. **SEG-04 CONFIRMADO:** reinstalar consultante no recupera ID, posiciones ni permisos desde backup; consultante no reinstalado puede conservar la última legítima del emisor desinstalado. **SEG-05/06 y SEG-03 jurídico PENDIENTES:** viabilidad Android/avisos, acuse de recepción, sincronización y protección jurídica de menores. No seleccionar mecanismo de autenticación/proveedor.
+
+**Criterios adicionales:** (a) autorización no verificable no devuelve coordenadas nuevas; (b) no se simula ubicación con una caché como respuesta fresca; (c) reinstalar B no recupera última posición aunque exista copia; (d) no se encola solicitud para cuando el emisor recupere conexión.
+
 ## PENDIENTE / técnico
 No prometer precisión, recepción de notificaciones, verificación exacta de estado remoto ni revocación instantánea offline; permisos/versiones Android, timeout, concurrencia, colas, batería, recuperación de red, accesibilidad y pruebas de error a cargo de TECH LEAD. Considerar salvaguardas y consentimiento en contexto de menores. Relacionadas #2, #6, #10, #12, #16. No se aprueba infraestructura ni implementación.
