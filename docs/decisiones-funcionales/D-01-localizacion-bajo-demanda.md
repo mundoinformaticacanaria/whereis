@@ -1,7 +1,7 @@
 # D-01 — Localización bajo demanda e identificador fijo de dispositivo
 
 - **Fecha de aprobación del Propietario:** 15/10/2026.
-- **Estado de la decisión funcional:** `CONFIRMADO` por aprobación expresa del Propietario; incorporación a `main` pendiente de revisión/merge.
+- **Estado de la decisión funcional:** `CONFIRMADO` por aprobación expresa del PROPIETARIO; documento integrado en `main` mediante [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) (23/10/2026). El baseline global sigue `PENDIENTE`.
 - **Clasificación:** `MATERIAL`.
 - **Fuente de trazabilidad:** [Issue #1](https://github.com/mundoinformaticacanaria/whereis/issues/1).
 - **Origen:** definición del producto Whereis y decisiones expresadas en la conversación con el Propietario el 15/10/2026.
