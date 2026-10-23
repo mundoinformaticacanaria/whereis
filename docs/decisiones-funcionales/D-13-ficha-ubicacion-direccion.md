@@ -25,5 +25,9 @@
 - D13-CA04: fallo sin auto-reintentos, reintento manual no modifica coordenadas ni fecha original.
 - D13-CA05: cerrar ficha durante búsqueda no cancela esa operación ni permite interacción con mapa mientras la ficha esté abierta.
 
+## Salvaguardas funcionales de la ficha — SEG-01/02/04
+
+**SEG-01 y SEG-02 / [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24)** están CONFIRMADOS: el botón de actualizar de la ficha no obtiene posición nueva si no se verifica identidad auténtica de instalación y permiso direccional vigente. El ID/QR copiado no es prueba. Solo mostrar una última posición legítima y fechada conforme D-09/D-10, que puede ocultar marcador por bloqueo o borrar datos por eliminación. La **reinstalación del propio consultante (SEG-04)** no restaura posiciones ni autorizaciones desde backup; el consultante no reinstalado puede conservar una anterior legítima del emisor desinstalado. **PENDIENTES:** exactitud Android, servicio de geocodificación y licencias/costes, ubicación/retención/borrado legal y protección jurídica de menores. Ningún proveedor queda aprobado.
+
 ## PENDIENTE / técnico
 Precisión/semántica Android, permisos y geocodificación; dependencia de proveedores, licencias, datos de direcciones y coste: TECH LEAD propone alternativas. No se ha elegido tecnología, no se garantizan direcciones ni exactitud. Relacionadas D-06 #12, D-07 #14 y D-08 #16.
