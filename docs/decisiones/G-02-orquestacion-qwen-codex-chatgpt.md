@@ -43,6 +43,18 @@ Desde el 18/10/2026, **`QWEN-LINUX` queda SUPERSEDED como identidad operativa vi
 - Las restricciones y gates pertenecen al ejecutor/proyecto, no al nombre del modelo.
 - Si un cambio de modelo altera capacidades, privacidad, coste, permisos o riesgo material, TECH LEAD lo eleva antes de usarlo; la neutralidad nominal no elude aprobaciones.
 
+## Instancia Linux en servidor multiproyecto (aclaración del PROPIETARIO, 23/10/2026)
+
+**CONFIRMADO — criterio MATERIAL de aislamiento** en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28#issuecomment-6372583456): el servidor Linux es **compartido** con otros proyectos; el ejecutor `PROGRAMADOR-LINUX` de WHEREIS es **una instancia por proyecto**, no parte de un runner global que despache issues de varios repositorios. La identidad estable y el modelo configurable definidos arriba pertenecen solo a la instancia WHEREIS.
+
+- El runner de `mundoinformaticacanaria/crm-remisiones-veterinarias` es **externo a WHEREIS**. No modificar ni detener sus componentes; solo inspección técnica indispensable, en lectura, para detectar colisiones. Las decisiones funcionales o de gobernanza CRM no se heredan.
+- Separar entre proyectos repositorios, configuración/agentes/modelos, variables, XDG, sesiones, caché/estado/recovery, locks, logs, unidades systemd/timers, `RuntimeDirectory`, temporales, procesos, puertos y contratos de selección de issues/ramas, cuando corresponda.
+- Se admite compartir binarios/herramientas comunes (OpenCode, Git, GitHub CLI, Python), **no** compartir configuración por proyecto. Los cambios de alcance global que puedan afectar a CRM u otros proyectos son **MATERIALES** y requieren autorización expresa antes de ejecutarse.
+- Diseñar para que otro proyecto pueda incorporar su propia instancia sin modificar WHEREIS ni CRM; evitar un framework genérico especulativo o replicar referencias cruzadas específicas. Aislamiento primero, reutilización solo ante necesidad justificada.
+- La separación horaria histórica CRM `:15` / WHEREIS `:45` es referencia de aislamiento temporal, **no** aprobación del timer ni señal de un runner común.
+
+La inspección de rutas y servicios actuales del servidor y el resultado de pruebas de no colisión siguen **PENDIENTES de evidencia**. Esta aclaración no levanta `NO ASIGNAR PROGRAMADOR`, ni autoriza desarrollo, cambios globales, instalación o ejecución desatendida. La [documentación operativa](../orquestacion/operacion-linux.md) contiene la matriz de validación.
+
 ## Ramas
 
 - Nuevas tareas de `PROGRAMADOR-LINUX`: `programador-linux/<issue>-<descripcion>`.
