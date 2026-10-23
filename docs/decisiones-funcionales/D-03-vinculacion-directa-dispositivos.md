@@ -2,7 +2,7 @@
 
 - **Aprobación original:** 15/10/2026.
 - **Ampliación / matización del PROPIETARIO:** 16/10/2026.
-- **Estado:** `CONFIRMADO` por el PROPIETARIO; documento pendiente de integración en `main`.
+- **Estado:** `CONFIRMADO` por el PROPIETARIO; documento integrado en `main` mediante [PR #7](https://github.com/mundoinformaticacanaria/whereis/pull/7) (20/10/2026). Baseline global `PENDIENTE`.
 - **Clasificación:** `MATERIAL` — cambio funcional de relación entre dispositivos.
 - **Issue:** [#6](https://github.com/mundoinformaticacanaria/whereis/issues/6). **PR:** [#7](https://github.com/mundoinformaticacanaria/whereis/pull/7).
 - **Relacionado:** [D-01 #1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02 #2](https://github.com/mundoinformaticacanaria/whereis/issues/2), [D-04 #8](https://github.com/mundoinformaticacanaria/whereis/issues/8) y D-05.
@@ -80,7 +80,7 @@ Reconocer dispositivos mediante su ID fijo Whereis, independientemente de conced
 
 ## Handoff
 
-**TECH LEAD** revisa compatibilidad técnica, seguridad, límites Android y la PR #7 sobre su head SHA actual; después corresponde integración conforme a G-01 V3. **QA** será independiente para implementación futura. El cambio documental **no autoriza desarrollo**.
+**TECH LEAD** integró documentalmente la PR #7 el 20/10/2026. La validación técnica de identidad, seguridad y límites Android continúa `PENDIENTE` conforme a G-02; **QA** será independiente para implementación futura. El cambio documental **no autoriza desarrollo**.
 
 ## Ampliación posterior CONFIRMADA — D-09 y SEG-02 (17 y 19/10/2026)
 
@@ -100,4 +100,4 @@ Reconocer dispositivos mediante su ID fijo Whereis, independientemente de conced
 - **D03-CA12:** dos reintentos de una misma solicitud no producen dos pendientes; una caduca 24 horas después del envío, y una rechazada/caducada puede reenviarse salvo bloqueo.
 - **D03-CA13:** copiar el ID de B en C no concede a C el permiso que A otorgó a B; una prueba de identidad o autorización no verificable impide obtener nueva ubicación.
 
-**PENDIENTE:** contratos técnicos exactos de entrega/acuse, identidad, defensa antiabuso y revocación remota; ninguna decisión de arquitectura, proveedor, coste ni desarrollo se presume. **Siguiente acción: TECH LEAD** para conciliación de [PR #7](https://github.com/mundoinformaticacanaria/whereis/pull/7) con [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25), revisión documental e integración. El baseline sigue PENDIENTE.
+**PENDIENTE:** contratos técnicos exactos de entrega/acuse, identidad, defensa antiabuso y revocación remota; ninguna decisión de arquitectura, proveedor, coste ni desarrollo se presume. **Siguiente acción:** FUNCIONAL debe corregir [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25) y TECH LEAD debe revalidar su coherencia con D-03 ya integrada; no está pendiente el merge de [PR #7](https://github.com/mundoinformaticacanaria/whereis/pull/7). El baseline sigue PENDIENTE.
