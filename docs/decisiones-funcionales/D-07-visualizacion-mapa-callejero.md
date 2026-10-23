@@ -32,7 +32,7 @@ No se presupone que «familia» sea un requisito de cuenta o vínculo parental: 
 4. **Actualización individual manual:** el usuario puede seleccionar un dispositivo y pulsar **«Actualizar ubicación»** para solicitar una nueva posición **solo de ese dispositivo** y **solo si mantiene autorización activa**, respetando D-01/D-02. Una consulta fallida sigue D-06.
 5. **No seguimiento continuo:** mostrar el mapa, moverlo, seleccionar marcadores o alternar entre dispositivos **no activa consultas de posición automáticas ni periódicas**, ni obtiene posiciones simultáneas de todos por el mero hecho de ver la pantalla.
 6. **Dispositivos conocidos sin posición:** que B conozca el ID de A por QR/entrada manual (D-03) **no autoriza** a situar a A en el mapa. Sin una posición real disponible para B, no se inventa marcador; la app puede indicar «Ubicación no disponible» en la lista o detalle.
-7. **Autorización desactivada:** tras revocación aplicada (D-05), B **no puede actualizar** la posición de A; si ya había recibido una posición, **sigue visible la última ubicación fechada y rotulada como anterior**.
+7. **Desactivación ordinaria de autorización (D-05):** tras revocación aplicada, B **no puede actualizar** A y puede seguir viendo la última ubicación legítima, fechada y rotulada como anterior **si no existe bloqueo ni eliminación**. En cambio, **D-09 / #19** y **D-10 / #20** confirman que un **bloqueo** oculta el marcador anterior sin exigir borrar la posición, y una **eliminación** confirmada borra última ubicación y personalización en el consultante.
 8. **Fallo de actualización:** se informa del error; si existe última ubicación obtenida previamente se conserva visible en el mapa con fecha/hora y advertencia; si no, se indica «Ubicación no disponible» (D-06).
 9. **Preferencia por tecnología libre:** deben **priorizarse** biblioteca y cartografía de código/datos abiertos compatibles con el proyecto, pero **TECH LEAD** elige y justifica solución, licencias, atribuciones, escalabilidad y costes según gobernanza; **ninguna opción tecnológica queda aprobada en D-07**.
 
@@ -43,7 +43,9 @@ No se presupone que «familia» sea un requisito de cuenta o vínculo parental: 
 | A conocido por ID/QR pero sin autorización y sin posición previa | No: sin marcador inventado | No |
 | A autorizado y con posición previamente obtenida | Sí: marcador identificable, fecha/hora de última posición | Sí, solicitud puntual manual; éxito sujeto a Android/conexión |
 | A autorizado, sin posición anterior, consulta fallida | No: «Ubicación no disponible» | Posibilidad de nueva consulta manual, sujeto a permiso/condiciones |
-| A desautorizado, con posición que B obtuvo antes | Sí: última posición **anterior** fechada (D-05) | No |
+| A con autorización **simplemente desactivada**, sin bloqueo ni eliminación, con posición previa legítima | Sí: última posición **anterior** fechada (D-05) | No |
+| A **bloqueado** (D-09) tras posición obtenida previamente | **No:** marcador oculto; posición anterior conservada solo en la medida prevista por D-10 | No |
+| A **eliminado** de conocidos (D-10) | **No:** ubicación y personalización borradas del consultante tras confirmación | No |
 | A reinstalado con ID nuevo (D-04) | Sin heredar antiguas autorizaciones ni generar nuevas coordenadas automáticamente | No hasta nuevo reconocimiento y autorización |
 
 Se describe el **contrato observable**, no una decisión sobre cómo almacenar los marcadores.
@@ -57,19 +59,27 @@ Se describe el **contrato observable**, no una decisión sobre cómo almacenar l
 - **D07-CA05:** abrir o mover el mapa y seleccionar marcadores no activa seguimiento ni consultas automáticas periódicas.
 - **D07-CA06:** sin ubicación legítima previa no se pinta un marcador ficticio, aunque el dispositivo sea conocido; se muestra un estado de no disponibilidad donde corresponda.
 - **D07-CA07:** si falla una actualización, se mantiene la última posición en el mapa y se rotula con fecha/hora + advertencia de antigüedad; si no hay posición, «Ubicación no disponible» (D-06).
-- **D07-CA08:** al desactivar permiso en el emisor, en el consultante no se permiten nuevas consultas; la última posición legítima previamente obtenida sigue visible como **anterior** (D-05).
+- **D07-CA08:** la **desactivación ordinaria** del permiso impide nuevas consultas y mantiene visible una posición anterior legítima con fecha/hora cuando no haya bloqueo ni eliminación (D-05). Ante **bloqueo**, el marcador se oculta; ante **eliminación**, se borra la posición en el consultante, según D-09/D-10.
+- **D07-CA10 (SEG-01/02):** cuando no se puede verificar identidad auténtica de la instalación y autorización activa/vigente, no se recibe ninguna posición nueva, aunque exista un estado local cacheado de «autorizado».
+- **D07-CA11 (D-11/D-13):** pantalla principal dividida con mapa superior/lista inferior; foto o número, borde de color, agrupación de marcadores y ficha modal conforme D-11; fecha/hora de posición `DD/MM/AAAA HH:mm:ss` en zona local del consultante conforme D-13.
 - **D07-CA09:** la visualización de varios dispositivos no concede permiso a quienes solo se conocen por ID, ni cambia las autorizaciones independientes.
 
 ## PENDIENTE — diseño técnico, licencias y diseño visual
 
 - **Biblioteca/renderizador Android:** estudiar alternativas libres (por ejemplo MapLibre, sin elegirlo ni declararlo dependencia).
 - **Fuente de datos y distribución de mapas:** cartografía abierta como OpenStreetMap es una alternativa; **su uso no implica disponer de un servicio de teselas gratuito ni ilimitado**. Verificar atribución, términos, volumen, política de caché, disponibilidad, costes y rendimiento antes de seleccionar.
-- **Diseño UX:** disposición del botón de refresco, lista de dispositivos y mapa, marcadores superpuestos, diferenciación de antigüedad, zoom/encuadre inicial, indicadores de carga/error, formatos de fecha y hora, accesibilidad.
-- **Privacidad:** tratamiento de posiciones cuando caducan, se desinstala Whereis o se borran datos; normativa, seguridad y almacenamiento/retención no definidos por D-07.
+- **D-11 / #21 CONFIRMADO:** pantalla principal dividida (mapa superior siempre visible y lista inferior), solo mapa maximizable; marcadores circulares con foto o número y borde de color, agrupaciones expandibles, selección desde lista sin recentrar y ficha inferior modal al pulsar marcador. Búsqueda, filtros, alias y numeración estable están fijados en D-11, sin convertirlos en selección de tecnología.
+- **D-13 / #23 CONFIRMADO:** fecha/hora real de la ubicación `DD/MM/AAAA HH:mm:ss` en zona horaria del consultante (no relativa), precisión y dirección solo cuando existan; última posición no hereda dirección de otra captura.
+- **PENDIENTE de diseño/viabilidad:** accesibilidad, composición adaptativa a distintas pantallas, rendimiento/legibilidad del agrupamiento, ubicación exacta de controles, comportamiento no especificado, pruebas de uso y límites técnicos de geocodificación.
+- **D-10 / #20 y SEG-04 / #24 CONFIRMADOS:** solo la última posición legítima, sin caducidad funcional automática hasta eliminación; reinstalar consultante no recupera ID/ubicaciones/permisos, aunque el consultante que no se reinstala puede conservar última posición de emisor desinstalado. **PENDIENTE** retención conforme a normativa, borrado físico y copias externas, cifrado, ubicación de almacenamiento, límites Android y protección de menores.
 - **Entornos sin conexión:** carga de mapa/teselas y comportamiento offline sin infraestructura.
-- **Ampliación posterior CONFIRMADA en D-08 / issue #16:** desde el mapa inicial existirá **«Actualizar todos»**, accionado **manualmente** por el usuario, que intentará una consulta puntual por cada dispositivo con autorización activa. La opción no estaba aprobada cuando se formalizó inicialmente D-07, pero ahora **sí** lo está; **no** se habilitan actualizaciones automáticas o programadas. Concurrencia, límites, timeouts y rendimiento técnicos siguen **PENDIENTES**.
+- **Ampliación posterior CONFIRMADA en D-08 / #16 y D-12 / #22:** desde el mapa inicial existe «Actualizar todos» por pulsación manual; D-12 evita duplicar destinos ya en curso, añade consultas elegibles restantes y registra resultado independiente/resumen final. Sin Internet local no se encolan peticiones ni se refresca automáticamente tras reconectar. **PENDIENTE técnico:** límites reales de ejecución, timeout, paralelismo seguro, rendimiento y compatibilidad Android; no se habilita seguimiento automático.
 - **Servicios opcionales:** navegación y rutas, imágenes satelitales, Street View, geocercas, historial y seguimiento en tiempo real **no aprobados para D-07**; su futuro estado MVP/POST-MVP requiere decisión adicional.
 - **Infraestructura y costes:** no hay autorización de proveedor, gasto ni despliegue.
+
+## Prioridad de autenticación y autorización — SEG-01/SEG-02 CONFIRMADAS
+
+Para entregar **cualquier** nueva ubicación, no basta conocer un ID/QR, ni un interruptor activado mostrado desde estado local: hay que verificar identidad auténtica de instalación **y** autorización direccional vigente (**[#24](https://github.com/mundoinformaticacanaria/whereis/issues/24)**). Si esa verificación falla o no es posible, **no se obtiene dato nuevo**. Puede mostrarse la última posición legítima únicamente si las reglas D-09/D-10 permiten visualizarla; nunca fingir posición actual. El mecanismo y garantías de concurrencia y revocación son **PENDIENTES** de estudio TECH LEAD/ARQUITECTO. No se selecciona ahora proveedor o sistema de autenticación.
 
 ## Impacto
 
@@ -88,6 +98,6 @@ Se describe el **contrato observable**, no una decisión sobre cómo almacenar l
 - [D-07 — issue #14](https://github.com/mundoinformaticacanaria/whereis/issues/14).
 - **PROPIETARIO:** comportamiento confirmado.
 - **FUNCIONAL:** documentación y criterios de aceptación.
-- **TECH LEAD:** siguiente acción de revisión de PR y elección/evaluación técnica con justificación de licencias, límites, coste y seguridad, sin autoautorizar proveedores/gastos ni iniciar desarrollo.
+- **TECH LEAD:** siguiente acción de revisión de PR bajo **G-02 vigente**, con apoyo de ARQUITECTO activo para viabilidad/seguridad Android; evaluación cartográfica, licencias, límites y costes sin autoaprobar gasto/proveedores ni iniciar desarrollo. SEG-01/SEG-02 requieren verificar identidad y autorización activa para cada ubicación nueva; si no verificable, **denegar nuevas ubicaciones** (fail-closed).
 - **QA:** revisión independiente posterior cuando haya implementación autorizada.
 - **Baseline funcional global:** `PENDIENTE`.
