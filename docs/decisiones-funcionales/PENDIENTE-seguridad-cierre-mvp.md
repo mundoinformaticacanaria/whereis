@@ -1,32 +1,45 @@
-# Seguridad y cierre del MVP — pendientes materiales
+# Seguridad y cierre del MVP — decisiones SEG y pendientes materiales
 
-- **Fecha:** 17/10/2026
-- **Estado:** `PROPUESTA` / `PENDIENTE` de estudio y aprobación.
-- **Fuente viva:** [issue #24](https://github.com/mundoinformaticacanaria/whereis/issues/24).
-- **No constituye baseline aprobado**, ni permiso de implementación, ni selección de proveedor.
+- **Origen:** [issue #24 y sus comentarios](https://github.com/mundoinformaticacanaria/whereis/issues/24), fuente viva y prevalente sobre este documento.
+- **Actualización:** 23/10/2026, conciliación de decisiones aprobadas el 19/10/2026 y conflicto elevado al PROPIETARIO el 23/10/2026.
+- **Clasificación:** MATERIAL; **estado mixto** por subdecisión (no todo PENDIENTE).
+- **Integración:** documentación funcional para revisión TECH LEAD; **baseline MVP global, programación, infraestructura y proveedores NO AUTORIZADOS**.
 
-## Clasificación
-**MATERIAL — PROPUESTA / PENDIENTE**. La petición general del PROPIETARIO (17/10/2026) de priorizar seguridad, resolver lo rutinario y actualizar GitHub no equivale a aprobar por defecto decisiones con impacto legal, de seguridad o de arquitectura. No constituye baseline.
+## Estado inequívoco por subdecisión
 
-## Objetivo
-Cerrar los riesgos de acceso a ubicación autorizada, especialmente por el uso familiar mencionado por el PROPIETARIO, **sin convertir Whereis en seguimiento oculto ni omitir protecciones de menores**. El consentimiento/control legítimo previsto en D-01 a D-05 sigue siendo condición del proyecto.
+| Subdecisión | Estado confirmado por el PROPIETARIO | Pendientes reales |
+|---|---|---|
+| **SEG-01 — Fallo seguro** | **CONFIRMADO 19/10/2026**. No entregar una nueva ubicación si no puede verificarse autorización direccional vigente; solo posición previa legítima, fechada/anterior si D-09/D-10 permiten mostrarla | Mecanismo y momento de validación, concurrencia/revocación sin conexión; no prometer revocación instantánea |
+| **SEG-02 — Identidad de instalación** | **CONFIRMADO 19/10/2026**. ID/QR no autentica; cada instalación y relación autorizada necesitan prueba auténtica y medidas contra suplantación, replay, enumeración y abuso | Arquitectura/criptografía, límites verificables, costes, pruebas negativas; **conflicto D-09 «ID no encontrado» aún sin decisión** |
+| **SEG-03 — Modo para menores** | **CONFIRMADO 19/10/2026**: por ahora **no** se incluye un modo familiar diferenciado; mismos flujos ordinarios sin privilegios parentales automáticos | **PENDIENTE** revisión jurídica y técnica sobre menores, legitimación/representación, información, controles, derechos, minimización, conservación y borrado; no habilita acceso oculto |
+| **SEG-04 — Reinstalación y backup** | **CONFIRMADO 19/10/2026**: la nueva instalación empieza con nuevo ID, sin recuperar ubicaciones ni permisos desde backup; el consultante no reinstalado puede conservar su última posición legítima de emisor desinstalado (D-10) | Estrategia Android/backup, datos externos, retención legal, borrado verificable y seguridad del almacenamiento |
+| **SEG-05 — Android y avisos** | **PENDIENTE** de viabilidad y, si altera comportamiento, aprobación material adicional | Permisos/versiones y ejecución no visible, notificaciones por solicitante/24 h, reinicio de límites, batería |
+| **SEG-06 — Acuses/conectividad** | **PENDIENTE técnico** con reglas funcionales de D-09/D-12 ya confirmadas | «Recibida» en app versus notificación, idempotencia, estado remoto realmente verificable, garantías offline y sincronización |
+| **SEG-07 — Mapas/direcciones/proveedores** | **PENDIENTE** | Licencias, atribuciones, servicios de teselas/geocodificación, coste, disponibilidad, proveedor/infrastructura y autorización humana |
 
-## Propuestas FUNCIONAL sujetas a aprobación / validación
-1. **SEG-01 — Estado remoto no verificable (P0):** `PROPUESTA` denegar nuevas ubicaciones cuando no sea verificable la autorización vigente; conservar solo última ubicación legítima con fecha/hora y aviso, sin afirmar «revocación instantánea» hasta que se valide sincronización. **TECH LEAD** debe estudiar conectividad y consultas simultáneas; **PROPIETARIO** aprueba garantías/UX finales.
-2. **SEG-02 — Identidad y abuso (P0):** `PROPUESTA` verificación robusta de instalación y autorización por relación; defensas ante suplantación, consulta con ID copiado, enumeración de IDs, repetición de solicitudes y bloqueo abusivo. Estudiar compatibilidad con decisiones D-09 de «ID no encontrado» y reenvío inmediato tras rechazo; si hay contradicción, elevar alternativas al PROPIETARIO sin modificar las aprobadas.
-3. **SEG-03 — Menores y tratamiento de datos (P0):** `PENDIENTE` revisar base de legitimación/consentimiento o representación legal aplicable, transparencia y derechos del menor, roles de responsables del tratamiento, accesibilidad del control en emisor, conservación y borrado. **Prioridad de seguridad no elimina obligaciones de privacidad**. No permitir acceso secreto o sin autorización conforme a condiciones de producto y legislación aplicable.
-4. **SEG-04 — Retención indefinida hasta eliminación (P0):** D-10 recoge intención del PROPIETARIO (solo última ubicación), pero falta revisar limitación de conservación, almacenamiento en dispositivos/servicios, eliminación efectiva y copia de seguridad. No dar por definido dónde se almacena.
-5. **SEG-05 — Android y notificaciones (P1):** TECH LEAD verificará permisos y restricciones reales (incluidos estados sin interacción/ubicación desactivada), que un aviso por emisor/24h sea viable y que el reinicio del límite tras activar/desactivar pueda detectarse, además de política de fallos y ahorro de batería.
-6. **SEG-06 — Acuses y desconexión (P1):** especificar «recibida» solo si la solicitud está realmente disponible en la app destinataria; distinguir «entrega no confirmada» y «rechazada»; idempotencia estricta. Estado remoto «sin conexión» solo si verificable.
-7. **SEG-07 — Proveedores, mapas, direcciones, coste (P1):** selección de fuente de mapas/direcciones, licencias y costes reservada a TECH LEAD para evaluación y PROPIETARIO para autorización material.
+**Precedencia:** SEG-01 y SEG-02 se aplican a **todas** las consultas de ubicación nueva, incluso si la interfaz o caché declara un interruptor activado. Ante autorización o identidad no verificable, no hay nueva ubicación. Conservar una ubicación anterior **no** equivale a recuperar autorizaciones ni a historiar. No alterar D-09 sin decisión humana nueva.
 
-## Criterios previos al baseline funcional
-- Matriz de amenazas mínimas para ID/suplantación/permiso/revocación/bloqueo y pruebas negativas verificables.
-- Demostración de comportamiento al fallar red y frente a operaciones concurrentes.
-- Política de conservación/eliminación revisada para datos de localización de menores.
-- Compatibilidad real por versión Android y permisos, sin prometer capacidades inexistentes.
-- Costes/proveedores revisados y autorización separada.
-- Aprobación material específica del PROPIETARIO antes de declarar cerrado cada punto y del baseline final; QA independiente en desarrollo.
+## Conflicto material D-09 / SEG-02 — siguiente acción PROPIETARIO
 
-## Estado / Handoff
-`PROPUESTA`, `PENDIENTE` de TECH LEAD y PROPIETARIO. Relacionadas D-01 a D-13, en especial #19–#23; no habilita programación ni infraestructura. ARQUITECTO solo si se autoriza activación puntual.
+El [comentario TECH LEAD del 23/10/2026 en #24](https://github.com/mundoinformaticacanaria/whereis/issues/24) contrasta el texto «ID no encontrado» aprobado en D-09 con la protección frente a enumeración exigida por SEG-02. **No hay opción A/B aprobada aún.**
+
+- **A propuesta:** conservar el mensaje D-09 y exigir defensas antiabuso demostrables; persistiría riesgo residual de revelar existencia.
+- **B propuesta:** mensaje indistinguible para identificadores inexistentes/no verificables en consulta no autenticada, modificando la UX D-09 por decisión expresa del PROPIETARIO.
+- **No se elige ninguna opción en esta PR.** Continúan vigentes tanto el mensaje de D-09 como la obligación SEG-02; cualquier incompatibilidad para implementación bloquea resolverla por intuición. Mantener issue #24 etiquetada **PROPIETARIO** hasta su decisión.
+
+## Criterios funcionales mínimos y verificación posterior
+
+1. Solo el ID/QR copiado no permite consultar ubicación ajena; intento de suplantación/replay o permiso no verificable no entrega nueva posición (**SEG-01/02**).
+2. Revocación y consultas concurrentes, con red intermitente, se someten a comprobación de autorización vigente en un punto efectivo de control; no fingir eficacia remota instantánea.
+3. Solicitud aceptada desde desconocido da de alta como conocido **sin** permiso; bloqueo impide consultas/solicitudes y desbloqueo no reautoriza (D-09).
+4. Reinstalación con backup no recupera ID, permisos ni última posición en el dispositivo reinstalado; el consultante no reinstalado puede conservar el último dato legítimo anterior (SEG-04/D-10).
+5. El tratamiento de datos de menores y la retención efectiva requieren revisión legal antes del baseline global; preferir seguridad del menor no implica renunciar a garantías aplicables.
+6. Validar con TECH LEAD/ARQUITECTO límites Android, latencia, conectividad, privacidad y costes; QA independiente y controles de CI/gates siguen exigibles antes de código real.
+
+## Handoff y límites
+
+- **PROPIETARIO:** decisión A/B sobre D-09/SEG-02 y demás autorizaciones materiales reservadas.
+- **TECH LEAD / ARQUITECTO (activo por G-02):** evaluación, trazabilidad, alternativas técnicas y seguridad, sin autoaprobar gastos ni requisitos.
+- **FUNCIONAL:** conciliación de contratos y criterios, sin cambiar el mensaje D-09 por intuición.
+- **QA:** independiente si llega a haber implementación autorizada.
+- **Estado global:** #24 abierta, baseline funcional y arquitectónico PENDIENTES, gates #28 PENDIENTES, **NO ASIGNAR PROGRAMADOR ni activar timer**.
