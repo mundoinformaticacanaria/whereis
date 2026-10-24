@@ -2,7 +2,7 @@
 
 - **Proyecto:** Whereis
 - **Repositorio:** https://github.com/mundoinformaticacanaria/whereis
-- **Fecha de estado:** 23/10/2026
+- **Fecha de estado:** 24/10/2026
 
 ## Estado resumido
 
@@ -13,7 +13,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 ## Baselines
 
 - **Gobernanza:** G-01 V3 y G-02 `CONFIRMADAS` en su alcance. Política de roles y orquestación en [playbook](orquestacion/README.md); configuración técnica de acceso/labels/CI aún `PENDIENTE`.
-- **Baseline funcional completo / alcance MVP:** `PENDIENTE`. D-01/D-02 están integradas documentalmente por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) en `main@97a29e450fee24887f785e73f5222a35b2605369` (23/10/2026); D-03/D-04 también constan en `main`. D-05/D-06/D-07/D-08 siguen en [PR #11](https://github.com/mundoinformaticacanaria/whereis/pull/11), [#13](https://github.com/mundoinformaticacanaria/whereis/pull/13), [#15](https://github.com/mundoinformaticacanaria/whereis/pull/15) y [#18](https://github.com/mundoinformaticacanaria/whereis/pull/18), devueltas a FUNCIONAL para conciliación; D-09–D-13 están en [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25) en borrador y devuelta a FUNCIONAL. Ninguna integración aislada aprueba el baseline global.
+- **Baseline funcional completo / alcance MVP:** `PENDIENTE`. D-01/D-02 están integradas documentalmente por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) en `main@97a29e450fee24887f785e73f5222a35b2605369` (23/10/2026); D-03/D-04 también constan en `main`. D-05/D-06/D-07/D-08 están integradas **solo documentalmente** mediante [PR #11](https://github.com/mundoinformaticacanaria/whereis/pull/11), [#13](https://github.com/mundoinformaticacanaria/whereis/pull/13), [#15](https://github.com/mundoinformaticacanaria/whereis/pull/15) (23/10) y [#18](https://github.com/mundoinformaticacanaria/whereis/pull/18) (24/10, `main@9dfdb37b98bd998f990a17b1e9daba7c13bbd435`). D-09–D-13 siguen en [PR #25](https://github.com/mundoinformaticacanaria/whereis/pull/25), borrador devuelto a FUNCIONAL para incorporar la opción B de seguridad aprobada en #24. Ninguna integración aislada aprueba el baseline global.
 - **Baseline arquitectónico:** `PENDIENTE`.
 - **Estado MVP/beta:** `PENDIENTE`; implementación no autorizada.
 
@@ -34,6 +34,8 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 - **Gobernanza G-01:** [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [PR #5](https://github.com/mundoinformaticacanaria/whereis/pull/5) proporcionan trazabilidad de la formalización documental; una vez integrados/cerrados no suponen nueva autorización operativa.
 - [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): documentación integrada por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) el 23/10/2026; sin aprobación de baseline global.
 - **Primera issue de programación:** todavía no autorizada.
+- **Aislamiento del runner Linux:** criterio multiproyecto confirmado por PROPIETARIO en #28; formalización en [PR #36](https://github.com/mundoinformaticacanaria/whereis/pull/36), aún en borrador. No equivale a verificación del servidor.
+- **ARQUITECTO y heartbeat:** decisiones materiales de gobernanza pendientes del PROPIETARIO en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38).
 
 ## Configuración y decisiones PENDIENTES
 
@@ -51,4 +53,4 @@ No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## Próximo avance
 
-**FUNCIONAL:** corregir los HEAD de PR #11/#13/#15/#18/#25 conforme a revisiones de TECH LEAD y devolverlos para revalidación. **PROPIETARIO:** decidir el conflicto D-09/SEG-02 documentado en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), actualmente con label `PROPIETARIO`. **TECH LEAD:** seguir #28, verificar configuración real de GitHub y coordinar viabilidad sin asignar `PROGRAMADOR` ni activar el timer Linux mientras falten baselines, seguridad y gates.
+**FUNCIONAL:** corregir el HEAD de PR #25 para reflejar la opción B de D-09/SEG-02 ya aprobada por PROPIETARIO en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24). **PROPIETARIO:** decidir #37 (ejecutor formal ARQUITECTO) y #38 (heartbeat), y resolver los aspectos materiales de privacidad/seguridad aún pendientes de #24. **TECH LEAD:** revisar PR #25 cuando haya nuevo HEAD, mantener #28 y los gates operativos, coordinar revisión formal de propuestas arquitectónicas #34/#35 y PR #36 cuando deje de estar en borrador; sin asignar `PROGRAMADOR` ni activar el timer Linux mientras falten baselines, seguridad y gates.
