@@ -1,7 +1,7 @@
 # D-07 — Mapa callejero conjunto y actualización manual de dispositivos
 
 - **Fecha de aprobación del Propietario:** 16/10/2026.
-- **Estado:** `CONFIRMADO` para comportamiento de visualización; selección técnica/operativa e incorporación a `main` `PENDIENTES`.
+- **Estado:** `CONFIRMADO` para comportamiento de visualización; documento integrado en `main` mediante [PR #15](https://github.com/mundoinformaticacanaria/whereis/pull/15) el 23/10/2026. Selección técnica/operativa y baseline global `PENDIENTES`.
 - **Clasificación:** `MATERIAL — FUNCIONAL`.
 - **Issue:** [#14 — D-07](https://github.com/mundoinformaticacanaria/whereis/issues/14).
 - **Trazabilidad:** [D-01 #1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02 #2](https://github.com/mundoinformaticacanaria/whereis/issues/2), [D-03 #6](https://github.com/mundoinformaticacanaria/whereis/issues/6), [D-04 #8](https://github.com/mundoinformaticacanaria/whereis/issues/8), [D-05 #10](https://github.com/mundoinformaticacanaria/whereis/issues/10), [D-06 #12](https://github.com/mundoinformaticacanaria/whereis/issues/12).
