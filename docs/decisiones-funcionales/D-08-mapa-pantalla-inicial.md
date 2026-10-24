@@ -2,7 +2,7 @@
 
 - **Decisión aprobada por PROPIETARIO:** 16/10/2026.
 - **Clasificación:** `MATERIAL — FUNCIONAL`.
-- **Estado:** `CONFIRMADO` en el alcance funcional aquí descrito; integración en `main` `PENDIENTE`.
+- **Estado:** `CONFIRMADO` en el alcance funcional aquí descrito; documento integrado en `main` mediante [PR #18](https://github.com/mundoinformaticacanaria/whereis/pull/18) el 24/10/2026. El baseline funcional global sigue `PENDIENTE`.
 - **Issue de decisión:** [D-08 / #16](https://github.com/mundoinformaticacanaria/whereis/issues/16).
 - **Antecedente directo:** [D-07 / #14](https://github.com/mundoinformaticacanaria/whereis/issues/14), mapa conjunto con ubicaciones de varios dispositivos, actualizaciones manuales y preferencia de cartografía libre.
 - **Otras relaciones:** [D-01/#1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02/#2](https://github.com/mundoinformaticacanaria/whereis/issues/2), [D-03/#6](https://github.com/mundoinformaticacanaria/whereis/issues/6), [D-04/#8](https://github.com/mundoinformaticacanaria/whereis/issues/8), [D-05/#10](https://github.com/mundoinformaticacanaria/whereis/issues/10), [D-06/#12](https://github.com/mundoinformaticacanaria/whereis/issues/12).
