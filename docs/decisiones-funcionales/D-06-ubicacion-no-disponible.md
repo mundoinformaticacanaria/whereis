@@ -2,7 +2,7 @@
 
 - **Fecha de aprobación del Propietario:** 16/10/2026.
 - **Clasificación:** `MATERIAL` — definición funcional.
-- **Estado de decisión:** `CONFIRMADO` por aprobación expresa; documento todavía `PENDIENTE` de revisión/integración en `main`.
+- **Estado de decisión:** `CONFIRMADO` por aprobación expresa; documento integrado en `main` mediante [PR #13](https://github.com/mundoinformaticacanaria/whereis/pull/13) el 23/10/2026. El baseline funcional global sigue `PENDIENTE`.
 - **Issue:** [#12 — D-06](https://github.com/mundoinformaticacanaria/whereis/issues/12).
 - **Decisiones relacionadas:** [D-01 #1](https://github.com/mundoinformaticacanaria/whereis/issues/1), [D-02 #2](https://github.com/mundoinformaticacanaria/whereis/issues/2), [D-04 #8](https://github.com/mundoinformaticacanaria/whereis/issues/8), [D-05 #10](https://github.com/mundoinformaticacanaria/whereis/issues/10).
 - **Baseline funcional completo del MVP:** `PENDIENTE`; esta decisión no lo aprueba.
