@@ -15,7 +15,8 @@
 4. SEG-02: ID/QR no es prueba de identidad. Una ubicación nueva requiere **autenticidad de la instalación solicitante** y **relación autorizada vigente**.
 5. SEG-01: si no es verificable la autorización actual, no entregar nueva ubicación; no prometer revocación remota instantánea sin conectividad.
 6. D-10: A desinstalado no borra por sí mismo la última ubicación legítima en B que sigue instalado. B reinstalado no recupera su copia previa. Bloquear puede ocultar ubicación anterior sin volverla actual.
-7. Borrado, retención legal y salvaguardas de menores siguen `PENDIENTE` en #24; no equiparar una exclusión de backup a supresión jurídica completa.
+7. **Opción B de D-09/SEG-02 CONFIRMADA** por PROPIETARIO el 23/10/2026 en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24#issuecomment-6371711122): una verificación de ID no autenticada o sin derecho de conocer su existencia no debe distinguir un ID inexistente de otro existente pero no divulgable. La UX literal corresponde a FUNCIONAL; no modificar por esta opción los reintentos legítimos ni la caducidad de 24 h de D-09.
+8. Borrado, retención legal y salvaguardas de menores siguen `PENDIENTE` de revisión especializada en [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41); no equiparar una exclusión de backup a supresión jurídica completa. SEG-02 continúa técnicamente PENDIENTE.
 
 ## 2. Amenazas y límites
 
@@ -39,10 +40,13 @@
 - **`InstallationIdentity`**: `installationId` opaco y público, `credentialKeyRef` privado y local, `generationProof` ligado al ciclo de vida de la instalación. Prohibir exportar la credencial. El QR solo contiene identificador/elementos públicos, nunca secreto.
 - **`KnownDevice`**: reconocer no crea `AuthorizationRelation`.
 - **`AuthorizationRelation`**: `grantorInstallationId`, `granteeInstallationId`, sentido, `status`, `revision` monótona y evidencia de la acción expresa. Las verificaciones deben usar revisiones actuales, nunca un estado de caché offline como permiso suficiente.
-- **`AuthorizedLocationRelease`**: contrato de verificación justo antes de entregar una posición nueva. Petición autenticada, no caducada, ligada a ambas identidades, relación direccional activa y no revocada. Si no se puede acreditar, **denegar** y no diferir la entrega hasta reconectar.
+- **`AuthorizedLocationRelease`**: cada posición tiene un único punto de autorización de **liberación** ante la autoridad de la relación, no solo un chequeo al recibir la solicitud. Petición autenticada, no caducada, ligada a ambas instalaciones, y relación direccional activa con revisión vigente. Preparar/cifrar un resultado antes del gate **no** autoriza transmitírselo a B; respuestas pendientes o reintentos exigen gate nuevo o invalidación demostrable. Si no se puede acreditar identidad/permiso actual, **denegar** y no diferir entrega hasta reconectar.
+- **`ExistenceDisclosurePolicy` (opción B CONFIRMADA)**: ante una verificación no autenticada o sin derecho de consultar existencia, IDs inexistentes y existentes no divulgables producen un resultado externo indistinguible; revisar mensajes, códigos de respuesta, longitud, cabeceras, metadatos, patrones de red y latencia observable. El texto exacto lo decide FUNCIONAL. Antiabuso/rate-limit no reemplaza esta regla y no es aceptable usar validaciones rápidas de «no existe» frente a lentas de «existe» sin mitigación y prueba. No impedir flujos legitimados de QR/ID ni reducir controles de autorización.
 - **`LastLegitimateLocation`**: solo última captura legítima almacenada en el consultante, con instante real, precisión conocida y estado de antigüedad. No se debe rehidratar desde la copia de una instalación extinguida.
 
-La decisión de autorizar y emitir debe definir un **punto de orden total por relación** (verificador transaccional o mecanismo equivalente): una revocación aplicada antes de ese punto impide el envío. No se puede deshacer una posición que ya fue entregada antes de la revocación ni prometer conocer instantáneamente una desinstalación offline.
+**Orden de concurrencia propuesto para revisar con PR #35:** `AuthorizationAuthority` serializa por relación los eventos `Grant(revision)`, `Revoke(revision+1)`, `Block(revision+1)` y `Release(requestId,revision)`. `Release` no es el chequeo al aceptar ni al capturar: es la decisión final, verificable y atómica respecto a los cambios de revisión antes de permitir que el contenido abandone el dominio protegido del emisor/verificador. Si `Revoke` confirma primero, `Release` falla incluso con muestra preparada; si `Release` confirma primero, se puede haber transmitido el dato legalmente **antes** de la revocación. No compartir un resultado previamente autorizado mediante una cola de red sin nuevo control al retransmitir; descartar reintentos en nueva revisión, también si luego se reactiva el interruptor.
+
+**Límite distribuido no resuelto:** en una red asíncrona, un paquete emitido *antes* de revocación puede llegar físicamente después. No se promete retirarlo del transporte ni borrar el dato ya conocido. Como defensa adicional, la instalación B valida la vigencia de su relación y la generación de la solicitud **antes de aceptar y mostrar** un resultado retrasado; sin verificación disponible no muestra una ubicación nueva. Aun así, una revocación remota no propagada a B puede ser desconocida: las garantías exactas y el punto de liberación requieren análisis/ensayos de TECH LEAD y decisión MATERIAL si el requisito se interpretara como prohibición absoluta de recepción posterior, imposible de garantizar sin condiciones de conectividad. **Es una PROPUESTA, no una demostración de atomicidad.**
 
 ## 5. Bootstrap de identidad y backups
 
@@ -61,7 +65,9 @@ La decisión de autorizar y emitir debe definir un **punto de orden total por re
 | Restore cloud y D2D, con y sin copia antigua | No resucita ID, relaciones, claves ni posición en instalación nueva | API/target/OEM |
 | Copia de QR/ID, BD, preferencias o tokens en C | C no autentica como B ni puede consultar A | Simulación de suplantación |
 | Clave privada inaccesible, restore parcial o corrupted state | No se acepta identidad o permiso antiguo; fail-closed | Recuperación |
-| Revocación concurrente con consulta y respuesta retrasada | Ninguna posición posterior pasa el punto de autorización con revisión revocada | Orden y reintentos |
+| Revocación aplicada entre captura y gate de liberación, incluso con contenido ya preparado | Gate niega liberar dato; reintento o respuesta reordenada no usan validación anterior | Prueba de serialización por relación |
+| Revocación después de liberar, entrega retrasada, reactivación y respuesta de revisión anterior | Precisar límite de red; B vuelve a validar antes de mostrar y descarta respuesta de época anterior; documentar riesgo residual de paquete ya emitido | Matriz de orden y límites distribuidos |
+| ID inexistente frente a ID existente no divulgable, solicitante sin derecho | Respuesta indistinguible por cuerpo, código, longitud, cabeceras, tiempo y metadatos observables; no oráculo de existencia | Opción B / SEG-02; pruebas estadísticas negativas |
 | Falla verificador o conectividad | No nueva ubicación; última legítima solo si permitida, con timestamp anterior | SEG-01/D-10 |
 | A se reinstala y B sigue instalado | B puede mostrar la última anterior, no consultar a A antiguo | D-10 |
 | B reinstalado | No recupera ubicación ni alias anterior | SEG-04 |
@@ -72,11 +78,12 @@ No se ha ejecutado código, test Android, `adb` ni una auditoría de dispositivo
 
 ## 7. Pendientes y handoff
 
-- **PROPIETARIO — [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), label `PROPIETARIO`:** resolver D-09/SEG-02 (respuesta «ID no encontrado» y enumeración), y decisiones jurídicas/materiales de menores, conservación/borrado y proveedores. El estudio puede revisarse sin adelantar estas decisiones.
+- **TECH LEAD — [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), label `TECH LEAD`:** coordinar SEG-01/02/05–07 y validación del gate de revocación, identidad, disponibilidad de verificador y anti-enumeración; la **opción B D-09/SEG-02 ya está CONFIRMADA** por PROPIETARIO, sin que ello cierre la seguridad técnica.
+- **PROPIETARIO — [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41), label `PROPIETARIO`:** decisiones jurídicas de menores, conservación/borrado, base de legitimación, tratamiento por terceros y costes cuando corresponda. [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) mantiene pendiente la decisión expresa del ejecutor formal de ARQUITECTO.
 - **FUNCIONAL/TECH LEAD:** si se pretende definir el caso de clave perdida sin desinstalación o modificar experiencia confirmada, registrar nueva decisión material; revisar integración D-09/PR #25.
 - **TECH LEAD:** validar disponibilidad y modelo de verificador, versiones Android objetivo, superficie de datos, presupuesto, métricas y plan de ensayos; no asignar PROGRAMADOR con #28 abierto.
 - **ARQUITECTO formal (Codex):** revisión técnica adversarial del ADR y coordinación con [#22](https://github.com/mundoinformaticacanaria/whereis/issues/22); una vez revisable, devolver a TECH LEAD conforme G-02. Esta PR **no realiza** ese handoff ni marca seguridad resuelta.
-- **Gobernanza [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28):** la instrucción conversacional que pide a este GPT actuar como arquitecto debe reconciliarse expresamente con el ejecutor formal Codex antes de adjudicarle el cierre formal de issues.
+- **Gobernanza [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37):** issue separada con label `PROPIETARIO` para decisión expresa sobre el ejecutor ARQUITECTO. Hasta entonces sigue vigente Codex; [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28) permanece bajo TECH LEAD para gates. Mantener esta PR en borrador.
 
 ## 8. Fuentes de viabilidad externas (no sustituyen GitHub)
 
