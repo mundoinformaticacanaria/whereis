@@ -2,11 +2,11 @@
 
 - **Proyecto:** Whereis
 - **Repositorio:** https://github.com/mundoinformaticacanaria/whereis
-- **Fecha de estado:** 24/10/2026
+- **Fecha de estado:** 25/10/2026
 
 ## Estado resumido
 
-Proyecto Android en fase de definición y bootstrap. **G-01 V3** confirmó cinco roles iniciales. La [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md), enmendada materialmente el 18/10/2026 en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28), activa además `ARQUITECTO` (Codex) y las identidades lógicas de PROGRAMADOR `PROGRAMADOR-LINUX` y `CODEX`; `QWEN-LINUX` queda **SUPERSEDED** como identidad operativa. Roles vigentes: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`. Véanse [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [decisión G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md).
+Proyecto Android en fase de definición y bootstrap. **G-01 V3** confirmó cinco roles iniciales. La [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md), enmendada materialmente el 18/10/2026 en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28), activa además `ARQUITECTO` (chat ChatGPT dedicado e independiente, enmienda material aprobada por PROPIETARIO en #37 el 25/10/2026 y formalizada en PR #43) y las identidades lógicas de PROGRAMADOR `PROGRAMADOR-LINUX` y `CODEX`; `QWEN-LINUX` queda **SUPERSEDED** como identidad operativa. Roles vigentes: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`. Véanse [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [decisión G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md).
 
 La aprobación de gobernanza **no autoriza desarrollo del producto**, contratación ni infraestructura. `PROGRAMADOR-LINUX` usa un modelo configurable separado de su identidad. A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es solo **CANDIDATO ACTUAL VALIDADO EN ENTORNO AISLADO** (14/16), sin autorización de desarrollo real ni timer. Cuentas GitHub, acceso real de PROGRAMADOR-LINUX/CODEX, capacidades, QA efectivo y permisos continúan `PENDIENTE` de verificación.
 
@@ -22,11 +22,11 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 - `PROPIETARIO`: decide autorizaciones y materiales reservados.
 - `FUNCIONAL`: análisis funcional independiente y criterios de aceptación.
 - `TECH LEAD`: coordinación y cola de issues sin labels; asigna PROGRAMADOR-LINUX/CODEX, revisa calidad y hace merge.
-- `ARQUITECTO`: Codex, propuestas y evaluación arquitectónica sin sustituir las aprobaciones del Propietario.
+- `ARQUITECTO`: chat ChatGPT dedicado e independiente de TECH LEAD y de QA de su propio trabajo (decisión #37); propuestas y evaluación arquitectónica, sin aprobar baselines ni sustituir al PROPIETARIO.
 - `PROGRAMADOR`: PROGRAMADOR-LINUX o CODEX, exactamente uno en el cuerpo de la issue; desarrollo solo autorizado.
 - `QA`: Codex (para PR PROGRAMADOR-LINUX) o ChatGPT conversacional independiente (en particular para PR Codex); dictamen antes de merge.
 
-`DEVOPS` y `COMERCIAL` no están activados permanentemente. El Arquitecto sí está activado como Codex por G-02.
+`DEVOPS` y `COMERCIAL` no están activados permanentemente. La asignación anterior de Codex como ARQUITECTO (G-02 del 18/10) queda `SUPERSEDED` por la decisión #37; Codex conserva PROGRAMADOR y QA independiente cuando corresponda. No se atribuyen retroactivamente dictámenes al nuevo Arquitecto.
 
 ## Cola operativa
 
@@ -35,7 +35,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 - [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): documentación integrada por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) el 23/10/2026; sin aprobación de baseline global.
 - **Primera issue de programación:** todavía no autorizada.
 - **Aislamiento del runner Linux:** criterio multiproyecto confirmado por PROPIETARIO en #28; formalización en [PR #36](https://github.com/mundoinformaticacanaria/whereis/pull/36), aún en borrador. No equivale a verificación del servidor.
-- **ARQUITECTO y heartbeat:** decisiones materiales de gobernanza pendientes del PROPIETARIO en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38).
+- **ARQUITECTO y heartbeat:** decisiones materiales del PROPIETARIO **CONFIRMADAS** en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38) el 25/10/2026. La enmienda #37 se formaliza en PR #43; la política #38 continúa en PR #44 pendiente de integración; rama `ops/logs` y heartbeat operativo aún no verificados.
 
 ## Configuración y decisiones PENDIENTES
 
@@ -53,4 +53,4 @@ No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## Próximo avance
 
-**FUNCIONAL:** corregir el HEAD de PR #25 para reflejar la opción B de D-09/SEG-02 ya aprobada por PROPIETARIO en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24). **PROPIETARIO:** decidir #37 (ejecutor formal ARQUITECTO) y #38 (heartbeat), y resolver los aspectos materiales de privacidad/seguridad aún pendientes de #24. **TECH LEAD:** revisar PR #25 cuando haya nuevo HEAD, mantener #28 y los gates operativos, coordinar revisión formal de propuestas arquitectónicas #34/#35 y PR #36 cuando deje de estar en borrador; sin asignar `PROGRAMADOR` ni activar el timer Linux mientras falten baselines, seguridad y gates.
+**FUNCIONAL:** corregir el HEAD de PR #25 para reflejar la opción B de D-09/SEG-02 ya aprobada por PROPIETARIO en [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24). **TECH LEAD:** integrar documentalmente las decisiones #37/#38 mediante PR #43/#44 tras QA, revisión y conciliación de sus cambios compartidos; coordinar la evaluación técnica de #41. **PROPIETARIO:** conserva las decisiones materiales de privacidad/seguridad pendientes de #24. **TECH LEAD:** revisar PR #25 cuando haya nuevo HEAD, mantener #28 y los gates operativos, coordinar revisión formal de propuestas arquitectónicas #34/#35 y PR #36 cuando deje de estar en borrador; sin asignar `PROGRAMADOR` ni activar el timer Linux mientras falten baselines, seguridad y gates.
