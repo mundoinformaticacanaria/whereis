@@ -1,11 +1,11 @@
 # ADR-PROP-41 — Viabilidad de WHEREIS sin nube, con datos locales y coste adicional 0 €
 
-- **Estado:** \`PROPUESTA / PENDIENTE DE DECISIÓN MATERIAL\`. **No** es baseline ni garantía de viabilidad.
+- **Estado:** `PROPUESTA / PENDIENTE DE DECISIÓN MATERIAL`. **No** es baseline ni garantía de viabilidad.
 - **Clasificación:** MATERIAL — arquitectura, seguridad, permisos Android, privacidad y servicios.
 - **Encargo:** [issue #41, handoff de TECH LEAD del 25/10/2026](https://github.com/mundoinformaticacanaria/whereis/issues/41#issuecomment-6396002383).
 - **Trazabilidad:** [#8 / PR #34](https://github.com/mundoinformaticacanaria/whereis/pull/34), [#22 / PR #35](https://github.com/mundoinformaticacanaria/whereis/pull/35), [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), [#19 (D-09)](https://github.com/mundoinformaticacanaria/whereis/issues/19), [#20 (D-10)](https://github.com/mundoinformaticacanaria/whereis/issues/20), [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28), [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37).
 - **Evidencia:** análisis documental de contratos de GitHub y fuentes Android/IETF/OSMF/AEPD citadas al final; **ningún experimento ejecutado**, sin mediciones reales de compatibilidad, coste ni latencia.
-- **Autoridad:** decisión del PROPIETARIO en #41 CONFIRMADA; estudio de ARQUITECTO. La enmienda G-02 sobre ejecutor ChatGPT está aprobada por PROPIETARIO en #37, pero su integración documental en \`main\` sigue pendiente en PR #43/QA. No confundir aprobación humana de la función con integración de gobernanza.
+- **Autoridad:** decisión del PROPIETARIO en #41 CONFIRMADA; estudio de ARQUITECTO. La enmienda G-02 sobre ejecutor ChatGPT está aprobada por PROPIETARIO en #37, pero su integración documental en `main` sigue pendiente en PR #43/QA. No confundir aprobación humana de la función con integración de gobernanza.
 
 ## 1. Contratos materiales CONFIRMADOS
 
@@ -53,15 +53,15 @@ La ausencia de servicios cloud **no prohíbe la red IP en sí**; cualquier alter
 
 ### 4.2. D-09: bandeja, caducidad y acuse
 
-- **Envío:** B crea solicitud local con \`requestId\` y hora de envío fijada de forma fiable; la regla de 24 h no se renueva en reintentos. Sin backend, los relojes pueden diferir: hora confiable/anti-retroceso y sincronización son PENDIENTES.
-- **Recepción:** sólo mostrar «recibida» cuando A ha guardado durablemente la solicitud en **su almacenamiento local** y devuelve un **acuse autenticado** ligado a \`requestId\`, identidades y revisión. Éxito de socket, notificación o devolución de API no equivale a acuse. **Si A está offline, ninguna «recibida» demostrable**. Si A apaga la app y Android no recibe/procesa, idem.
-- **Reintento de vinculación**: B puede reentregar una solicitud aún vigente cuando el canal sea accesible, conservando el mismo \`requestId\` y caducidad original. A deduplica; sin prueba de entrega, B indica «entrega no confirmada». No inventar posibilidad de distribución automática fiable a un A sin camino de red.
+- **Envío:** B crea solicitud local con `requestId` y hora de envío fijada de forma fiable; la regla de 24 h no se renueva en reintentos. Sin backend, los relojes pueden diferir: hora confiable/anti-retroceso y sincronización son PENDIENTES.
+- **Recepción:** sólo mostrar «recibida» cuando A ha guardado durablemente la solicitud en **su almacenamiento local** y devuelve un **acuse autenticado** ligado a `requestId`, identidades y revisión. Éxito de socket, notificación o devolución de API no equivale a acuse. **Si A está offline, ninguna «recibida» demostrable**. Si A apaga la app y Android no recibe/procesa, idem.
+- **Reintento de vinculación**: B puede reentregar una solicitud aún vigente cuando el canal sea accesible, conservando el mismo `requestId` y caducidad original. A deduplica; sin prueba de entrega, B indica «entrega no confirmada». No inventar posibilidad de distribución automática fiable a un A sin camino de red.
 - **Aceptar** añade B a conocidos en A pero deja permiso de ubicación inactivo hasta el interruptor expreso. Rechazo, bloqueo o expiración se aplican por revisión, de manera que respuestas tardías no crean relaciones ni autorizaciones.
 
 ### 4.3. D-12: ubicación puntual sin ejecución en reconexión
 
 - **Solicitud de posición ≠ solicitud de vinculación**. La consulta sólo existe como **intento manual acotado y en vivo** de B, sin cola persistente en transportes ni A para capturar al reconectar. B no mantiene operación pendiente tras timeout/fallo.
-- Un \`expiresAt\` o un push demorado **NO** bastan: si A estaba desconectado y reaparece antes de TTL, un mensaje retenido podría producir captura prohibida. **PROPUESTA condicional:** un enlace directo autenticado y aceptación por A durante la **sesión original y en la misma época de conectividad**; al perder conexión, cerrar operación e invalidar su identificador. En una nueva sesión, rechazar la solicitud anterior aun no expirada. Esto depende de que la plataforma pueda **observar inequívocamente la sesión**, no está demostrado en Android.
+- Un `expiresAt` o un push demorado **NO** bastan: si A estaba desconectado y reaparece antes de TTL, un mensaje retenido podría producir captura prohibida. **PROPUESTA condicional:** un enlace directo autenticado y aceptación por A durante la **sesión original y en la misma época de conectividad**; al perder conexión, cerrar operación e invalidar su identificador. En una nueva sesión, rechazar la solicitud anterior aun no expirada. Esto depende de que la plataforma pueda **observar inequívocamente la sesión**, no está demostrado en Android.
 - La captura debe ser nueva y legítima según permisos/ubicación del sistema, con timestamp del sensor (no del envío). A revalida autorización vigente al **liberar**; B acepta sólo respuesta de solicitud vigente, no reinterpretando caché como posición nueva.
 - **Si A no puede ejecutar por estar en segundo plano/force-stop**, fallar sin cola. Android API 26+, permisos de ubicación background API 29+ y foreground services API 31+/34+ restringen captura; recepción de un evento no equivale a permiso para ejecutar. Sin sistema push autorizado y sin socket mantenible, tampoco hay mecanismo universal para despertar A.
 - **Bloqueo/retención:** tras bloqueo el marcador anterior se oculta, conservando sólo cuando D-10 lo permite; tras eliminación local se borra dato/alias/estado de B y se impide resurrección por mensajes tardíos. Si A no puede recibir el aviso de eliminación, no se afirma revocación remota inmediata.
@@ -110,7 +110,7 @@ Separar expresamente **renderizador**, **datos** y **servicios**:
 | Geocodificación inversa | Opcional si es técnicamente viable con índice/datos geográficos locales y licencia; si no, mostrar sólo coordenadas/precisión según D-13 y elevar cambio MATERIAL si la UX aprobada se degrada | Dataset local de direcciones, almacenamiento, exactitud, cobertura, licencias; **NO** enviar coordenadas de menores a Nominatim público por defecto |
 | Geocodificación pública Nominatim | No autorizada por defecto, aunque parezca gratuita | Política pública de uso (máx. 1 req/s total de aplicación, identificación, caché, privacidad, cambio de proveedor), incompatibilidad con supuestos de uso masivo/offline |
 
-Un mapa puramente offline **es posible en principio** sin abono de proveedor si se obtiene y distribuye un dataset legalmente utilizable. **No hay demostración** de que los datos callejeros completos, direcciones precisas, actualizaciones y necesidades de almacenamiento de WHEREIS se satisfagan sin costes indirectos. No utilizar \`tile.openstreetmap.org\` como origen de precargas.
+Un mapa puramente offline **es posible en principio** sin abono de proveedor si se obtiene y distribuye un dataset legalmente utilizable. **No hay demostración** de que los datos callejeros completos, direcciones precisas, actualizaciones y necesidades de almacenamiento de WHEREIS se satisfagan sin costes indirectos. No utilizar `tile.openstreetmap.org` como origen de precargas.
 
 ## 7. Matriz de validación y pruebas negativas — TODAS PENDIENTES
 
@@ -153,4 +153,4 @@ Un mapa puramente offline **es posible en principio** sin abono de proveedor si 
 
 **ARQUITECTO:** entrega la matriz y riesgo demostrable de incompatibilidad. **TECH LEAD:** siguiente responsable de revisar esta PR sobre su head exacto, coordinar reconciliación de PR #34/#35 y elevar decisiones L-01/L-02 al PROPIETARIO. **PROPIETARIO:** único facultado para aceptar cambios de alcance, proveedores/servicios, privacidad o costes. **FUNCIONAL:** ajusta D-02/D-09/D-12/D-13 sólo tras decisión humana si se requieren cambios. **QA:** independiente del autor para entregas que lo requieran. **G-02/#37**: la enmienda documental está en PR #43 y no se presume integrada.
 
-No se elige tecnología/proveedor, ni se modifica \`docs/arquitectura.md\` como baseline. No se abre exposición de red, no se toca servidor/CRM, no se contrata nada, no se ejecuta producto ni se activa timer Linux.
+No se elige tecnología/proveedor, ni se modifica `docs/arquitectura.md` como baseline. No se abre exposición de red, no se toca servidor/CRM, no se contrata nada, no se ejecuta producto ni se activa timer Linux.
