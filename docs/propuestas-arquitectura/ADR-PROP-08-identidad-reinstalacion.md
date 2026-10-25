@@ -4,7 +4,7 @@
 - **Clasificación:** `MATERIAL` — seguridad, identidad, privacidad y persistencia.
 - **Issue:** [#8 — D-04](https://github.com/mundoinformaticacanaria/whereis/issues/8).
 - **Dependencias:** [#24 — SEG-01/02/03/04](https://github.com/mundoinformaticacanaria/whereis/issues/24), [#19 — D-09](https://github.com/mundoinformaticacanaria/whereis/issues/19), [#20 — D-10](https://github.com/mundoinformaticacanaria/whereis/issues/20), [#22 — D-12](https://github.com/mundoinformaticacanaria/whereis/issues/22).
-- **Alcance:** propuesta revisable; NO cambia `docs/arquitectura.md`, no elige proveedor, no aprueba baseline ni autoriza implementación.
+- **Alcance:** propuesta revisable; NO cambia `docs/arquitectura.md`, no elige proveedor, no aprueba baseline ni autoriza implementación. **Decisión posterior del PROPIETARIO en [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41#issuecomment-6395532943): datos de la app solo en teléfonos, sin backend/cloud/servicios contratados y coste añadido 0 €.** La viabilidad remota condicionada se estudia en [PR #45](https://github.com/mundoinformaticacanaria/whereis/pull/45). Lo que en esta ADR parezca requerir verificador externo debe leerse como alternativa NO AUTORIZADA, no como proveedor implícito.
 - **Autoridad y transición G-02:** [#37, decisión B CONFIRMADA el 25/10/2026](https://github.com/mundoinformaticacanaria/whereis/issues/37#issuecomment-6395244289) designa como nuevo ejecutor del rol `ARQUITECTO` a un chat independiente de ChatGPT. **La enmienda documental de G-02 aún no está integrada en `main`** y la issue #37 ya se ha devuelto a TECH LEAD para formalizarla. Este estudio sigue siendo PROPUESTA y no habilita integración o implementación.
 
 ## 1. Invariantes CONFIRMADOS (no son opciones de arquitectura)
@@ -30,10 +30,10 @@
 | Alternativa | Ventajas | Riesgo/limitación | Evaluación |
 |---|---|---|---|
 | ID + secreto bearer en preferencias/BD restaurables | Poco código inicial | Un backup/duplicado puede recrear identidad y permisos | **No recomendar** |
-| ID público aleatorio + clave no exportable por instalación; verificador de identidad y relación | Separa identificador visible de autenticación y autorización; evita recuperar permiso mediante copiar QR | Depende de gestión de claves, alcance del Keystore y verificación de estado entre dispositivos | **Preferida como PROPUESTA**, sujeta a validación |
+| ID público aleatorio + clave no exportable; **A como autoridad local** de sus relaciones A→B | Separa identificador visible de autenticación y autorización, evita reutilización de QR/backup y no requiere persistencia remota | Requiere canal directo disponible, emparejamiento confiable, seguridad Keystore y validación en A; sin garantias globales de disponibilidad | **Preferida como PROPUESTA condicional** dentro de #41, no solución completa de consulta remota |
 | Relación exclusivamente P2P sin punto de verificación disponible | Menos infraestructura central | Difícil acreditar permiso vigente, concurrencia, offline y dispositivos no visibles | No demuestra SEG-01/02/D-02 por sí sola |
 
-**Diseño candidato**, no selección tecnológica final: generación en cada instalación de un identificador público con entropía suficiente y una prueba de posesión no restaurable (p. ej. par asimétrico en Android Keystore). Una contraparte de confianza registra la clave pública de la instalación y comprueba un desafío fresco unido al contexto de cada petición; verifica por separado la autorización direccional. El diseño no obliga todavía a backend concreto, proveedor o cloud. Una mera firma sin control de permiso vigente **no** satisface SEG-01.
+**Diseño candidato**, no selección tecnológica final: generar en cada instalación ID público suficientemente aleatorio y prueba de posesión no restaurable (p. ej. par asimétrico en Android Keystore); intercambiar las claves públicas mediante un emparejamiento auténtico aún pendiente de validar. **La instalación A conserva localmente y actúa como autoridad de cada autorización direccional A→B**; recibe, autentica y comprueba una petición **cuando existe canal directo** y realiza el gate final antes de liberar la ubicación. No se asume backend, proveedor, cloud ni registro global. Cuando A está offline/no alcanzable, B no puede demostrar permiso actual y falla cerrado. No se promete entrega o revocación instantánea en B; una firma sola no resuelve SEG-01.
 
 ## 4. Fronteras y contratos propuestos
 
@@ -85,7 +85,18 @@ No se ha ejecutado código, test Android, `adb` ni una auditoría de dispositivo
 - **ARQUITECTO (chat ChatGPT independiente designado en #37 B):** completar revisión adversarial del ADR con [#22](https://github.com/mundoinformaticacanaria/whereis/issues/22), sin autoaprobarla ni actuar como QA/TECH LEAD. El handoff formal e integración por TECH LEAD dependen de regularizar G-02 en `main` y de revisar la propuesta sobre su HEAD. Esta PR **no marca** seguridad resuelta.
 - **Gobernanza [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37):** la opción **B está CONFIRMADA** por PROPIETARIO: chat ChatGPT independiente sustituirá a Codex como ejecutor del rol ARQUITECTO. #37 tiene ahora label `TECH LEAD` para registrar en rama/PR e integrar esa enmienda en G-02. El texto actual de `main` todavía identifica a Codex hasta que se complete ese paso. [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28) permanece bajo TECH LEAD para gates. Mantener esta PR en borrador.
 
-## 8. Fuentes de viabilidad externas (no sustituyen GitHub)
+## 8. Conciliación material posterior: local-only / 0 € (#41)
+
+**CONFIRMADO** por PROPIETARIO el 25/10/2026 en [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41#issuecomment-6395532943): todas las ubicaciones y autorizaciones persistentes solo en instalaciones; no nube, backend ni servicio de intermediación contratado o implícitamente autorizado, aunque gratuito; coste adicional 0 €. **PR #45** aporta estudio exhaustivo y opciones para decisión humana.
+
+- El concepto anterior de `AuthorizationAuthority` es **un contrato lógico que vive en el teléfono A**, no un servidor de autorizaciones. A valida relación en vivo, serializa revocaciones locales y libera únicamente si aún está autorizada; B conserva solo la última posición legítima. Un relay/verificador central que guarde permisos queda **NO AUTORIZADO**. El punto de liberación está definido conceptualmente, **no probado** como garantía de transporte en redes externas.
+- La ausencia de servidor no permite conocer el estado vivo de A si no hay conexión directa. La desinstalación de A desde B no se detecta al instante; el teléfono B puede mostrar la última posición legítima anterior en los casos aprobados. El reloj/sincronización de versiones y prevención de respuestas tardías sin reloj central siguen sujetos a diseño y prueba.
+- No existe **directorio global autorizado** para resolver ID manual → dirección pública: el emparejamiento, autenticidad de QR/ID y la no enumeración (SEG-02 opción B) pueden exigir un cambio material de flujo si se pretende local-only estricto. No inferir que una clave pública en un QR garantiza disponibilidad remota o que el endpoint existe.
+- La capa de respaldo Android es asunto local: exclusiones cloud/D2D para datos WHEREIS siguen exigidas por D-04 incluso si el producto prohíbe almacenamiento cloud propio. No confundir backup del sistema Android con autorización de copia.
+- `SEG-03/04` y usos domésticos de menores continúan sin dictamen jurídico. No dar por legítima retención ilimitada ni suprimir requisitos de control parental por diseño.
+- **Decisión material pendiente en PROPIETARIO, vía TECH LEAD:** mantener UX remota general de D-02/D-12 (requeriría autorizar estudio de infraestructura/canal, sin selección implícita) o aceptar funcionamiento condicionado a alcance/conectividad directa. PR #45 no implementa ninguno.
+
+## 9. Fuentes de viabilidad externas (no sustituyen GitHub)
 
 - [Android Backup](https://developer.android.com/identity/data/backup)
 - [Auto Backup y exclusiones](https://developer.android.com/identity/data/autobackup)
