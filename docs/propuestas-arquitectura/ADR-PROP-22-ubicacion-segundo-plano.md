@@ -5,7 +5,7 @@
 - **Issue:** [#22 — D-12](https://github.com/mundoinformaticacanaria/whereis/issues/22).
 - **Contrato relacionado:** [#2 — D-02](https://github.com/mundoinformaticacanaria/whereis/issues/2), [#8 — D-04](https://github.com/mundoinformaticacanaria/whereis/issues/8), [#19 — D-09](https://github.com/mundoinformaticacanaria/whereis/issues/19), [#20 — D-10](https://github.com/mundoinformaticacanaria/whereis/issues/20), [#24 — SEG-01/02/03/05/06/07](https://github.com/mundoinformaticacanaria/whereis/issues/24) y PR #25.
 - **Alcance:** estudio y alternativas; **no** selecciona proveedor, SDK, backend, push, mapas, infraestructura o versiones Android objetivo; no hay pruebas de dispositivo ni implementación.
-- **Autoridad:** estudio puntual solicitado por PROPIETARIO en conversación. Conforme G-02 de `main`, ARQUITECTO formal = Codex; se requiere revisión/handoff formal antes de considerar completada la issue por ese rol.
+- **Autoridad / transición:** [#37, opción B CONFIRMADA el 25/10/2026](https://github.com/mundoinformaticacanaria/whereis/issues/37#issuecomment-6395244289) asigna el rol `ARQUITECTO` al chat independiente de ChatGPT. G-02 en `main` **todavía** designa a Codex hasta que TECH LEAD formalice e integre la enmienda. La propuesta requiere revisión de contenido y handoff verificables, sin autoaprobación.
 
 ## 1. Comportamiento CONFIRMADO que se debe preservar
 
@@ -111,7 +111,7 @@ Medir `targetSdk`, permisos efectivos, error Android real, estado de proceso, é
 - **TECH LEAD — [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), label `TECH LEAD`:** coordinar SEG-01/02/05–07 y evidencias de canal/acuse; la **opción B D-09/SEG-02 está CONFIRMADA** por PROPIETARIO, por lo que se diseña no divulgación de existencia sin declarar SEG-02 cerrado. Elevar incompatibilidad del protocolo con prohibición de ejecución tras reconexión si no puede probarse.
 - **PROPIETARIO — [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41), label `PROPIETARIO`:** validación jurídica de menores, retención/borrado y terceros; [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) decide ejecutor formal de ARQUITECTO. Proveedor, gasto, permisos/UX materiales siguen sujetos a autorización expresa.
 - **FUNCIONAL — PR #25 devuelta para conciliación:** mantener semántica de fallos/reintentos/avisos confirmada; abrir decisión MATERIAL adicional si restricciones reales hacen imposible algún flujo.
-- **ARQUITECTO formal (Codex)**: validar hipótesis Android/seguridad, la época de conectividad real de A, gate compartido con [ADR-PROP-08](https://github.com/mundoinformaticacanaria/whereis/issues/8) y límites de respuesta después de revocar. Solo entonces devolver a TECH LEAD. **Pendiente decisión de gobernanza #37; esta PR no es cierre formal ni handoff.**
+- **ARQUITECTO (chat ChatGPT independiente designado por #37 B)**: revisar hipótesis Android/seguridad, viabilidad de epoch en A, gate con [ADR-PROP-08](https://github.com/mundoinformaticacanaria/whereis/issues/8) y límites de respuesta tras revocar, sin autoaprobar ni ejercer QA/TECH LEAD. **La enmienda documental de G-02 aún debe integrarla TECH LEAD; esta PR no es cierre formal ni handoff.**
 - **Prototipo Android**: requiere autorización y issue distinta de esta ADR. No toca código, servidores, tokens, proveedores ni timers.
 
 ## 8. Fuentes técnicas externas
