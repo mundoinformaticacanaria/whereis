@@ -65,7 +65,7 @@ No resolver contradicciones por intuición.
 
 `DEVOPS` y `COMERCIAL` quedan como especialidades no activas por defecto; su intervención requiere autorización.
 
-**Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
+**Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** Si hay dos o más labels de rol, es un error de enrutamiento: solo TECH LEAD puede inspeccionar/abordar la issue para retirar labels sobrantes y asignar un único responsable; ningún otro rol ejecuta trabajo sustantivo hasta corregirlo (decisión #38). `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
 
 Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
@@ -172,7 +172,7 @@ Política: `docs/logs/README.md`.
 
 Los logs son heartbeat e histórico auxiliar, nunca fuente de verdad.
 
-Cada rol con heartbeat **operativamente definido** cumple su política de inicio y fin de ciclo. En Whereis, la zona horaria, rama y ficheros de heartbeat están `PENDIENTE`; no fabricar registros ni dar por activada una configuración no aprobada.
+Decisión material del PROPIETARIO [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38#issuecomment-6395402627): referencia UTC con hora Atlantic/Canary adicional entre corchetes, precisión de segundos; intervenciones por issue con ID único, INICIO/FIN emparejados, ventana de 30 minutos y 100 entradas recientes por log de rol en rama `ops/logs`. Los fallos de GitHub/logs no detienen ni modifican la automatización horaria TECH LEAD; las mutaciones inseguras se suspenden si faltan precondiciones verificables. **Rama `ops/logs` y ficheros de roles activos creados y leídos** (evidencia en #38); la política aún no está integrada en `main` y siguen pendientes validación integral, concurrencia real y QA independiente. No fabricar registros. Los timers Linux siguen desactivados salvo autorización independiente.
 
 ## Regla final
 
