@@ -5,7 +5,7 @@
 - **Issue:** [#8 — D-04](https://github.com/mundoinformaticacanaria/whereis/issues/8).
 - **Dependencias:** [#24 — SEG-01/02/03/04](https://github.com/mundoinformaticacanaria/whereis/issues/24), [#19 — D-09](https://github.com/mundoinformaticacanaria/whereis/issues/19), [#20 — D-10](https://github.com/mundoinformaticacanaria/whereis/issues/20), [#22 — D-12](https://github.com/mundoinformaticacanaria/whereis/issues/22).
 - **Alcance:** propuesta revisable; NO cambia `docs/arquitectura.md`, no elige proveedor, no aprueba baseline ni autoriza implementación.
-- **Autoridad:** estudio puntual solicitado por el PROPIETARIO en conversación. Según G-02 en `main`, el ejecutor formal de `ARQUITECTO` continúa siendo Codex: requiere su validación/handoff para tratarlo como entrega formal del rol.
+- **Autoridad y transición G-02:** [#37, decisión B CONFIRMADA el 25/10/2026](https://github.com/mundoinformaticacanaria/whereis/issues/37#issuecomment-6395244289) designa como nuevo ejecutor del rol `ARQUITECTO` a un chat independiente de ChatGPT. **La enmienda documental de G-02 aún no está integrada en `main`** y la issue #37 ya se ha devuelto a TECH LEAD para formalizarla. Este estudio sigue siendo PROPUESTA y no habilita integración o implementación.
 
 ## 1. Invariantes CONFIRMADOS (no son opciones de arquitectura)
 
@@ -82,8 +82,8 @@ No se ha ejecutado código, test Android, `adb` ni una auditoría de dispositivo
 - **PROPIETARIO — [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41), label `PROPIETARIO`:** decisiones jurídicas de menores, conservación/borrado, base de legitimación, tratamiento por terceros y costes cuando corresponda. [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) mantiene pendiente la decisión expresa del ejecutor formal de ARQUITECTO.
 - **FUNCIONAL/TECH LEAD:** si se pretende definir el caso de clave perdida sin desinstalación o modificar experiencia confirmada, registrar nueva decisión material; revisar integración D-09/PR #25.
 - **TECH LEAD:** validar disponibilidad y modelo de verificador, versiones Android objetivo, superficie de datos, presupuesto, métricas y plan de ensayos; no asignar PROGRAMADOR con #28 abierto.
-- **ARQUITECTO formal (Codex):** revisión técnica adversarial del ADR y coordinación con [#22](https://github.com/mundoinformaticacanaria/whereis/issues/22); una vez revisable, devolver a TECH LEAD conforme G-02. Esta PR **no realiza** ese handoff ni marca seguridad resuelta.
-- **Gobernanza [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37):** issue separada con label `PROPIETARIO` para decisión expresa sobre el ejecutor ARQUITECTO. Hasta entonces sigue vigente Codex; [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28) permanece bajo TECH LEAD para gates. Mantener esta PR en borrador.
+- **ARQUITECTO (chat ChatGPT independiente designado en #37 B):** completar revisión adversarial del ADR con [#22](https://github.com/mundoinformaticacanaria/whereis/issues/22), sin autoaprobarla ni actuar como QA/TECH LEAD. El handoff formal e integración por TECH LEAD dependen de regularizar G-02 en `main` y de revisar la propuesta sobre su HEAD. Esta PR **no marca** seguridad resuelta.
+- **Gobernanza [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37):** la opción **B está CONFIRMADA** por PROPIETARIO: chat ChatGPT independiente sustituirá a Codex como ejecutor del rol ARQUITECTO. #37 tiene ahora label `TECH LEAD` para registrar en rama/PR e integrar esa enmienda en G-02. El texto actual de `main` todavía identifica a Codex hasta que se complete ese paso. [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28) permanece bajo TECH LEAD para gates. Mantener esta PR en borrador.
 
 ## 8. Fuentes de viabilidad externas (no sustituyen GitHub)
 
