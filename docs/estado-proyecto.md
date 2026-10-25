@@ -6,7 +6,7 @@
 
 ## Estado resumido
 
-Proyecto Android en fase de definición y bootstrap. **G-01 V3** confirmó cinco roles iniciales. La [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md), enmendada materialmente el 18/10/2026 en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28), activa además `ARQUITECTO` (chat ChatGPT dedicado e independiente, enmienda material aprobada por PROPIETARIO en #37 el 25/10/2026, pendiente de integración documental en PR #43) y las identidades lógicas de PROGRAMADOR `PROGRAMADOR-LINUX` y `CODEX`; `QWEN-LINUX` queda **SUPERSEDED** como identidad operativa. Roles vigentes: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`. Véanse [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [decisión G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md).
+Proyecto Android en fase de definición y bootstrap. **G-01 V3** confirmó cinco roles iniciales. La [G-02](decisiones/G-02-orquestacion-qwen-codex-chatgpt.md), enmendada materialmente el 18/10/2026 en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28), activa además `ARQUITECTO` (chat ChatGPT dedicado e independiente, enmienda material aprobada por PROPIETARIO en #37 el 25/10/2026 y formalizada en PR #43) y las identidades lógicas de PROGRAMADOR `PROGRAMADOR-LINUX` y `CODEX`; `QWEN-LINUX` queda **SUPERSEDED** como identidad operativa. Roles vigentes: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR`, `QA`. Véanse [issue #4](https://github.com/mundoinformaticacanaria/whereis/issues/4) y [decisión G-01](decisiones/G-01-gobernanza-minima-cinco-roles.md).
 
 La aprobación de gobernanza **no autoriza desarrollo del producto**, contratación ni infraestructura. `PROGRAMADOR-LINUX` usa un modelo configurable separado de su identidad. A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es solo **CANDIDATO ACTUAL VALIDADO EN ENTORNO AISLADO** (14/16), sin autorización de desarrollo real ni timer. Cuentas GitHub, acceso real de PROGRAMADOR-LINUX/CODEX, capacidades, QA efectivo y permisos continúan `PENDIENTE` de verificación.
 
@@ -26,7 +26,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 - `PROGRAMADOR`: PROGRAMADOR-LINUX o CODEX, exactamente uno en el cuerpo de la issue; desarrollo solo autorizado.
 - `QA`: Codex (para PR PROGRAMADOR-LINUX) o ChatGPT conversacional independiente (en particular para PR Codex); dictamen antes de merge.
 
-`DEVOPS` y `COMERCIAL` no están activados permanentemente. La G-02 canónica en `main` aún identifica a Codex como ARQUITECTO hasta integrar PR #43; la decisión material posterior del PROPIETARIO en #37 asigna el rol a un chat ChatGPT dedicado. Codex conserva PROGRAMADOR y QA independiente cuando corresponda; no se atribuyen retroactivamente dictámenes del nuevo Arquitecto.
+`DEVOPS` y `COMERCIAL` no están activados permanentemente. La asignación anterior de Codex como ARQUITECTO (G-02 del 18/10) queda `SUPERSEDED` por la decisión #37; Codex conserva PROGRAMADOR y QA independiente cuando corresponda. No se atribuyen retroactivamente dictámenes al nuevo Arquitecto.
 
 ## Cola operativa
 
@@ -35,7 +35,7 @@ La aprobación de gobernanza **no autoriza desarrollo del producto**, contrataci
 - [Issues #1/#2 — D-01/D-02](https://github.com/mundoinformaticacanaria/whereis/issues/1): documentación integrada por [PR #3](https://github.com/mundoinformaticacanaria/whereis/pull/3) el 23/10/2026; sin aprobación de baseline global.
 - **Primera issue de programación:** todavía no autorizada.
 - **Aislamiento del runner Linux:** criterio multiproyecto confirmado por PROPIETARIO en #28; formalización en [PR #36](https://github.com/mundoinformaticacanaria/whereis/pull/36), aún en borrador. No equivale a verificación del servidor.
-- **ARQUITECTO y heartbeat:** decisiones materiales del PROPIETARIO **CONFIRMADAS** en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38) el 25/10/2026. Enmiendas documentales pendientes de integración en PR #43 y #44, respectivamente; rama `ops/logs` y heartbeat operativo aún no verificados.
+- **ARQUITECTO y heartbeat:** decisiones materiales del PROPIETARIO **CONFIRMADAS** en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38) el 25/10/2026. La enmienda #37 se formaliza en PR #43; la política #38 continúa en PR #44 pendiente de integración; rama `ops/logs` y heartbeat operativo aún no verificados.
 
 ## Configuración y decisiones PENDIENTES
 
