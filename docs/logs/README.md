@@ -7,7 +7,7 @@
 - Heartbeat = **observabilidad y coordinación por issue**, no autorización de trabajo ni exclusión mutua atómica.
 - Rama separada: `ops/logs`; fichero por rol/ejecutor realmente activo: `docs/logs/<rol>.log` (por ejemplo `docs/logs/tech-lead.log`). No crear índice global adicional por issue.
 - Cada intervención **sobre una issue** registra `INICIO` y `FIN` asociados al mismo ID único de intervención, con número de issue, rol y resultado breve. Conservar **100 entradas más recientes por fichero**; no fabricar entradas, reescribir historia ni registrar secretos/datos personales.
-- La configuración, permisos, existencia y funcionamiento de `ops/logs` siguen **PENDIENTES de verificación**. TECH LEAD coordina la preparación y validación sin escribir documentos canónicos directamente en `main`.
+- **Existencia verificada en GitHub:** rama `ops/logs` y ficheros `docs/logs/tech-lead.log`, `qa.log`, `funcional.log` y `arquitecto.log` creados y leídos, según evidencias de #38. **PENDIENTES:** permisos/segregación operativa, concurrencia real, retención, validación integral e integración de esta política en `main`. TECH LEAD coordina sin escribir documentos canónicos directamente en `main`.
 
 ## Formato normativo
 
