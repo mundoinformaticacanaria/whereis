@@ -122,12 +122,12 @@ Medir `targetSdk`, permisos efectivos, error Android real, estado de proceso, é
 
 - **TECH LEAD**: decidir matriz API/target a validar, presupuesto de complejidad, máximo tiempo de espera y frescura, revisar opciones de transporte y necesidad mínima de componente verificador. No asignar desarrollo hasta #28.
 - **TECH LEAD — [#24](https://github.com/mundoinformaticacanaria/whereis/issues/24), label `TECH LEAD`:** coordinar SEG-01/02/05–07 y evidencias de canal/acuse; la **opción B D-09/SEG-02 está CONFIRMADA** por PROPIETARIO, por lo que se diseña no divulgación de existencia sin declarar SEG-02 cerrado. Elevar incompatibilidad del protocolo con prohibición de ejecución tras reconexión si no puede probarse.
-- **PROPIETARIO — [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41), label `PROPIETARIO`:** validación jurídica de menores, retención/borrado y terceros; [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) decide ejecutor formal de ARQUITECTO. Proveedor, gasto, permisos/UX materiales siguen sujetos a autorización expresa.
+- **PROPIETARIO — [#41](https://github.com/mundoinformaticacanaria/whereis/issues/41), label `PROPIETARIO`:** validación jurídica de menores, retención/borrado y terceros; [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37) tiene opción B CONFIRMADA; PR #43 está pendiente de QA. Proveedor, gasto, permisos/UX materiales siguen sujetos a autorización expresa.
 - **FUNCIONAL — PR #25 devuelta para conciliación:** mantener semántica de fallos/reintentos/avisos confirmada; abrir decisión MATERIAL adicional si restricciones reales hacen imposible algún flujo.
 - **ARQUITECTO (chat ChatGPT independiente designado por #37 B)**: revisar hipótesis Android/seguridad, viabilidad de epoch en A, gate con [ADR-PROP-08](https://github.com/mundoinformaticacanaria/whereis/issues/8) y límites de respuesta tras revocar, sin autoaprobar ni ejercer QA/TECH LEAD. **La enmienda documental de G-02 aún debe integrarla TECH LEAD; esta PR no es cierre formal ni handoff.**
 - **Prototipo Android**: requiere autorización y issue distinta de esta ADR. No toca código, servidores, tokens, proveedores ni timers.
 
-## 8. Fuentes técnicas externas
+## 9. Fuentes técnicas externas
 
 - [Android Background location limits](https://developer.android.com/develop/sensors-and-location/location/background)
 - [Android Background location permissions](https://developer.android.com/develop/sensors-and-location/location/permissions/background)
