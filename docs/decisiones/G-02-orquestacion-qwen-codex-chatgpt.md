@@ -1,10 +1,10 @@
 # G-02 — Orquestación de PROGRAMADOR-LINUX, Codex y ChatGPT
 
 - **Fecha original:** 17/10/2026.
-- **Enmienda material vigente:** 18/10/2026, decisión expresa del PROPIETARIO registrada en [issue #28](https://github.com/mundoinformaticacanaria/whereis/issues/28).
+- **Enmiendas materiales:** 18/10/2026, identidad Linux en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28); 25/10/2026, ejecutor formal ARQUITECTO aprobado en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37#issuecomment-6395244289).
 - **Estado:** `CONFIRMADO` para distribución de funciones, identidades lógicas y política de labels; integraciones técnicas, permisos, baselines y gates concretos siguen `PENDIENTE`.
 - **Tipo:** `MATERIAL` — gobernanza y asignación de ejecutores.
-- **Relación con G-01 V3:** G-02 mantiene `ARQUITECTO` activo (Codex), conserva PROPIETARIO, FUNCIONAL, TECH LEAD, PROGRAMADOR y QA, autoridad humana y QA independiente. G-01 conserva su historia; para composición vigente prevalece G-02.
+- **Relación con G-01 V3:** G-02 mantiene `ARQUITECTO` activo (chat ChatGPT independiente desde #37), conserva PROPIETARIO, FUNCIONAL, TECH LEAD, PROGRAMADOR y QA, autoridad humana y QA independiente. G-01 conserva su historia; para composición vigente prevalece G-02.
 
 ## Trazabilidad histórica de la enmienda
 
@@ -19,11 +19,19 @@ Desde el 18/10/2026, **`QWEN-LINUX` queda SUPERSEDED como identidad operativa vi
 | `PROPIETARIO` | Humano propietario | Aprueba decisiones materiales reservadas |
 | `FUNCIONAL` | Chat conversacional ChatGPT | Requisitos; no aprueba por sí mismo ni programa |
 | `TECH LEAD` **o ninguna label de rol** | ChatGPT conversacional del Tech Lead activo | Triage, reparto, revisión, merge |
-| `ARQUITECTO` | Codex | Diseño/viabilidad técnica; no autoriza gastos ni cambios funcionales |
+| `ARQUITECTO` | Chat ChatGPT dedicado, independiente de TECH LEAD y QA | Diseño/viabilidad técnica y handoff documentado; sin merge ni aprobación humana |
 | `PROGRAMADOR` | Ejecutores `PROGRAMADOR-LINUX` o `CODEX` | Solo issue asignada, rama/PR; sin merge |
 | `QA` | Codex independiente o ChatGPT conversacional independiente | Revisión independiente del autor; sin merge |
 
 `DEVOPS` y `COMERCIAL` no se activan permanentemente sin nueva decisión.
+
+### Enmienda #37 — segregación del ARQUITECTO
+
+El PROPIETARIO confirmó el 25/10/2026 la opción B en [#37](https://github.com/mundoinformaticacanaria/whereis/issues/37#issuecomment-6395244289): el titular formal de `ARQUITECTO` pasa a ser un **chat de ChatGPT dedicado e independiente**, sustituyendo a Codex en esa función, **sin crear un rol nuevo ni doble titularidad**. La decisión se formaliza en esta enmienda documental y solo es canónica tras integrar su PR en `main`.
+
+El chat ARQUITECTO debe leer `main`, `AGENTS.md`, `docs/contexto-arquitecto.md`, la issue con todos sus comentarios y el playbook; atender únicamente issues con label `ARQUITECTO`; documentar alternativas, riesgos, evidencias, decisiones PENDIENTES y handoff en GitHub. Entrega a TECH LEAD para coordinación/revisión o eleva a PROPIETARIO lo reservado a autoridad humana. **No** actúa simultáneamente como TECH LEAD, no es QA de su propio trabajo, no hace merge ni aprueba baselines por sí mismo. Codex conserva `CODEX` PROGRAMADOR y QA independiente cuando se cumplan los gates y segregación real. Ninguna propuesta o revisión anterior se atribuye retroactivamente al nuevo titular.
+
+Las propuestas DRAFT [PR #34](https://github.com/mundoinformaticacanaria/whereis/pull/34) y [PR #35](https://github.com/mundoinformaticacanaria/whereis/pull/35) requieren evaluación arquitectónica formal acreditada por el nuevo ejecutor y revisión posterior de TECH LEAD sobre HEAD exacto; no son baselines. Esta enmienda no autoriza PROGRAMADOR, infraestructura, gasto, proveedor, servidor, CRM ni timers.
 
 ## Labels y asignación
 
@@ -104,6 +112,7 @@ La primera ejecución sobre una issue real, únicamente cuando los bloqueos gene
 
 - [Issue #26](https://github.com/mundoinformaticacanaria/whereis/issues/26) y [PR #27](https://github.com/mundoinformaticacanaria/whereis/pull/27): G-02 original.
 - [Issue #28](https://github.com/mundoinformaticacanaria/whereis/issues/28): enmienda model-neutral y bloqueos operativos vivos.
+- [Issue #37](https://github.com/mundoinformaticacanaria/whereis/issues/37): decisión expresa sobre ejecutor formal ARQUITECTO.
 - [PR #29](https://github.com/mundoinformaticacanaria/whereis/pull/29): evidencias sintéticas de modelos; no autoriza desarrollo.
 - [G-01 V3](G-01-gobernanza-minima-cinco-roles.md)
 - [Playbook](../orquestacion/README.md)
