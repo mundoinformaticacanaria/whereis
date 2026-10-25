@@ -45,6 +45,8 @@ Las labels de rol son `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PR
 - **La automatización horaria TECH LEAD de ChatGPT nunca se desactiva, pausa, elimina ni reprograma por fallos de GitHub, logs, ausencia de tareas o bloqueos.** Solo una petición nueva y directa del PROPIETARIO puede autorizar cambiarla.
 - Esta automatización de ChatGPT **no es** el timer Linux de PROGRAMADOR: los timers Linux siguen desactivados hasta autorización independiente. Ninguna regla de heartbeat autoriza PROGRAMADOR, código real, servidores, CRM, gasto, proveedores ni baseline.
 
-## Validación pendiente (no ejecutada)
+## Validación parcial y pruebas pendientes
 
-Casos exigidos antes de declarar operatividad: UTC y Atlantic/Canary en invierno/verano (incluido cambio DST); FIN inmediato; INICIO abierto a **29:59** (bloquea) y **30:00** (permite retomar); FIN tardío asociado solo a su ID; dos labels de rol; dos instancias del mismo rol sobre una issue; escrituras concurrentes, conflictos de SHA y fallo de API. Registrar resultados reales y evidencias sanitizadas en #38/#28; no atribuir pruebas no ejecutadas.
+**Ejecutado y documentado en #38 (25/10/2026):** conversión UTC/Atlantic/Canary en los cambios de hora de marzo y octubre de 2026; umbral sintético **29:59** bloquea y **30:00** permite reanudar; GitHub rechazó escritura con blob SHA obsoleto (HTTP 409), sin sobrescribir entradas. La existencia de `ops/logs` y de cuatro ficheros de roles activos se comprobó mediante lectura GitHub. Estas evidencias **no demuestran** coordinación concurrente real.
+
+**Pendiente antes de declarar operatividad:** FIN inmediato y FIN tardío asociados a su intervención; dos labels de rol; dos instancias reales del mismo rol en una issue; escrituras simultáneas con conciliación, retención de 100 entradas, fallo de API/permisos y QA independiente del HEAD. **Incidencia histórica observada:** algunas entradas FIN de 25/10/2026 muestran formato Canary malformado (`+NaN:00`); conservarlas como evidencia, no corregirlas retroactivamente y validar formato en las siguientes escrituras. Registrar resultados sanitizados en #38/#28, sin atribuir pruebas no ejecutadas.
