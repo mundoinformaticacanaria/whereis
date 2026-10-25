@@ -5,12 +5,19 @@ import re
 import subprocess
 import sys
 
-TEXT_SUFFIXES = {'.md', '.txt', '.yaml', '.yml', '.json', '.sh', '.py', '.xml', '.kt', '.gradle', '.properties'}
+TEXT_SUFFIXES = {'.md', '.txt', '.yaml', '.yml', '.json', '.sh', '.py', '.xml', '.kt', '.gradle', '.properties', '.toml', '.ini', '.cfg', '.kts'}
 SUSPECT_SECRETS = re.compile(rb'(?:-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----|github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35})')
 
 
 def git(*args):
     return subprocess.run(['git', *args], capture_output=True, check=True).stdout
+
+
+def is_text_path(path):
+    name = path.name.lower()
+    return (path.suffix.lower() in TEXT_SUFFIXES
+            or name == '.env' or name.startswith('.env.')
+            or name in {'.gitignore', '.gitattributes', '.editorconfig', 'dockerfile', 'makefile'})
 
 
 def main():
@@ -30,13 +37,13 @@ def main():
     inspected = 0
     for raw in filter(None, changed):
         path = pathlib.Path(raw.decode('utf-8', errors='surrogateescape'))
-        if path.suffix.lower() not in TEXT_SUFFIXES:
+        if not is_text_path(path):
             continue
         inspected += 1
         try:
-            content = path.read_bytes()
+            content = git('show', f'HEAD:{path.as_posix()}')
             decoded = content.decode('utf-8')
-        except (OSError, UnicodeError):
+        except (subprocess.CalledProcessError, OSError, UnicodeError):
             print('FAIL: changed text file unreadable or not UTF-8 (path suppressed).', file=sys.stderr)
             failures += 1
             continue
