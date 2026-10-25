@@ -10,7 +10,7 @@
 | `TECH LEAD` | TECH LEAD explícito |
 | `PROPIETARIO` | Persona propietaria; decisión o autorización |
 | `FUNCIONAL` | ChatGPT Funcional |
-| `ARQUITECTO` | Codex Arquitecto |
+| `ARQUITECTO` | Chat ChatGPT dedicado e independiente de TECH LEAD/QA (enmienda G-02 #37) |
 | `PROGRAMADOR` | Ejecutor único del cuerpo de issue: `PROGRAMADOR-LINUX` o `CODEX` |
 | `QA` | Codex QA o ChatGPT QA independiente del autor |
 
@@ -21,6 +21,10 @@ Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-L
 `PROGRAMADOR-LINUX` es la identidad lógica estable del ejecutor Linux. El modelo/proveedor se selecciona por configuración y puede cambiar por disponibilidad, coste o calidad sin crear otra identidad ni modificar la label `PROGRAMADOR`, la rama de una tarea en curso o los gates. `QWEN-LINUX` está **SUPERSEDED** como identidad operativa; se conserva solo por trazabilidad histórica.
 
 A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es únicamente **CANDIDATO ACTUAL VALIDADO EN ENTORNO AISLADO** (14/16). No autoriza desarrollo real, ejecución desatendida ni timer. Véase [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28).
+
+## Handoff arquitectónico
+
+`ARQUITECTO` corresponde a un chat ChatGPT dedicado e independiente, no a TECH LEAD ni a QA del mismo trabajo. Lee `main`, contexto, issue y comentarios; publica en GitHub propuesta, evidencias y pendientes. Eleva decisiones materiales reservadas a `PROPIETARIO`; devuelve a TECH LEAD para revisión/integración retirando la label `ARQUITECTO` o cambiándola a `TECH LEAD` cuando el entregable sea revisable. Las PR #34/#35 son DRAFT y no tienen dictamen formal acreditado por el nuevo ejecutor. Sin baseline ni desarrollo por la enmienda #37.
 
 ## Handoff de implementación
 
@@ -43,7 +47,7 @@ A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es únicamente **CANDIDAT
 
 - [PROGRAMADOR-LINUX](programador-linux.md): ejecutor Linux model-neutral, requisitos de acceso y prompt reproducible.
 - [QWEN-LINUX — SUPERSEDED](qwen-linux.md): referencia histórica; no usar como identidad en nuevas issues.
-- [Codex](codex.md): instrucciones del Arquitecto y del Programador.
-- [ChatGPT conversacional](chatgpt-roles.md): Funcional, Tech Lead y QA.
+- [Codex](codex.md): instrucciones del Programador CODEX y QA independiente, no titular de ARQUITECTO desde la enmienda #37.
+- [ChatGPT conversacional](chatgpt-roles.md): Funcional, Tech Lead, Arquitecto independiente y QA.
 - [Plantilla de issue](../../.github/ISSUE_TEMPLATE/tarea-ejecutable.md): campos obligatorios para el enrutamiento.
 - No hay integración automática de mensajes con PROGRAMADOR-LINUX ni Codex confirmada. El disparador de ejecución es una issue efectivamente asignada, no una etiqueta o mención en un chat.
