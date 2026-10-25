@@ -14,7 +14,11 @@
 | `PROGRAMADOR` | Ejecutor único del cuerpo de issue: `PROGRAMADOR-LINUX` o `CODEX` |
 | `QA` | Codex QA o ChatGPT QA independiente del autor |
 
-Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-LINUX`, `QWEN`, `CODEX`, `PENDIENTE`, etc. Para los cambios de responsable: quitar la label anterior y añadir la nueva; para devolver al TECH LEAD basta quitar todas las labels de rol. La label `TECH LEAD` ya existente equivale a sin label. No asumir que las labels están todas creadas: comprobar la configuración real antes de depender de ella.
+Si una issue presenta **dos o más labels de rol**, solo TECH LEAD puede inspeccionarla/abordarla para resolver el error de enrutamiento; ningún otro rol ejecuta trabajo sustantivo hasta dejar una sola label (decisión #38). Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-LINUX`, `QWEN`, `CODEX`, `PENDIENTE`, etc. Para los cambios de responsable: quitar la label anterior y añadir la nueva; para devolver al TECH LEAD basta quitar todas las labels de rol. La label `TECH LEAD` ya existente equivale a sin label. No asumir que las labels están todas creadas: comprobar la configuración real antes de depender de ella.
+
+## Heartbeat y coordinación (#38)
+
+Antes de abordar una issue, el rol consulta **su propio** log en `ops/logs` para esa issue, verifica el ID de intervención y la ventana desde INICIO: <30 minutos sin FIN bloquea, ≥30 minutos permite nueva intervención sin cierre retroactivo; FIN emparejado permite otra inmediatamente. UTC + hora Atlantic/Canary entre corchetes, segundos y 100 entradas recientes por rol. El log no es un lock atómico ni autorización. Ante errores de GitHub no se modifica la automatización horaria TECH LEAD; no se ejecutan mutaciones inseguras con estado desconocido. **Implantación pendiente**, véase [política](../logs/README.md) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38).
 
 ## Identidad Linux y modelo
 
