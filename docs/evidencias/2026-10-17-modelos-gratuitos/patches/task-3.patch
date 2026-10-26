@@ -1,0 +1,66 @@
+diff --git a/src/billing.py b/src/billing.py
+index a241504..64c5963 100644
+--- a/src/billing.py
++++ b/src/billing.py
+@@ -3 +3,6 @@ def discounted_cents(amount, percent):
+-    return amount
++    if amount < 0:
++        raise ValueError("amount must be non-negative")
++    if percent < 0 or percent > 100:
++        raise ValueError("percent must be between 0 and 100 inclusive")
++    multiplier = 100 - percent
++    return (amount * multiplier + 50) // 100
+diff --git a/tests/test_billing.py b/tests/test_billing.py
+index 0104e09..0cca253 100644
+--- a/tests/test_billing.py
++++ b/tests/test_billing.py
+@@ -6,0 +7,49 @@ class BillingTests(unittest.TestCase):
++
++    def test_full_discount(self):
++        self.assertEqual(discounted_cents(100, 100), 0)
++
++    def test_example_cases(self):
++        self.assertEqual(discounted_cents(101, 50), 51)
++        self.assertEqual(discounted_cents(199, 25), 149)
++        self.assertEqual(discounted_cents(100, 100), 0)
++
++    def test_boundary_amounts(self):
++        self.assertEqual(discounted_cents(0, 50), 0)
++        self.assertEqual(discounted_cents(1, 0), 1)
++        self.assertEqual(discounted_cents(1, 100), 0)
++
++    def test_validation_negative_amount(self):
++        with self.assertRaises(ValueError):
++            discounted_cents(-1, 10)
++
++    def test_validation_percent_below_zero(self):
++        with self.assertRaises(ValueError):
++            discounted_cents(100, -1)
++
++    def test_validation_percent_above_100(self):
++        with self.assertRaises(ValueError):
++            discounted_cents(100, 101)
++
++    def test_rounding_half_up(self):
++        # Test cases where fractional part is exactly 0.5
++        # amount * (100-percent) / 100 yields .5
++        # Example: amount=1, percent=50 => multiplier=50 => 1*50=50 => /100=0.5 -> round up to 1
++        self.assertEqual(discounted_cents(1, 50), 1)
++        # amount=2, percent=50 => 2*50=100 => /100=1.0 -> no fraction
++        self.assertEqual(discounted_cents(2, 50), 1)
++        # Actually 2*50=100 => +50=150//100=1 => correct.
++        # Need a case where .5: amount*multiplier % 100 == 50
++        # Let's compute: amount=3, percent=50 => 3*50=150 => +50=200//100=2 => expected 2? 150/100=1.5 round up ->2 correct.
++        self.assertEqual(discounted_cents(3, 50), 2)
++        # Another: amount=1, percent=25 => multiplier=75 => 1*75=75 => +50=125//100=1 => 75/100=0.75 round up? Actually 0.75 rounds up to 1 (since >=0.5). That's correct.
++        # Test exact .5 case: amount=2, percent=25 => multiplier=75 => 2*75=150 => +50=200//100=2 => 150/100=1.5 round up ->2.
++        self.assertEqual(discounted_cents(2, 25), 2)
++        # Test .49 rounds down: amount=1, percent=20 => multiplier=80 => 80/100=0.8 round up? Actually 0.8 >=0.5 rounds up to 1. Need .49: maybe amount=49, percent=0? Not.
++        # Let's just test a few rounding cases using known formula.
++        # We'll trust the property.
++
++    def test_additional_rounding(self):
++        # Some random checks
++        self.assertEqual(discounted_cents(99, 50), 50)  # 99*50=4950+50=5000//100=50
++        self.assertEqual(discounted_cents(100, 10), 90)  # 100*90=9000+50=9050//100=90
++        self.assertEqual(discounted_cents(199, 25), 149)  # already in example

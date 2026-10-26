@@ -1,0 +1,136 @@
+[
+  {
+    "type": "tool_use",
+    "tool": "glob",
+    "status": "completed",
+    "input": {
+      "pattern": "**"
+    },
+    "output": "/eval/repo/README.md\n/eval/repo/notes/other-work.txt\n/eval/repo/notes/task-99.md\n/eval/repo/tests/test_billing.py\n/eval/repo/tests/test_packaging.py\n/eval/repo/tests/test_allocations.py\n/eval/repo/tests/test_shipping.py\n/eval/repo/AGENTS.md\n/eval/repo/src/__init__.py\n/eval/repo/src/billing.py\n/eval/repo/src/shipping.py\n/eval/repo/src/packaging.py\n/eval/repo/src/allocations.py\n/eval/repo/src/tax.py"
+  },
+  {
+    "type": "tool_use",
+    "tool": "read",
+    "status": "completed",
+    "input": {
+      "path": "/eval/repo/src/shipping.py"
+    },
+    "output": "Read file /eval/repo/src/shipping.py, lines 1-3\n1: def shipping_cents(subtotal):\n2:     \"\"\"Return domestic shipping cost in integer cents.\"\"\"\n3:     return 500"
+  },
+  {
+    "type": "tool_use",
+    "tool": "read",
+    "status": "completed",
+    "input": {
+      "path": "/eval/repo/tests/test_shipping.py"
+    },
+    "output": "Read file /eval/repo/tests/test_shipping.py, lines 1-6\n1: import unittest\n2: from src.shipping import shipping_cents\n3: \n4: class ShippingTests(unittest.TestCase):\n5:     def test_small_order(self):\n6:         self.assertEqual(shipping_cents(900), 500)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "edit",
+    "status": "completed",
+    "input": {
+      "path": "/eval/repo/src/shipping.py",
+      "oldString": "def shipping_cents(subtotal):\n    \"\"\"Return domestic shipping cost in integer cents.\"\"\"\n    return 500",
+      "newString": "def shipping_cents(subtotal):\n    \"\"\"Return domestic shipping cost in integer cents.\"\"\"\n    if subtotal < 0:\n        raise ValueError(\"subtotal must be non-negative\")\n    if subtotal >= 10000:\n        return 0\n    return 500"
+    },
+    "output": "Edited src/shipping.py (1 replacement)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "read",
+    "status": "completed",
+    "input": {
+      "path": "/eval/repo/tests/test_shipping.py"
+    },
+    "output": "Read file /eval/repo/tests/test_shipping.py, lines 1-6\n1: import unittest\n2: from src.shipping import shipping_cents\n3: \n4: class ShippingTests(unittest.TestCase):\n5:     def test_small_order(self):\n6:         self.assertEqual(shipping_cents(900), 500)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "edit",
+    "status": "completed",
+    "input": {
+      "path": "/eval/repo/tests/test_shipping.py",
+      "oldString": "import unittest\nfrom src.shipping import shipping_cents\n\nclass ShippingTests(unittest.TestCase):\n    def test_small_order(self):\n        self.assertEqual(shipping_cents(900), 500)",
+      "newString": "import unittest\nfrom src.shipping import shipping_cents\n\nclass ShippingTests(unittest.TestCase):\n    def test_small_order(self):\n        self.assertEqual(shipping_cents(900), 500)\n\n    def test_negative_subtotal_raises(self):\n        with self.assertRaises(ValueError):\n            shipping_cents(-1)\n\n    def test_zero_subtotal(self):\n        self.assertEqual(shipping_cents(0), 500)\n\n    def test_border_below_10000(self):\n        self.assertEqual(shipping_cents(9999), 500)\n\n    def test_border_at_10000(self):\n        self.assertEqual(shipping_cents(10000), 0)\n\n    def test_border_above_10000(self):\n        self.assertEqual(shipping_cents(10001), 0)"
+    },
+    "output": "Edited tests/test_shipping.py (1 replacement)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "python3 -m unittest discover -s tests -v"
+    },
+    "output": "test_even (test_allocations.AllocationTests.test_even) ... ok\ntest_zero_discount (test_billing.BillingTests.test_zero_discount) ... ok\ntest_plain (test_packaging.PackagingTests.test_plain) ... ok\ntest_border_above_10000 (test_shipping.ShippingTests.test_border_above_10000) ... ok\ntest_border_at_10000 (test_shipping.ShippingTests.test_border_at_10000) ... ok\ntest_border_below_10000 (test_shipping.ShippingTests.test_border_below_10000) ... ok\ntest_negative_subtotal_raises (test_shipping.ShippingTests.test_negative_subtotal_raises) ... ok\ntest_small_order (test_shipping.ShippingTests.test_small_order) ... ok\ntest_zero_subtotal (test_shipping.ShippingTests.test_zero_subtotal) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.001s\n\nOK\n"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git status"
+    },
+    "output": "On branch eval/task-1\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n  (use \"git restore <file>...\" to discard changes in working directory)\n\tmodified:   src/shipping.py\n\tmodified:   tests/test_shipping.py\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git add src/shipping.py tests/test_shipping.py"
+    },
+    "output": "(no output)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git diff --cached"
+    },
+    "output": "diff --git a/src/shipping.py b/src/shipping.py\nindex 7868109..de976f9 100644\n--- a/src/shipping.py\n+++ b/src/shipping.py\n@@ -1,3 +1,7 @@\n def shipping_cents(subtotal):\n     \"\"\"Return domestic shipping cost in integer cents.\"\"\"\n+    if subtotal < 0:\n+        raise ValueError(\"subtotal must be non-negative\")\n+    if subtotal >= 10000:\n+        return 0\n     return 500\ndiff --git a/tests/test_shipping.py b/tests/test_shipping.py\nindex cdc1556..c918bab 100644\n--- a/tests/test_shipping.py\n+++ b/tests/test_shipping.py\n@@ -4,3 +4,19 @@ from src.shipping import shipping_cents\n class ShippingTests(unittest.TestCase):\n     def test_small_order(self):\n         self.assertEqual(shipping_cents(900), 500)\n+\n+    def test_negative_subtotal_raises(self):\n+        with self.assertRaises(ValueError):\n+            shipping_cents(-1)\n+\n+    def test_zero_subtotal(self):\n+        self.assertEqual(shipping_cents(0), 500)\n+\n+    def test_border_below_10000(self):\n+        self.assertEqual(shipping_cents(9999), 500)\n+\n+    def test_border_at_10000(self):\n+        self.assertEqual(shipping_cents(10000), 0)\n+\n+    def test_border_above_10000(self):\n+        self.assertEqual(shipping_cents(10001), 0)\n"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git diff"
+    },
+    "output": "(no output)"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git commit -m \"Task 1: implement shipping_cents with negative subtotal error and free shipping over 10000 cents; add boundary and negative tests\""
+    },
+    "output": "[eval/task-1 fd4bab5] Task 1: implement shipping_cents with negative subtotal error and free shipping over 10000 cents; add boundary and negative tests\n 2 files changed, 20 insertions(+)\n"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git status"
+    },
+    "output": "On branch eval/task-1\nnothing to commit, working tree clean\n"
+  },
+  {
+    "type": "tool_use",
+    "tool": "shell",
+    "status": "completed",
+    "input": {
+      "command": "git rev-parse HEAD"
+    },
+    "output": "fd4bab5822d1ae4d21d1591d088837e55d877498\n"
+  },
+  {
+    "type": "text",
+    "text": "**Task 1 Completed Successfully**\n\n**Test Results**  \nRan the full test suite with `python3 -m unittest discover -s tests -v`:  \n- 9 tests passed (including new negative and boundary tests).  \n- Output:  \n```\ntest_even (test_allocations.AllocationTests.test_even) ... ok\ntest_zero_discount (test_billing.BillingTests.test_zero_discount) ... ok\ntest_plain (test_packaging.PackagingTests.test_plain) ... ok\ntest_border_above_10000 (test_shipping.ShippingTests.test_border_above_10000) ... ok\ntest_border_at_10000 (test_shipping.ShippingTests.test_border_at_10000) ... ok\ntest_border_below_10000 (test_shipping.ShippingTests.test_border_below_10000) ... ok\ntest_negative_subtotal_raises (test_shipping.ShippingTests.test_negative_subtotal_raises) ... ok\ntest_small_order (test_shipping.ShippingTests.test_small_order) ... ok\ntest_zero_subtotal (test_shipping.ShippingTests.test_zero_subtotal) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.001s\n\nOK\n```\n\n**Changes Made**  \nModified exactly two authorized files:  \n1. `src/shipping.py`:  \n   - Added `ValueError` for negative `subtotal`.  \n   - Return `0` for `subtotal >= 10000` (free shipping threshold).  \n   - Otherwise return `500`.  \n2. `tests/test_shipping.py`:  \n   - Added tests for negative subtotal (expects `ValueError`).  \n   - Added boundary tests: `0`, `9999`, `10000`, `10001`.  \n   - Kept existing test for small order.\n\n**Commit**  \n- Commit hash: `fd4bab5822d1ae4d21d1591d088837e55d877498`  \n- Commit message:  \n  `Task 1: implement shipping_cents with negative subtotal error and free shipping over 10000 cents; add boundary and negative tests`\n\n**Branch and Working Tree**  \n- Current branch: `eval/task-1`  \n- HEAD: `fd4bab5822d1ae4d21d1591d088837e55d877498`  \n- Working tree: clean (no unstaged or uncommitted changes).  \n\nAll requirements satisfied: only the two authorized files modified, tests pass, exactly one local commit, clean working tree."
+  }
+]
