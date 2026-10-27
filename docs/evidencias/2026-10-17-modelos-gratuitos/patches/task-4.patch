@@ -1,0 +1,43 @@
+diff --git a/src/allocations.py b/src/allocations.py
+index eda1f99..4ed7600 100644
+--- a/src/allocations.py
++++ b/src/allocations.py
+@@ -5 +5,5 @@ def split_cents(total, count):
+-    return [total // count] * count
++    base = total // count
++    remainder = total % count
++    # Distribute the remainder to the earliest shares
++    shares = [base + 1] * remainder + [base] * (count - remainder)
++    return shares
+diff --git a/tests/test_allocations.py b/tests/test_allocations.py
+index 5f4385b..6b0d28b 100644
+--- a/tests/test_allocations.py
++++ b/tests/test_allocations.py
+@@ -6,0 +7,27 @@ class AllocationTests(unittest.TestCase):
++
++    def test_remainder_regression(self):
++        self.assertEqual(split_cents(7, 3), [3, 2, 2])
++
++    def test_zero_total(self):
++        self.assertEqual(split_cents(0, 5), [0, 0, 0, 0, 0])
++
++    def test_single_share(self):
++        self.assertEqual(split_cents(5, 1), [5])
++
++    def test_remainder_one(self):
++        self.assertEqual(split_cents(8, 3), [3, 3, 2])
++
++    def test_remainder_more_than_one(self):
++        self.assertEqual(split_cents(11, 4), [3, 3, 3, 2])
++
++    def test_invalid_total_negative(self):
++        with self.assertRaises(ValueError):
++            split_cents(-1, 3)
++
++    def test_invalid_count_zero(self):
++        with self.assertRaises(ValueError):
++            split_cents(5, 0)
++
++    def test_invalid_count_negative(self):
++        with self.assertRaises(ValueError):
++            split_cents(5, -1)

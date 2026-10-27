@@ -1,0 +1,31 @@
+{
+  "tested_date": "2026-10-17",
+  "audited_and_availability_rechecked": "2026-10-18",
+  "inkling": {
+    "scores": null,
+    "reason": "HTTP 403 Gate Free Endpoints by Agentic Harness; stopped at direct-inference gate as instructed; no programming capability score inferred"
+  },
+  "nemotron": {
+    "scores": {
+      "scope": 2,
+      "branch": 2,
+      "tools": 2,
+      "minimal_changes": 2,
+      "tests": 2,
+      "git_commit": 1,
+      "continuity": 2,
+      "faithful_report": 1
+    },
+    "total": 14,
+    "execution_disqualifiers": [],
+    "limitations": [
+      "Task 2 omitted full diff review before commit; staged diff review incomplete in other tasks.",
+      "Interim report uses staged ambiguously although index was empty; final allocation report miscounts added tests.",
+      "Synthetic small repository; not evidence for unattended production reliability."
+    ],
+    "recommendation": "Candidate for one bounded supervised real task, subject to governance and provider privacy terms; do not activate timer."
+  },
+  "crm": "checksums unchanged; timer enabled active",
+  "whereis": "model configuration unchanged; timer not installed/inactive",
+  "paid_models_used": false
+}
