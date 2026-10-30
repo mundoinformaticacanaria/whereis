@@ -83,6 +83,26 @@ Las reglas originales D-06 siguen CONFIRMADAS para consultas puntuales **legíti
 
 **Pendientes reales:** seguridad/menores, retención legal, medios de verificación, concurrencia, Android y proveedores. Sigue el **baseline funcional global PENDIENTE**. Bajo **G-02 vigente**, TECH LEAD revisa e integra con asesoramiento de ARQUITECTO activo; QA independiente en futuras implementaciones. **NO ASIGNAR PROGRAMADOR** por esta actualización documental.
 
+## Enmienda funcional CONFIRMADA — descarte de respuestas posteriores al timeout (29/10/2026)
+
+**Autoridad:** decisión MATERIAL expresa del PROPIETARIO, opción A, en [#12 (comentario de aprobación)](https://github.com/mundoinformaticacanaria/whereis/issues/12#issuecomment-6508029995), tras [propuesta FUNCIONAL A/B](https://github.com/mundoinformaticacanaria/whereis/issues/12#issuecomment-6507979579). Esta enmienda precisa D-06; no aprueba el baseline global ni una implementación.
+
+- **D06-RN07:** una vez que B declara timeout/error de la consulta puntual **Q1**, se **descarta toda respuesta de ubicación Q1 recibida después**, incluso si A inició la captura legítimamente antes del timeout. Q1 permanece en `Error`; no se convierte en `Actualizado`, ni modifica posición conservada, instante de captura, marcador, mapa, ficha, lista o resumen de «Actualizar todos».
+- **D06-RN08:** si existe una última posición legítima **P0**, se mantiene con su fecha/hora real y aviso de antigüedad; si no existe o no es visible legítimamente, se muestra «Ubicación no disponible». Ni timeout ni recepción tardía actualizan la fecha de P0.
+- **D06-RN09:** solo una nueva consulta **Q2 manual**, con identidad y autorización vigentes verificables, puede obtener una nueva posición. Una respuesta tardía Q1 se descarta **antes, durante o después de Q2**, tanto si Q2 tiene éxito como si falla; no modifica sus resultados ni sobrescribe datos aceptados. Reconectar A no ejecuta capturas Q1 diferidas (D-12).
+- **D06-RN10:** revocación, bloqueo, eliminación o reinstalación no se revierten por una respuesta tardía. Prevalecen D-04/D-05/D-09/D-10 y SEG-01/02; ninguna posición borrada/ocultada ni autorización se restituye.
+
+**Criterios de aceptación aprobados para diseño y QA futura (NO ejecutados):**
+
+- **D06-T01:** Q1 expira sin P0; fallo + «Ubicación no disponible»; una Q1 tardía no crea marcador ni cambia estado.
+- **D06-T02:** Q1 expira con P0; fallo + P0 anterior fechada; una Q1 tardía no cambia posición ni timestamp.
+- **D06-T03:** Q1 tardía llega antes/durante/después de Q2, con Q2 exitosa o fallida; Q1 no afecta Q2, mapa, última posición aceptada ni «Actualizar todos».
+- **D06-T04:** A estaba offline y reconecta; no se captura Q1 diferida; solo una Q2 manual puede iniciar captura.
+- **D06-T05:** revocación, bloqueo, eliminación o reinstalación con Q1 tardía; no reaparecen posiciones borradas/ocultas ni permisos.
+- **D06-T06:** fecha/hora de ubicación realmente aceptada según D-13 (zona local de B, `DD/MM/AAAA HH:mm:ss`); timeout y recepción no se usan como hora de captura.
+
+**PENDIENTE técnico:** umbral/mecanismo de timeout, IDs y versionado de Q1/Q2, orden/idempotencia, reloj y autenticidad de captura, transporte, condiciones Android y pruebas negativas reproducibles; conciliar con D-12/#22, SEG/#24 y [PR #35](https://github.com/mundoinformaticacanaria/whereis/pull/35) aún DRAFT. **No** se autoriza código, pruebas reales, proveedor, servicios, servidor/CRM, PROGRAMADOR ni timers Linux.
+
 ## Trazabilidad y siguiente acción
 
 [Issue #12](https://github.com/mundoinformaticacanaria/whereis/issues/12). La regla de D-02 «no presentar una ubicación antigua como actual» sigue `CONFIRMADA` y queda especificada con este comportamiento de último dato conocido, no sustituida.
