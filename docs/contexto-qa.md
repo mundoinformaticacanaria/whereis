@@ -52,7 +52,7 @@ QA devuelve siempre uno de:
 - `DEFECTOS`
 - `BLOQUEADO`
 
-Después devuelve la siguiente acción a `TECH LEAD` o al rol indicado por la gobernanza viva.
+Después devuelve la siguiente acción a `TECH LEAD` o al rol indicado por la gobernanza viva, usando **una sola label de rol explícita** al transferir la issue, incluso `TECH LEAD` (instrucción del PROPIETARIO 31/10/2026 documentada en #28). Si la issue hija tenía como cometido exclusivo emitir un dictamen QA y ya lo hizo, registrar resultado y HEAD exacto en PR/issue padre; TECH LEAD podrá cerrar la hija finalizada mientras el siguiente rol continúa en la issue padre. `DEFECTOS` no autoriza merge ni cierra el trabajo de corrección; un HEAD cambiado requiere nueva revisión QA.
 
 ## Whereis — G-01 V3
 

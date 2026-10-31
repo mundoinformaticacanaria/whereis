@@ -14,7 +14,7 @@
 | `PROGRAMADOR` | Ejecutor único del cuerpo de issue: `PROGRAMADOR-LINUX` o `CODEX` |
 | `QA` | Codex QA o ChatGPT QA independiente del autor |
 
-Si una issue presenta **dos o más labels de rol**, solo TECH LEAD puede inspeccionarla/abordarla para resolver el error de enrutamiento; ningún otro rol ejecuta trabajo sustantivo hasta dejar una sola label (decisión #38). Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-LINUX`, `QWEN`, `CODEX`, `PENDIENTE`, etc. Para los cambios de responsable: quitar la label anterior y añadir la nueva; para devolver al TECH LEAD basta quitar todas las labels de rol. La label `TECH LEAD` ya existente equivale a sin label. No asumir que las labels están todas creadas: comprobar la configuración real antes de depender de ella.
+Si una issue presenta **dos o más labels de rol**, solo TECH LEAD puede inspeccionarla/abordarla para resolver el error de enrutamiento; ningún otro rol ejecuta trabajo sustantivo hasta dejar una sola label (decisión #38). Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-LINUX`, `QWEN`, `CODEX`, `PENDIENTE`, etc. Para los cambios de responsable: sustituir la label anterior por **una única label de rol explícita**, también `TECH LEAD` al devolver una tarea. Cero labels sigue significando TECH LEAD por compatibilidad con G-02, pero TECH LEAD normaliza ese fallback en triage (decisión operativa PROPIETARIO 31/10/2026, #28). No asumir que las labels están todas creadas: comprobar la configuración real antes de depender de ella.
 
 ## Heartbeat y coordinación (#38)
 
@@ -36,7 +36,7 @@ A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es únicamente **CANDIDAT
 2. `PROGRAMADOR-LINUX` o `CODEX` lee el contrato, ejecuta solo lo autorizado, presenta PR vinculada a issue y adjunta pruebas, comando/resultado, head SHA, riesgos y limitaciones.
 3. El ejecutor retira `PROGRAMADOR`, asigna `QA` y se detiene. No toma más trabajo de forma autónoma.
 4. QA independiente obtiene diff, SHA y evidencias de primera mano. Dictamen `APTO`, `DEFECTOS` o `BLOQUEADO` con razones y test negativo cuando aplique.
-5. `DEFECTOS`: QA devuelve `PROGRAMADOR` con el mismo ejecutor o a TECH LEAD si la reasignación es necesaria. `APTO`: QA retira su label para devolver a TECH LEAD.
+5. `DEFECTOS`: QA devuelve al autor `PROGRAMADOR` con el ejecutor autorizado o a TECH LEAD si requiere reasignación, siempre con label única explícita. `APTO`: QA pone label `TECH LEAD` explícita para revisión final. En issues hijas de revisión documental QA, si el dictamen vigente ya terminó la labor QA, cerrar la hija tras registrar resultado y dejar la tarea real en la issue padre/PR correctamente etiquetada; nunca cerrar el defecto del entregable ni reutilizar APTO de un HEAD anterior.
 6. TECH LEAD revisa PR/issue/decisiones/CI/SHA y hace merge o devuelve. Cambiar SHA invalida el APTO previo.
 
 ## Planificación y límites
@@ -45,7 +45,7 @@ A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es únicamente **CANDIDAT
 - PROGRAMADOR-LINUX es preferente para tareas poco riesgosas y deterministas; Codex para arquitectura, permisos, seguridad, identidad, backend sensible, ubicación y concurrencia. Ver [G-02](../decisiones/G-02-orquestacion-qwen-codex-chatgpt.md).
 - Ningún ejecutor instala servicios, expone datos, altera settings o cambia requisitos sin autorización.
 - En la fase actual **no hay programación autorizada**. Primero resolver las decisiones del PROPIETARIO y el baseline funcional/arquitectónico del incremento.
-- El Tech Lead revisa periódicamente issues sin labels: esa es su bandeja de entrada, no trabajo para los programadores.
+- El Tech Lead revisa periódicamente issues sin labels: siguen siendo su bandeja de entrada por G-02, pero debe etiquetarlas explícitamente `TECH LEAD` o transferirlas al siguiente responsable real. No dejar QA hijas finalizadas abiertas y sin rol.
 
 ## Arranque por entorno
 
