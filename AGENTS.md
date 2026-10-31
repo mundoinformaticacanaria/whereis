@@ -67,6 +67,8 @@ No resolver contradicciones por intuición.
 
 **Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** Si hay dos o más labels de rol, es un error de enrutamiento: solo TECH LEAD puede inspeccionar/abordar la issue para retirar labels sobrantes y asignar un único responsable; ningún otro rol ejecuta trabajo sustantivo hasta corregirlo (decisión #38). `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
 
+**Preferencia operativa de visibilidad — PROPIETARIO 31/10/2026, issue #28:** toda nueva issue ejecutable y cada handoff deben mostrar una única label de rol **explícita**, también `TECH LEAD`. La ausencia de label conserva el significado de fallback `TECH LEAD` por G-02 para issues heredadas, pero TECH LEAD debe normalizarla en el siguiente triage. No confundir ninguna label con autorización de PROGRAMADOR. Las issues hijas creadas exclusivamente para QA no se mantienen indefinidamente abiertas tras un dictamen vigente: registrar resultado, SHA y handoff al responsable en la issue principal/PR; etiquetar explícitamente al siguiente rol si continúa trabajo en la hija o cerrar la hija ya concluida, sin cerrar defectos del entregable. Nuevo HEAD exige QA nueva cuando corresponda.
+
 Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
 ## Programadores
@@ -92,7 +94,7 @@ Prefijos de rama de trabajo: `programador-linux/<issue>-<slug>` para PROGRAMADOR
 - El Programador implementa; QA revisa de forma adversarial e independiente del autor, y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`. Para PR creadas por `CODEX`, QA = chat de ChatGPT independiente; para `PROGRAMADOR-LINUX`, QA = Codex o ChatGPT independiente. La misma implementación no puede autorrevisarse. Ante defectos o bloqueo no hay merge.
 - QA nunca hace merge; Tech Lead conserva la revisión final de calidad, integración, prioridad y merge.
 - Un cambio del head SHA invalida revisiones previas para integración. Si falta un revisor QA realmente independiente, el merge queda bloqueado.
-- G-01/G-02 no habilitan desarrollo ni autorizan proveedores, infraestructura, costes o nuevos requisitos sin aprobaciones específicas. Handoff de una issue a TECH LEAD = retirar labels de rol (o usar `TECH LEAD` explícita).
+- G-01/G-02 no habilitan desarrollo ni autorizan proveedores, infraestructura, costes o nuevos requisitos sin aprobaciones específicas. Handoff de una issue a TECH LEAD = asignar explícitamente la única label `TECH LEAD`; cero labels continúa siendo fallback compatible de G-02, no la práctica preferida.
 
 ## Principios de arquitectura
 
