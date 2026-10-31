@@ -2,7 +2,7 @@
 
 - **Proyecto:** Whereis
 - **Repositorio:** https://github.com/mundoinformaticacanaria/whereis
-- **Fecha de estado:** 27/10/2026
+- **Fecha de estado:** 31/10/2026
 
 ## Estado resumido
 
