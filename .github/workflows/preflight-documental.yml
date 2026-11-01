@@ -26,13 +26,22 @@ jobs:
           set -euo pipefail
           BASE="$(git merge-base origin/main HEAD)"
           git diff --check "$BASE...HEAD"
-          if git cat-file -e "$BASE:scripts/check-documentation.py" 2>/dev/null; then
-            test -f scripts/check-documentation.py || { echo "FAIL: preflight script removed"; exit 1; }
-            git show "$BASE:scripts/check-documentation.py" > "$RUNNER_TEMP/check-documentation.py"
+          # El validador solo procede del tip confiable de main, nunca de la PR.
+          # Así una rama antigua no puede eludirlo con un merge-base previo.
+          if git cat-file -e "origin/main:scripts/check-documentation.py" 2>/dev/null; then
+            if git diff --name-only --diff-filter=D "$BASE...HEAD" -- scripts/check-documentation.py | grep -q .; then
+              echo "FAIL: trusted preflight script deleted by PR"
+              exit 1
+            fi
+            git show "origin/main:scripts/check-documentation.py" > "$RUNNER_TEMP/check-documentation.py"
             python3 "$RUNNER_TEMP/check-documentation.py" "$BASE"
-          elif test -f scripts/check-documentation.py; then
-            # Solo durante bootstrap: el script aún no está integrado en main.
-            python3 scripts/check-documentation.py "$BASE"
           else
-            echo "PASS: bootstrap whitespace; script documental aún no integrado en main"
+            # Bootstrap estricto: solo se admite la PR que añade este workflow.
+            # Nunca ejecutar un script aportado por HEAD como validador confiable.
+            CHANGED="$(git diff --name-only "$BASE...HEAD")"
+            if [ "$CHANGED" != ".github/workflows/preflight-documental.yml" ]; then
+              echo "FAIL: trusted scanner absent from main; bootstrap restricted to workflow-only changes"
+              exit 1
+            fi
+            echo "PASS: workflow-only bootstrap whitespace; trusted scanner not yet in main"
           fi
