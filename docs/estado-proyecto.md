@@ -54,7 +54,7 @@ No interpretar ninguno de estos puntos como decidido por G-01.
 
 ## Próximo avance
 
-**TECH LEAD / #28:** coordinar la integración técnica acotada del aislamiento bubblewrap ya autorizada, aún sin evidencia de aplicación definitiva ni QA operativa; no habilitar PROGRAMADOR ni timers Linux. **#38:** cinco pares reales INICIO/FIN verificados el 01/11 para un escritor y retención de 100 entradas; siguen PENDIENTES concurrencia entre agentes independientes, FIN tardío, errores API/permisos, integridad temporal y QA integral. **PR #58:** QA #59 APTO documental, sin merge; **PR #48:** actualización factual del 01/11 pendiente de nueva QA sobre su HEAD actual y gates #42.
+**TECH LEAD / #28:** coordinar la integración técnica acotada del aislamiento bubblewrap ya autorizada, aún sin evidencia de aplicación definitiva ni QA operativa; no habilitar PROGRAMADOR ni timers Linux. **#38:** cinco pares reales INICIO/FIN verificados el 01/11 para un escritor y retención de 100 entradas; siguen PENDIENTES concurrencia entre agentes independientes, FIN tardío, errores API/permisos, integridad temporal y QA integral. **PR #58:** QA #59 APTO documental, sin merge; **PR #48:** esta actualización factual exige QA independiente del HEAD exacto y gates #42 antes de integrarse.
 
 **D-06 / #12:** PR #62 QA #63 APTO documental, sin merge. **D-12 / #22 y L-02 / #52:** PR #35/#55 tienen QA independiente #67/#68 APTO documental sobre sus respectivos HEAD, pero siguen DRAFT, sin adopción arquitectónica ni pruebas Android/red. **SEG-03/04 / #41:** #60 continúa FUNCIONAL sin entregable; #61/PR #66 están bajo ARQUITECTO por DEFECTOS QA #69, esperando corrección y nueva QA. **#24** permanece abierta; no existe dictamen jurídico, retención aprobada ni baseline.
 
