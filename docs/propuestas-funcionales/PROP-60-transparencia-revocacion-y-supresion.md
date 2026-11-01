@@ -5,7 +5,7 @@
 - **Clasificación:** **MATERIAL / PROPUESTA FUNCIONAL**, no baseline aprobado.
 - **Estado:** inventario de reglas **CONFIRMADAS** y propuestas **PENDIENTES** de revisión TECH LEAD / decisión PROPIETARIO; sin dictamen jurídico.
 - **Autoridad:** las decisiones y comentarios de #41, #24 y las decisiones D-04/05/09/10/12 en main prevalecen sobre este análisis.
-- **Dependencia paralela:** [#61 / PR #66](https://github.com/mundoinformaticacanaria/whereis/pull/66) inventaría superficies técnicas; QA #69 emitió **DEFECTOS** sobre el HEAD anterior de PR #66 (`7c553fba…`). ARQUITECTO ya entregó la corrección en HEAD `576dcf171ca8dd622fa6eb3318b34e3b00026e80` y devolvió #61 a TECH LEAD; **nueva QA independiente de ese HEAD PENDIENTE**. Este análisis **no** valida aquella PR, sus reglas de backup ni las pruebas Android.
+- **Dependencia paralela:** [#61 / PR #66](https://github.com/mundoinformaticacanaria/whereis/pull/66) es el estudio técnico independiente de superficies y backups, gestionado y corregido por separado. [QA #69](https://github.com/mundoinformaticacanaria/whereis/issues/69) emitió **DEFECTOS** únicamente sobre el HEAD anterior `7c553fba…` de #66; la versión que finalmente se entregue requiere **nueva QA independiente de su HEAD exacto**. Consultar la issue #61, sus labels y PR #66 para conocer responsable y estado vigentes; este análisis **no** valida aquella PR, sus reglas de backup ni pruebas Android.
 - **Ámbito aprobado:** uso personal/familiar en España; ubicaciones y relaciones persistentes solo en instalaciones participantes; coste de funcionamiento 0 €; ningún proveedor/relay/servicio autorizado. L-02b/c/d permite **solo estudio** de canales externos con metadatos mínimos, no despliegue (#41/#52).
 
 ## 1. Actores y lenguaje de interfaz
@@ -131,7 +131,7 @@ La decisión del PROPIETARIO de **no contratar asesoría jurídica en esta fase*
 
 ## 7. Handoff y límites
 
-1. **FUNCIONAL entrega esta PROPUESTA a TECH LEAD** en #60 para conciliar con #41, #24 y el estudio independiente #61/PR #66, cuya corrección ya entregó ARQUITECTO en HEAD `576dcf171ca8dd622fa6eb3318b34e3b00026e80`, aún **sin nueva QA independiente de ese HEAD**; no duplicar decisiones ni suponer que #66 está validada.
+1. **FUNCIONAL entrega esta PROPUESTA a TECH LEAD** en #60 para conciliar con #41, #24 y el estudio técnico independiente [#61 / PR #66](https://github.com/mundoinformaticacanaria/whereis/pull/66). Su responsable, HEAD y correcciones se consultan en GitHub vivo, no se fijan en este contrato funcional. [QA #69](https://github.com/mundoinformaticacanaria/whereis/issues/69) emitió **DEFECTOS** solo del HEAD anterior `7c553fba…` de #66; el HEAD finalmente entregado requiere **QA independiente nueva**, sin atribuirle APTO ni duplicar decisiones.
 2. **TECH LEAD** identifica preguntas MATERIAL que requieren PROPIETARIO: R-60a conservación/caducidad, R-60b posible solicitud de supresión, R-60c transparencia/representación cuando el análisis jurídico determine su necesidad. Revisar coherencia con seguridad, Android, canales externos estudiados y coste 0 €.
 3. **PROPIETARIO** conserva aprobación de cambios materiales y aceptación de riesgos dentro del marco aplicable; el estudio gratuito no sustituye dictamen jurídico ni permite obviar derechos o controles exigibles.
 4. **PENDIENTES**: revisión legal SEG-03/04, prueba de respaldo/retención/borrado en Android y terceros, revisión QA del documento técnico #61, baselines globales, proveedores y programación. No afirmar que tests de este documento fueron ejecutados.
