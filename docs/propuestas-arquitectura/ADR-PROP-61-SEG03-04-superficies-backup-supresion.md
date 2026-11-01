@@ -94,17 +94,22 @@ No historial automático de posiciones; ninguna autorización o ubicación persi
 
 **Pruebas no ejecutadas, sin CI, sin QA APTO ni validación Android.** El alcance de la plataforma/target, cifrado en reposo, reglas XML, schema local y mecanismos de borrado físico aún no están aprobados. No publicar datos reales de menores en evidencias.
 
-## 6. Decisiones y dependencias sin resolver
+## 6. Decisiones, revisión QA y handoff vigente (01/11/2026)
 
-| Área | Estado | Responsable siguiente tras revisión TECH LEAD |
+Esta sección distingue las **decisiones materiales aún PENDIENTES** de los **dictámenes documentales ya emitidos**. Los análisis de esta ADR son `PROPUESTA / NO DEMOSTRADO`: no fijan retención, proveedor, base jurídica ni autorización de pruebas.
+
+| Área | Estado verificable | Siguiente responsable |
 |---|---|---|
-| Política exacta de conservación de última posición y copias/derivados | **PENDIENTE MATERIAL**, D-10 no autoriza plazos indefinidos por omisión | PROPIETARIO, con FUNCIONAL #60 y análisis jurídico #41 |
-| Transparencia, representación de menores, ejercicio de derechos y posibilidad de supresión remota | **PENDIENTE**; no equiparar uso doméstico con exención universal | FUNCIONAL #60 propone; TECH LEAD coordina; PROPIETARIO decide materiales |
-| Elección de provider, cookies/tokens/IDs técnicos externos, jurisdicción, contrato y coste 0 € | P-52a/b/c/d **CONFIRMADAS SOLO PARA ESTUDIO**; adopción PENDIENTE | TECH LEAD #52 y PROPIETARIO antes de operar, QA #56 sobre PR #55 |
-| Matriz real API/target/OEM, test D2D/cloud, privacidad de notificaciones, borrado verificable | **NO EJECUTADO**; cualquier ensayo real necesita autorización nueva | TECH LEAD #28/#24, después PROPIETARIO |
-| Puntos de orden transaccional revocación/liberación y anti-enumeración por metadatos/canal lateral | **PROPUESTA técnica NO DEMOSTRADA** | TECH LEAD #24 tras #22/PR #35 y #8/PR #34 |
+| Conservación de última posición y copias/derivados | **PENDIENTE MATERIAL**. D-10 no implica que la retención indefinida sea jurídicamente válida | **TECH LEAD #41**, con propuesta FUNCIONAL #60; **PROPIETARIO** decide cualquier política material |
+| Transparencia, representación de menores, ejercicio de derechos y supresión remota | **PENDIENTE**; la excepción doméstica no está acreditada para todos los actores y terceros | **FUNCIONAL #60** para propuesta, **TECH LEAD #41** coordina; **PROPIETARIO** resuelve las decisiones reservadas |
+| Proveedor, tokens/IDs técnicos, jurisdicción, contratos, retención real externa y coste integral 0 € | **P-52a/b/c/d CONFIRMADAS únicamente PARA ESTUDIO**, no adopción. [PR #55](https://github.com/mundoinformaticacanaria/whereis/pull/55) en HEAD `cdee2dc8799c80cd33c75fe852fd9a97d704835b` recibió **APTO DOCUMENTAL** de [QA #68](https://github.com/mundoinformaticacanaria/whereis/issues/68), que sustituye el dictamen **DEFECTOS histórico** de #56 sobre HEAD anterior. Sin CI, proveedor o servicio autorizado | **TECH LEAD #52** para revisión final/coordinación; **PROPIETARIO** antes de elegir/usar, enviar datos reales o aprobar política |
+| Matriz API/target/OEM, Android cloud/D2D, privacidad de notificaciones y verificación real de borrado | **NO EJECUTADO**; no se autorizaron ensayos reales | **TECH LEAD #24/#28** coordina; **PROPIETARIO** aprueba previamente cualquier ensayo y coste si se propone |
+| Orden transaccional de revocación/liberación y anti-enumeración por metadatos/canal | **PROPUESTA técnica NO DEMOSTRADA**; no se acredita SEG-01/02 | **TECH LEAD #24**, en coordinación con #22/PR #35 y #8/PR #34 |
+| Revisión de esta ADR / PR #66 | [QA independiente #69](https://github.com/mundoinformaticacanaria/whereis/issues/69) dictaminó **DEFECTOS** sobre HEAD `7c553fba18bff9475230dc8a508eee11ce1b71ad` por referencias/roles obsoletos en §6; el **estudio técnico #61 ya fue entregado**, no está pendiente de redacción. Esta actualización corrige únicamente el handoff, **sin modificar el análisis técnico**, y exige **nueva QA independiente sobre el nuevo HEAD** | **ARQUITECTO #61** realiza esta corrección; **TECH LEAD** recibe nuevo HEAD, coordina QA y consolida en #41/#24 |
 
-**Handoff solicitado:** ARQUITECTO entrega análisis de superficies y pruebas negativas a **TECH LEAD**, para consolidar en #41/#24, coordinar FUNCIONAL #60 y elevar sólo decisiones reservadas; **no** atribuir dictamen legal o aprobación a esta PR. Mantener #41/#24 abiertos. No abrir nuevos trabajos de programación ni modificar `docs/arquitectura.md` como baseline.
+**Handoff tras la corrección:** el estudio arquitectónico de superficies/backups/supresión **ya está entregado en PR #66**. El siguiente paso no es volver a asignar a ARQUITECTO un estudio nuevo: **TECH LEAD** debe revisar el commit exacto que contiene esta corrección, solicitar **nuevo dictamen de QA independiente**, conciliar con #41 y #60 y elevar sólo las decisiones materiales que correspondan al PROPIETARIO. El APTO de QA #68 se refiere exclusivamente a **PR #55** y **no** valida PR #66. El dictamen anterior de QA #69 **no** es APTO de la nueva revisión.
+
+**Gates:** #41/#24/#28 continúan abiertas; no hay dictamen legal, política de retención aprobada, CI/Android probados, coste integral 0 € demostrado ni baseline arquitectónico aceptado. Sin PROGRAMADOR, creación/uso de proveedor, servidores/CRM o timers. No modificar `docs/arquitectura.md` como baseline ni integrar esta PR por el hecho de corregir trazabilidad.
 
 ## 7. Referencias verificables (sin uso de servicios)
 
