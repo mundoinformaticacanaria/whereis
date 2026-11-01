@@ -5,7 +5,7 @@ import re
 import subprocess
 import sys
 
-TEXT_SUFFIXES = {'.md', '.txt', '.yaml', '.yml', '.json', '.sh', '.py', '.xml', '.kt', '.gradle', '.properties', '.toml', '.ini', '.cfg', '.kts'}
+TEXT_SUFFIXES = {'.md', '.txt', '.yaml', '.yml', '.json', '.sh', '.py', '.xml', '.kt', '.gradle', '.properties', '.toml', '.ini', '.cfg', '.kts', '.env'}
 SUSPECT_SECRETS = re.compile(rb'(?:-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----|github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35})')
 
 
@@ -16,7 +16,7 @@ def git(*args):
 def is_text_path(path):
     name = path.name.lower()
     return (path.suffix.lower() in TEXT_SUFFIXES
-            or name == '.env' or name.startswith('.env.')
+            or name == '.env' or name.startswith('.env.') or '.env.' in name
             or name in {'.gitignore', '.gitattributes', '.editorconfig', 'dockerfile', 'makefile'})
 
 
@@ -37,16 +37,26 @@ def main():
     inspected = 0
     for raw in filter(None, changed):
         path = pathlib.Path(raw.decode('utf-8', errors='surrogateescape'))
-        if not is_text_path(path):
-            continue
-        inspected += 1
+        expected_text = is_text_path(path)
         try:
             content = git('show', f'HEAD:{path.as_posix()}')
-            decoded = content.decode('utf-8')
-        except (subprocess.CalledProcessError, OSError, UnicodeError):
-            print('FAIL: changed text file unreadable or not UTF-8 (path suppressed).', file=sys.stderr)
+        except (subprocess.CalledProcessError, OSError):
+            print('FAIL: changed file unreadable from HEAD (path suppressed).', file=sys.stderr)
             failures += 1
             continue
+        if b'\0' in content:
+            if expected_text:
+                print('FAIL: changed text file contains binary data (path suppressed).', file=sys.stderr)
+                failures += 1
+            continue
+        try:
+            decoded = content.decode('utf-8')
+        except UnicodeError:
+            if expected_text:
+                print('FAIL: changed text file not UTF-8 (path suppressed).', file=sys.stderr)
+                failures += 1
+            continue
+        inspected += 1
         if not content:
             print('FAIL: changed text file empty (path suppressed).', file=sys.stderr)
             failures += 1
