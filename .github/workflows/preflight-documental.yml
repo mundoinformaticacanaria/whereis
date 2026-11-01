@@ -45,24 +45,3 @@ jobs:
             fi
             echo "PASS: workflow-only bootstrap whitespace; trusted scanner not yet in main"
           fi
-
-  # Diagnóstico TEMPORAL de QA: se retirará antes de revisión del HEAD final.
-  diagnostico-pr46:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    steps:
-      - name: Checkout Git auténtico PR #46
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: refs/pull/46/head
-          fetch-depth: 0
-          persist-credentials: false
-      - name: Preflight PR #46 HEAD corregido
-        shell: bash
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = "c3e99e34bff638d6ada750cddd0a9237d9562c9c"
-          BASE="$(git merge-base origin/main HEAD)"
-          echo "HEAD=$(git rev-parse HEAD)"
-          echo "BASE=$BASE"
-          python3 scripts/check-documentation.py "$BASE"
