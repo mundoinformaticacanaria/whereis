@@ -1,0 +1,58 @@
+# Gate documental de WHEREIS: el YAML procede de main, no de la PR.
+# pull_request_target requiere NO ejecutar codigo del HEAD, NO secrets y token de solo lectura.
+# Este workflow solo se activa cuando ya esta integrado en la rama base.
+name: Preflight documental
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  docs-preflight:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout de la base confiable (solo lectura)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+          path: trusted
+          persist-credentials: false
+
+      - name: Checkout del HEAD no confiable (solo datos, nunca ejecutar)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: candidate
+          persist-credentials: false
+          submodules: false
+
+      - name: Ejecutar exclusivamente el scanner de main sobre datos de la PR
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git -C trusted rev-parse HEAD)" = "$BASE_SHA"
+          test "$(git -C candidate rev-parse HEAD)" = "$HEAD_SHA"
+          if [ ! -f trusted/scripts/check-documentation.py ]; then
+            echo "FAIL: trusted scanner missing from base; integrate PR #46 first"
+            exit 1
+          fi
+          # Importar la historia de la base desde el checkout confiable local.
+          # No ejecutar scripts, tests, hooks, makefiles ni dependencias del HEAD.
+          git -C candidate fetch --no-tags "$GITHUB_WORKSPACE/trusted" "$BASE_SHA"
+          BASE="$(git -C candidate merge-base "$BASE_SHA" "$HEAD_SHA")"
+          if git -C candidate diff --name-only --diff-filter=D "$BASE...$HEAD_SHA" -- scripts/check-documentation.py | grep -q .; then
+            echo "FAIL: trusted scanner deleted by PR"
+            exit 1
+          fi
+          cd candidate
+          python3 -I "$GITHUB_WORKSPACE/trusted/scripts/check-documentation.py" "$BASE"
