@@ -1,7 +1,9 @@
-# Bootstrap documental de WHEREIS; no es CI Android ni sustituye QA.
+# Gate documental de WHEREIS: el YAML procede de main, no de la PR.
+# pull_request_target requiere NO ejecutar codigo del HEAD, NO secrets y token de solo lectura.
+# Este workflow solo se activa cuando ya esta integrado en la rama base.
 name: Preflight documental
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
 
@@ -13,35 +15,44 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - name: Checkout del HEAD exacto de la PR
+      - name: Checkout de la base confiable (solo lectura)
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.base.sha }}
           fetch-depth: 0
+          path: trusted
           persist-credentials: false
 
-      - name: Preflight offline, sin secretos ni servicios externos
+      - name: Checkout del HEAD no confiable (solo datos, nunca ejecutar)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: candidate
+          persist-credentials: false
+          submodules: false
+
+      - name: Ejecutar exclusivamente el scanner de main sobre datos de la PR
         shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           set -euo pipefail
-          BASE="$(git merge-base origin/main HEAD)"
-          git diff --check "$BASE...HEAD"
-          # El validador solo procede del tip confiable de main, nunca de la PR.
-          # Así una rama antigua no puede eludirlo con un merge-base previo.
-          if git cat-file -e "origin/main:scripts/check-documentation.py" 2>/dev/null; then
-            if git diff --name-only --diff-filter=D "$BASE...HEAD" -- scripts/check-documentation.py | grep -q .; then
-              echo "FAIL: trusted preflight script deleted by PR"
-              exit 1
-            fi
-            git show "origin/main:scripts/check-documentation.py" > "$RUNNER_TEMP/check-documentation.py"
-            python3 "$RUNNER_TEMP/check-documentation.py" "$BASE"
-          else
-            # Bootstrap estricto: solo se admite la PR que añade este workflow.
-            # Nunca ejecutar un script aportado por HEAD como validador confiable.
-            CHANGED="$(git diff --name-only "$BASE...HEAD")"
-            if [ "$CHANGED" != ".github/workflows/preflight-documental.yml" ]; then
-              echo "FAIL: trusted scanner absent from main; bootstrap restricted to workflow-only changes"
-              exit 1
-            fi
-            echo "PASS: workflow-only bootstrap whitespace; trusted scanner not yet in main"
+          test "$(git -C trusted rev-parse HEAD)" = "$BASE_SHA"
+          test "$(git -C candidate rev-parse HEAD)" = "$HEAD_SHA"
+          if [ ! -f trusted/scripts/check-documentation.py ]; then
+            echo "FAIL: trusted scanner missing from base; integrate PR #46 first"
+            exit 1
           fi
+          # Importar la historia de la base desde el checkout confiable local.
+          # No ejecutar scripts, tests, hooks, makefiles ni dependencias del HEAD.
+          git -C candidate fetch --no-tags "$GITHUB_WORKSPACE/trusted" "$BASE_SHA"
+          BASE="$(git -C candidate merge-base "$BASE_SHA" "$HEAD_SHA")"
+          if git -C candidate diff --name-only --diff-filter=D "$BASE...$HEAD_SHA" -- scripts/check-documentation.py | grep -q .; then
+            echo "FAIL: trusted scanner deleted by PR"
+            exit 1
+          fi
+          cd candidate
+          python3 -I "$GITHUB_WORKSPACE/trusted/scripts/check-documentation.py" "$BASE"
