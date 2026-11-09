@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import resource
 import signal
+import socket
 import stat
 import subprocess as sp
 import sys
@@ -42,7 +43,7 @@ def verify_scope():
     print("WHEREIS_CGROUP_VERIFIED " + json.dumps(observed), flush=True)
 
 
-def bubblewrap(mode, temporary, relay_directory=None):
+def bubblewrap(mode, temporary, relay_directory=None, canary=None):
     from engine import instance
     values = instance(CONFIG / "instance.env")
     if values["IDENTITY"] != "PROGRAMADOR-LINUX" or values["REPOSITORY"] != "mundoinformaticacanaria/whereis":
@@ -55,7 +56,7 @@ def bubblewrap(mode, temporary, relay_directory=None):
     private_path(CONTROL, True)
     private_path(CONFIG, True)
     private_path(REPO, True)
-    marker = {"uid": os.getuid(), "home": str(HOME),
+    marker = {"uid": os.getuid(), "home": str(HOME), "canary": canary,
               "namespaces": {n: os.stat("/proc/self/ns/" + n).st_ino for n in NAMESPACES}}
     (temporary / "marker.json").write_text(json.dumps(marker))
     hosts = "127.0.0.1 localhost\n::1 localhost\n"
@@ -67,7 +68,8 @@ def bubblewrap(mode, temporary, relay_directory=None):
     (temporary / "passwd").write_text(f"{HOME.name}:x:{os.getuid()}:{os.getgid()}:WHEREIS:{HOME}:/bin/bash\n")
     (temporary / "group").write_text(f"{HOME.name}:x:{os.getgid()}:\n")
     (temporary / "nsswitch.conf").write_text("passwd: files\ngroup: files\nhosts: files dns\n")
-    args = ["/usr/bin/bwrap", "--unshare-all", "--disable-userns", "--assert-userns-disabled",
+    args = ["/usr/bin/bwrap", "--unshare-user", "--unshare-pid", "--unshare-ipc", "--unshare-net",
+            "--unshare-uts", "--unshare-cgroup", "--disable-userns", "--assert-userns-disabled",
             "--die-with-parent", "--new-session", "--cap-drop", "ALL", "--clearenv",
             "--hostname", "whereis-offline", "--proc", "/proc", "--dev", "/dev",
             "--size", str(8 * 1024**2), "--tmpfs", "/dev/shm",
@@ -89,6 +91,7 @@ def bubblewrap(mode, temporary, relay_directory=None):
     args += ["--ro-bind", str(temporary / "marker.json"), "/run/whereis-isolation.json",
              "--ro-bind", str(CONTROL), str(CONTROL),
              "--ro-bind", str(REPO), str(REPO),
+             "--size", str(4 * 1024**2), "--tmpfs", str(REPO / '.opencode'),
              "--ro-bind", str(binary), str(binary)]
     for directory in (".local/state/whereis-programador/logs", ".local/state/whereis-programador/recovery",
                       ".local/share/whereis-programador", ".cache/whereis-programador",
@@ -99,7 +102,7 @@ def bubblewrap(mode, temporary, relay_directory=None):
     for src, dest in ((CONFIG / "instance.env", CONFIG / "instance.env"),
                       (config / "opencode.json", config / "opencode.json"),
                       (config / "agents", config / "agents"),
-                      (config / "agents", HOME / ".local/state/whereis-programador/workdir/.opencode/agents")):
+                      (config / "agents", REPO / ".opencode/agents")):
         args += ["--ro-bind", str(src), str(dest)]
     env = {"HOME": str(HOME), "USER": HOME.name, "LOGNAME": HOME.name,
            "PATH": "/usr/bin:/bin", "LANG": "C.UTF-8", "TMPDIR": "/tmp", "TZ": "UTC",
@@ -117,7 +120,7 @@ def bubblewrap(mode, temporary, relay_directory=None):
         # setpriv removes all capabilities before any verification/runner process.
         args += ["--cap-add", "CAP_NET_BIND_SERVICE", "--cap-add", "CAP_SETPCAP",
                  "--ro-bind", str(relay_directory), "/run/whereis-egress"]
-    cwd = HOME / ".local/state/whereis-programador/workdir"
+    cwd = REPO
     if mode == "tls-smoke":
         command = ["/usr/bin/python3", str(CONTROL / "egress.py")]
     elif mode == "probe":
@@ -137,7 +140,19 @@ def confined(mode):
     with tempfile.TemporaryDirectory(prefix="whereis-offline-", dir=HOME / ".local/state/whereis-programador/tmp") as name:
         os.chmod(name, 0o700)
         relays = []
+        canaries = []
         try:
+            tcp = socket.socket(); canaries.append(tcp)
+            tcp.bind(('127.0.0.1', 0)); tcp.listen()
+            with socket.create_connection(tcp.getsockname(), timeout=1):
+                pass  # Positive host control before the negative namespace check.
+            unix = socket.socket(socket.AF_UNIX); canaries.append(unix)
+            unix.bind(str(Path(name) / 'canary.sock')); unix.listen()
+            abstract = socket.socket(socket.AF_UNIX); canaries.append(abstract)
+            abstract_name = 'whereis-' + uuid.uuid4().hex
+            abstract.bind('\0' + abstract_name); abstract.listen()
+            canary = {'pid': os.getpid(), 'tcp_port': tcp.getsockname()[1],
+                      'unix': str(Path(name) / 'canary.sock'), 'abstract': abstract_name}
             directory = Path(name) / 'egress'
             if mode == 'tls-smoke':
                 from egress import APPROVED, Relay
@@ -146,7 +161,7 @@ def confined(mode):
                     relay = Relay(host, directory)
                     relays.append(relay)
                     relay.start()
-            process = sp.Popen(bubblewrap(mode, Path(name), directory), close_fds=True, start_new_session=True)
+            process = sp.Popen(bubblewrap(mode, Path(name), directory, canary), close_fds=True, start_new_session=True)
             try:
                 return process.wait(timeout=75)
             except sp.TimeoutExpired:
@@ -156,6 +171,8 @@ def confined(mode):
         finally:
             for relay in reversed(relays):
                 relay.close()
+            for canary_socket in canaries:
+                canary_socket.close()
 
 
 def main():

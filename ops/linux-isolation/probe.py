@@ -43,6 +43,25 @@ checks['tmpfs_bounded'] = os.statvfs('/tmp').f_blocks * os.statvfs('/tmp').f_frs
 checks['home_bounded'] = os.statvfs(home).f_blocks * os.statvfs(home).f_frsize <= 96 * 1024**2
 checks['file_limit'] = resource.getrlimit(resource.RLIMIT_FSIZE)[0] == 16 * 1024**2
 checks['core_disabled'] = resource.getrlimit(resource.RLIMIT_CORE)[0] == 0
+canary = marker['canary']
+try:
+    os.kill(canary['pid'], 0)  # Existence check only; no signal is sent.
+except ProcessLookupError:
+    checks['host_pid_hidden'] = True
+else:
+    checks['host_pid_hidden'] = False
+for label, family, address in [('host_tcp_socket', socket.AF_INET, ('127.0.0.1', canary['tcp_port'])),
+                                ('host_unix_socket', socket.AF_UNIX, canary['unix']),
+                                ('host_abstract_socket', socket.AF_UNIX, '\0' + canary['abstract'])]:
+    sock = socket.socket(family); sock.settimeout(0.2)
+    try:
+        sock.connect(address)
+    except OSError:
+        checks[label + '_hidden'] = True
+    else:
+        checks[label + '_hidden'] = False
+    finally:
+        sock.close()
 for label, command in [('new_userns', ['unshare', '-Ur', 'true']), ('sudo', ['sudo', '-n', 'true'])]:
     checks[label + '_rejected'] = sp.run(command, stdout=sp.DEVNULL, stderr=sp.DEVNULL).returncode != 0
 for host in ('127.0.0.1', '169.254.169.254', '10.0.0.1', '1.1.1.1'):

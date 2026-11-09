@@ -21,7 +21,9 @@ def adapt(source):
     result = result.replace(' return r.stdout.strip()', ' return r.stdout if raw else r.stdout.strip()', 1)
     old = 'docs={p:git("show","origin/main:"+p) for p in DOCS}; validate_contract(issue,docs)'
     assert result.count(old) == 1
-    result = result.replace(old, 'docs={p:run("git","show","origin/main:"+p,raw=True) for p in DOCS}; validate_contract(issue,docs)\n heartbeat.start(number)')
+    matched = next(row for row in result.splitlines() if old in row)
+    indent = matched[:len(matched) - len(matched.lstrip())]
+    result = result.replace(old, 'docs={p:run("git","show","origin/main:"+p,raw=True) for p in DOCS}; validate_contract(issue,docs)\n' + indent + 'heartbeat.start(number)')
     tree = ast.parse(result)
     main = tree.body[-1]
     assert isinstance(main, ast.If) and '__name__' in ast.unparse(main.test)
