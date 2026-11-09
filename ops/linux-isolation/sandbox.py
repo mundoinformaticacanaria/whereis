@@ -137,7 +137,7 @@ def confined(mode):
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     resource.setrlimit(resource.RLIMIT_NOFILE, (128, 128))
     resource.setrlimit(resource.RLIMIT_FSIZE, (16 * 1024**2, 16 * 1024**2))
-    with tempfile.TemporaryDirectory(prefix="whereis-offline-", dir=HOME / ".local/state/whereis-programador/tmp") as name:
+    with tempfile.TemporaryDirectory(prefix="wi-", dir=HOME / ".local/state/whereis-programador/tmp") as name:
         os.chmod(name, 0o700)
         relays = []
         canaries = []

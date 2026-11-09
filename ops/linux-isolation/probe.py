@@ -43,6 +43,24 @@ checks['tmpfs_bounded'] = os.statvfs('/tmp').f_blocks * os.statvfs('/tmp').f_frs
 checks['home_bounded'] = os.statvfs(home).f_blocks * os.statvfs(home).f_frsize <= 96 * 1024**2
 checks['file_limit'] = resource.getrlimit(resource.RLIMIT_FSIZE)[0] == 16 * 1024**2
 checks['core_disabled'] = resource.getrlimit(resource.RLIMIT_CORE)[0] == 0
+try:
+    with Path('/tmp/file-limit-test').open('wb') as stream:
+        for _ in range(257): stream.write(b'x' * 65536)
+except OSError as exc:
+    checks['oversized_file_rejected'] = exc.errno == errno.EFBIG
+else:
+    checks['oversized_file_rejected'] = False
+children = []
+try:
+    for _ in range(60):
+        children.append(sp.Popen(['sleep', '5'], stdin=sp.DEVNULL, stdout=sp.DEVNULL, stderr=sp.DEVNULL))
+except OSError as exc:
+    checks['excess_processes_rejected'] = exc.errno == errno.EAGAIN
+else:
+    checks['excess_processes_rejected'] = False
+finally:
+    for child in children: child.terminate()
+    for child in children: child.wait()
 canary = marker['canary']
 try:
     os.kill(canary['pid'], 0)  # Existence check only; no signal is sent.

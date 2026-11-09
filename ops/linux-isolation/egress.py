@@ -38,7 +38,7 @@ class Relay:
     def __init__(self, host, directory, resolver=socket.getaddrinfo):
         self.host = endpoint("https://" + host)
         self.pin = public_pins(host, resolver)
-        self.path = Path(directory) / (host + ".sock")
+        self.path = Path(directory) / (str(APPROVED.index(host)) + ".sock")
         self.process = None
 
     def start(self):
@@ -72,7 +72,7 @@ def inside_relays():
     for index, host in enumerate(APPROVED, 2):
         command = [ACTIVATE, "--listen=127.0.0." + str(index) + ":443",
                    "/usr/bin/setpriv", "--bounding-set=-all", "--inh-caps=-all", "--ambient-caps=-all",
-                   "--no-new-privs", PROXY, "--connections-max=8", "/run/whereis-egress/" + host + ".sock"]
+                   "--no-new-privs", PROXY, "--connections-max=8", "/run/whereis-egress/" + str(APPROVED.index(host)) + ".sock"]
         sp.Popen(command, stdin=sp.DEVNULL, stdout=sp.DEVNULL, stderr=sp.DEVNULL, close_fds=True)
     command = ["/usr/bin/setpriv", "--bounding-set=-all", "--inh-caps=-all", "--ambient-caps=-all",
                "--no-new-privs", "/usr/bin/python3", str(Path(__file__).with_name("network_verify.py"))]
