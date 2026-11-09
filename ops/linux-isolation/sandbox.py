@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Mandatory WHEREIS entry. Offline integration is available; real execution is gated."""
 import json
+import fcntl
 import os
 from pathlib import Path
 import resource
@@ -91,8 +92,8 @@ def bubblewrap(mode, temporary, relay_directory=None, canary=None):
     args += ["--ro-bind", str(temporary / "marker.json"), "/run/whereis-isolation.json",
              "--ro-bind", str(CONTROL), str(CONTROL),
              "--ro-bind", str(REPO), str(REPO),
-             "--size", str(4 * 1024**2), "--tmpfs", str(REPO / '.opencode'),
-             "--ro-bind", str(binary), str(binary)]
+             "--ro-bind", str(binary), str(binary),
+             "--size", str(16 * 1024**2), "--tmpfs", "/work", "--dir", "/work/.opencode"]
     for directory in (".local/state/whereis-programador/logs", ".local/state/whereis-programador/recovery",
                       ".local/share/whereis-programador", ".cache/whereis-programador",
                       ".config/whereis-programador/gh", ".config/whereis-programador/xdg/opencode",
@@ -101,8 +102,8 @@ def bubblewrap(mode, temporary, relay_directory=None, canary=None):
     config = CONFIG / "xdg/opencode"
     for src, dest in ((CONFIG / "instance.env", CONFIG / "instance.env"),
                       (config / "opencode.json", config / "opencode.json"),
-                      (config / "agents", config / "agents"),
-                      (config / "agents", REPO / ".opencode/agents")):
+                      (config / "agents/whereis-programador.md", config / "agents/whereis-programador.md"),
+                      (config / "agents/whereis-programador.md", Path("/work/.opencode/agents/whereis-programador.md"))):
         args += ["--ro-bind", str(src), str(dest)]
     env = {"HOME": str(HOME), "USER": HOME.name, "LOGNAME": HOME.name,
            "PATH": "/usr/bin:/bin", "LANG": "C.UTF-8", "TMPDIR": "/tmp", "TZ": "UTC",
@@ -116,15 +117,14 @@ def bubblewrap(mode, temporary, relay_directory=None, canary=None):
     for key, value in env.items():
         args += ["--setenv", key, value]
     if mode == "tls-smoke":
-        # Only trusted initialization has these capabilities, in the private namespaces.
-        # setpriv removes all capabilities before any verification/runner process.
-        args += ["--cap-add", "CAP_NET_BIND_SERVICE", "--cap-add", "CAP_SETPCAP",
-                 "--ro-bind", str(relay_directory), "/run/whereis-egress"]
-    cwd = REPO
+        args += ["--ro-bind", str(relay_directory), "/run/whereis-egress"]
+    cwd = Path("/work")
     if mode == "tls-smoke":
         command = ["/usr/bin/python3", str(CONTROL / "egress.py")]
     elif mode == "probe":
         command = ["/usr/bin/python3", str(CONTROL / "probe.py")]
+    elif mode == "agents":
+        command = ["/usr/bin/python3", str(CONTROL / "opencode_check.py")]
     elif mode == "selftest":
         command = ["/usr/bin/python3", str(CONTROL / "review.py"), "--self-test"]
     else:
@@ -185,7 +185,9 @@ def main():
         command = ["/usr/bin/systemd-run", "--user", "--scope", "--quiet", "--collect", "--unit=" + unit,
                    "-p", "MemoryMax=320M", "-p", "MemorySwapMax=0", "-p", "TasksMax=48", "-p", "CPUQuota=25%",
                    "/usr/bin/python3", str(CONTROL / "sandbox.py"), "--scoped", args[1]]
-        return sp.run(command, close_fds=True).returncode
+        with (HOME / '.local/state/whereis-programador/review.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return sp.run(command, close_fds=True).returncode
     if len(args) == 2 and args[0] == "--scoped" and args[1] in MODES:
         return confined(args[1])
     raise RuntimeError("Unsupported entry; no unsandboxed fallback")
