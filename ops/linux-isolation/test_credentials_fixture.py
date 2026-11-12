@@ -144,6 +144,47 @@ class CredentialFixtureTests(unittest.TestCase):
         self.assertIn('if not args or args == ["--run"]:', source)
         self.assertIn('Real runner BLOCKED:', source)
 
+    def test_sandbox_private_path_rejects_hardlink(self):
+        from sandbox import private_path
+        path = self.write('{"FIXTURE_KEY":"x"}')
+        os.link(path, self.root / "linked.json")
+        with self.assertRaises(RuntimeError):
+            private_path(path)
+
+    def test_sandbox_private_path_rejects_symlink_parent(self):
+        from sandbox import private_path
+        actual = self.root / "isolated"
+        actual.mkdir()
+        secret = actual / "secret.json"
+        secret.write_text("{}")
+        alias = self.root / "alias"
+        alias.symlink_to(actual, target_is_directory=True)
+        with self.assertRaises(RuntimeError):
+            private_path(alias / "secret.json")
+
+    def test_sandbox_private_path_rejects_wrong_owner(self):
+        from sandbox import private_path
+        from unittest.mock import patch
+        path = self.write("{}")
+        original = Path.lstat
+
+        def other_owner(candidate):
+            result = original(candidate)
+            if candidate == path:
+                fields = list(result)
+                fields[4] = os.getuid() + 1
+                return os.stat_result(fields)
+            return result
+
+        with patch.object(Path, "lstat", other_owner):
+            with self.assertRaises(RuntimeError):
+                private_path(path)
+
+    def test_sandbox_private_path_rejects_directory_as_file(self):
+        from sandbox import private_path
+        with self.assertRaises(RuntimeError):
+            private_path(self.root)
+
 
 if __name__ == "__main__":
     unittest.main()
