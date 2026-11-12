@@ -103,6 +103,20 @@ class CredentialFixtureTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 credential_environment(VALUES, PROFILES, path)
 
+    def test_sandbox_does_not_import_shared_gh_or_provider_auth(self):
+        # Until a reviewed per-file delivery exists, reject accidental host credential exposure.
+        source = Path(__file__).with_name("sandbox.py").read_text()
+        self.assertNotIn('HOME / ".config/gh"', source)
+        self.assertNotIn('HOME / ".ssh"', source)
+        self.assertNotIn('"--ro-bind", str(CONFIG / "auth")', source)
+        self.assertNotIn('"--bind", str(CONFIG / "auth")', source)
+
+    def test_real_execution_stays_explicitly_blocked(self):
+        # This is a source-level guard only; it does not replace host integration QA.
+        source = Path(__file__).with_name("sandbox.py").read_text()
+        self.assertIn('if not args or args == ["--run"]:', source)
+        self.assertIn('Real runner BLOCKED:', source)
+
 
 if __name__ == "__main__":
     unittest.main()
