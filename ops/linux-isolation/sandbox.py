@@ -105,6 +105,15 @@ def bubblewrap(mode, temporary, relay_directory=None, canary=None):
                       (config / "agents/whereis-programador.md", config / "agents/whereis-programador.md"),
                       (config / "agents/whereis-programador.md", Path("/work/.opencode/agents/whereis-programador.md"))):
         args += ["--ro-bind", str(src), str(dest)]
+    # Credentials remain absent in offline modes. No host auth directory is ever exposed.
+    # A future real-run path must separately validate and mount individual files,
+    # after explicit authorization and independent QA of its final HEAD.
+    for forbidden in (CONFIG / "gh/hosts.yml", CONFIG / "auth/provider.json"):
+        if forbidden.exists() or forbidden.is_symlink():
+            private_path(forbidden)
+            if stat.S_IMODE(forbidden.lstat().st_mode) != 0o600:
+                raise RuntimeError("Credential file permissions rejected")
+    # Deliberately do not bind these files: offline probes must not read secrets.
     env = {"HOME": str(HOME), "USER": HOME.name, "LOGNAME": HOME.name,
            "PATH": "/usr/bin:/bin", "LANG": "C.UTF-8", "TMPDIR": "/tmp", "TZ": "UTC",
            "PYTHONDONTWRITEBYTECODE": "1", "GIT_CONFIG_NOSYSTEM": "1",
