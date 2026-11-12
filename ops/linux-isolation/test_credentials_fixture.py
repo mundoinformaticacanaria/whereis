@@ -144,6 +144,12 @@ class CredentialFixtureTests(unittest.TestCase):
         self.assertIn('if not args or args == ["--run"]:', source)
         self.assertIn('Real runner BLOCKED:', source)
 
+    def test_sandbox_private_path_rejects_readable_credentials(self):
+        from sandbox import private_path
+        path = self.write('{"FIXTURE_KEY":"x"}', 0o644)
+        with self.assertRaises(RuntimeError):
+            private_path(path)
+
     def test_sandbox_private_path_rejects_hardlink(self):
         from sandbox import private_path
         path = self.write('{"FIXTURE_KEY":"x"}')
