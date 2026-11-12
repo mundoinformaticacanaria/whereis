@@ -28,6 +28,8 @@ def private_path(path, directory=False):
         raise RuntimeError("Unexpected path owner/link")
     if directory != stat.S_ISDIR(meta.st_mode) or (not directory and meta.st_nlink != 1):
         raise RuntimeError("Unexpected path type/link count")
+    if not directory and stat.S_IMODE(meta.st_mode) != 0o600:
+        raise RuntimeError("Private file permissions rejected")
     for parent in path.parents:
         if parent.is_symlink():
             raise RuntimeError("Symlink ancestor rejected")
