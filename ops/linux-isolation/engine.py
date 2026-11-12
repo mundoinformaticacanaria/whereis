@@ -46,7 +46,22 @@ def credential_environment(values, profiles, path):
     meta = path.lstat()
     if not stat.S_ISREG(meta.st_mode) or meta.st_uid != os.getuid() or meta.st_nlink != 1 or meta.st_mode & 0o077:
         raise ValueError("Private exclusive credential file required")
-    data = json.loads(path.read_text())
+    if any(parent.is_symlink() for parent in path.parents):
+        raise ValueError("Symlink credential ancestor rejected")
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    try:
+        opened = os.fstat(fd)
+        if (opened.st_dev, opened.st_ino) != (meta.st_dev, meta.st_ino):
+            raise ValueError("Credential changed during validation")
+        if (not stat.S_ISREG(opened.st_mode) or opened.st_uid != os.getuid()
+                or opened.st_nlink != 1 or opened.st_mode & 0o077):
+            raise ValueError("Private exclusive credential file required")
+        with os.fdopen(fd, "r") as stream:
+            fd = -1
+            data = json.load(stream)
+    finally:
+        if fd >= 0:
+            os.close(fd)
     key = profile["credential_env"]
     if set(data) != {key} or not isinstance(data[key], str) or not data[key].strip():
         raise ValueError("Missing dedicated provider credential")
