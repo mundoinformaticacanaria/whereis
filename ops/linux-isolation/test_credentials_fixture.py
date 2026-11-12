@@ -61,6 +61,33 @@ class CredentialFixtureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             credential_environment(VALUES, PROFILES, self.secret)
 
+    def test_symlinked_parent_rejected(self):
+        actual = self.root / "private"
+        actual.mkdir()
+        secret = actual / "own.json"
+        secret.write_text('{"FIXTURE_KEY":"x"}')
+        secret.chmod(0o600)
+        alias = self.root / "alias"
+        alias.symlink_to(actual, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, alias / "own.json")
+
+    def test_file_replaced_between_stat_and_open_rejected(self):
+        from unittest.mock import patch
+        path = self.write('{"FIXTURE_KEY":"x"}')
+        original_open = os.open
+
+        def replace_before_open(candidate, flags, *args, **kwargs):
+            if Path(candidate) == path:
+                path.unlink()
+                path.write_text('{"FIXTURE_KEY":"replacement"}')
+                path.chmod(0o600)
+            return original_open(candidate, flags, *args, **kwargs)
+
+        with patch("engine.os.open", side_effect=replace_before_open):
+            with self.assertRaises(ValueError):
+                credential_environment(VALUES, PROFILES, path)
+
     def test_hardlink_rejected(self):
         path = self.write('{"FIXTURE_KEY":"x"}')
         os.link(path, self.root / "other.json")
