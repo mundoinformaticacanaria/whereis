@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+set +x
+umask 077
+# This entry never sources shared configuration and has no unsandboxed fallback.
+exec /usr/bin/python3 "$HOME/.local/libexec/whereis-programador/sandbox.py" --run "$@"
