@@ -1,0 +1,108 @@
+"""Synthetic negative gates for #100; no real credentials, API calls or runner invocation.
+
+These tests validate the provider credential parser only. They do NOT certify
+sandbox mounts, GH permissions, process-level isolation or host egress.
+"""
+import json
+import os
+from pathlib import Path
+import tempfile
+import unittest
+
+from engine import credential_environment
+
+PROFILES = {
+    "fixture": {
+        "approved": True,
+        "endpoint": "https://example.invalid",
+        "package": "fixture-only",
+        "credential_env": "FIXTURE_KEY",
+    }
+}
+VALUES = {"MODEL": "fixture/offline"}
+
+
+class CredentialFixtureTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.secret = self.root / "own.json"
+
+    def write(self, payload, mode=0o600):
+        self.secret.write_text(payload)
+        self.secret.chmod(mode)
+        return self.secret
+
+    def test_private_dedicated_fixture_is_accepted(self):
+        path = self.write(json.dumps({"FIXTURE_KEY": "not-a-token-fixture"}))
+        self.assertEqual(
+            credential_environment(VALUES, PROFILES, path),
+            {"FIXTURE_KEY": "not-a-token-fixture"},
+        )
+
+    def test_absent_file_fails_closed(self):
+        with self.assertRaises(FileNotFoundError):
+            credential_environment(VALUES, PROFILES, self.secret)
+
+    def test_world_readable_file_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":"x"}', 0o644))
+
+    def test_group_readable_file_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":"x"}', 0o640))
+
+    def test_symlink_rejected(self):
+        target = self.root / "target.json"
+        target.write_text('{"FIXTURE_KEY":"x"}')
+        target.chmod(0o600)
+        self.secret.symlink_to(target)
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.secret)
+
+    def test_hardlink_rejected(self):
+        path = self.write('{"FIXTURE_KEY":"x"}')
+        os.link(path, self.root / "other.json")
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, path)
+
+    def test_malformed_json_rejected(self):
+        with self.assertRaises(json.JSONDecodeError):
+            credential_environment(VALUES, PROFILES, self.write("{broken"))
+
+    def test_other_provider_key_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"SHARED_KEY":"x"}'))
+
+    def test_extra_key_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":"x","OTHER":"y"}'))
+
+    def test_empty_key_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":"  "}'))
+
+    def test_directory_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.root)
+
+    def test_owner_mismatch_rejected(self):
+        # Mock only the metadata returned by lstat; never change host ownership.
+        from unittest.mock import patch
+        original = Path.lstat
+        path = self.write('{"FIXTURE_KEY":"x"}')
+        def fake_lstat(candidate):
+            result = original(candidate)
+            if candidate == path:
+                fields = list(result)
+                fields[4] = os.getuid() + 1
+                return os.stat_result(fields)
+            return result
+        with patch.object(Path, "lstat", fake_lstat):
+            with self.assertRaises(ValueError):
+                credential_environment(VALUES, PROFILES, path)
+
+
+if __name__ == "__main__":
+    unittest.main()
