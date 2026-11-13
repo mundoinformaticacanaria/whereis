@@ -4,7 +4,7 @@
 
 Este repositorio gobierna el desarrollo del proyecto **Whereis**, una aplicación Android de consulta de ubicación autorizada entre dispositivos. Los contratos funcionales y arquitectónicos concretos se documentan en sus baselines y decisiones; no se infieren de este archivo.
 
-La [decisión G-01 V3](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) fijó cinco roles iniciales. **G-02** ([orquestación](docs/decisiones/G-02-orquestacion-qwen-codex-chatgpt.md)) activa además `ARQUITECTO` (Codex), identifica los programadores `PROGRAMADOR-LINUX` y `CODEX` y establece el enrutamiento mediante labels. Seis roles operativos; `DEVOPS` y `COMERCIAL` siguen no activos. Los campos `PENDIENTE` no se completan por intuición.
+La [decisión G-01 V3](docs/decisiones/G-01-gobernanza-minima-cinco-roles.md) fijó cinco roles iniciales. **G-02** ([orquestación](docs/decisiones/G-02-orquestacion-qwen-codex-chatgpt.md)) activa además `ARQUITECTO` (chat ChatGPT independiente según enmienda #37), identifica los programadores `PROGRAMADOR-LINUX` y `CODEX` y establece el enrutamiento mediante labels. Seis roles operativos; `DEVOPS` y `COMERCIAL` siguen no activos. Los campos `PENDIENTE` no se completan por intuición.
 
 ## Fuente de verdad
 
@@ -54,18 +54,18 @@ No resolver contradicciones por intuición.
 
 ## Roles, ejecutores y siguiente acción
 
-**CONFIRMADO — G-02:** roles operativos `PROPIETARIO` (humano), `FUNCIONAL` (chat ChatGPT independiente), `TECH LEAD` (chat ChatGPT), `ARQUITECTO` (Codex), `PROGRAMADOR` (PROGRAMADOR-LINUX o CODEX) y `QA` (Codex o ChatGPT independiente del autor).
+**CONFIRMADO — G-02, enmienda #37:** roles operativos `PROPIETARIO` (humano), `FUNCIONAL` (chat ChatGPT independiente), `TECH LEAD` (chat ChatGPT), `ARQUITECTO` (chat ChatGPT dedicado e independiente de TECH LEAD/QA), `PROGRAMADOR` (PROGRAMADOR-LINUX o CODEX) y `QA` (Codex o ChatGPT independiente del autor).
 
 - `PROPIETARIO`: decide alcance, requisitos materiales, proveedores, gastos y autorizaciones reservadas.
 - `FUNCIONAL`: requisitos, permisos funcionales, flujos y aceptación; propone sin autoaprobar decisiones materiales.
 - `TECH LEAD`: dueño del backlog de issues sin label de rol; arquitectura y desarrollo coordinados, asignación por riesgo, revisión final y merge.
-- `ARQUITECTO`: Codex; propuestas y validación arquitectónica, sin facultad de aprobar gastos/proveedores o alterar requisitos.
+- `ARQUITECTO`: chat ChatGPT independiente dedicado; propuestas y evaluación arquitectónica, sin aprobar gastos/proveedores/requisitos, sin actuar como TECH LEAD o QA de su propio trabajo y sin merge. Codex conserva sus funciones de PROGRAMADOR y QA independiente cuando corresponda.
 - `PROGRAMADOR`: exige en el cuerpo **Ejecutor autorizado: PROGRAMADOR-LINUX** o **Ejecutor autorizado: CODEX**; solo implementación asignada, PR y no merge.
 - `QA`: revisor independiente, `APTO` / `DEFECTOS` / `BLOQUEADO`, sin modificar el código evaluado ni realizar merge.
 
 `DEVOPS` y `COMERCIAL` quedan como especialidades no activas por defecto; su intervención requiere autorización.
 
-**Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
+**Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** Si hay dos o más labels de rol, es un error de enrutamiento: solo TECH LEAD puede inspeccionar/abordar la issue para retirar labels sobrantes y asignar un único responsable; ningún otro rol ejecuta trabajo sustantivo hasta corregirlo (decisión #38). `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
 
 Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
@@ -87,7 +87,7 @@ Prefijos de rama de trabajo: `programador-linux/<issue>-<slug>` para PROGRAMADOR
 
 ## Handoffs funcionales y de desarrollo
 
-- Decisiones funcionales materiales: `FUNCIONAL → PROPIETARIO (aprueba) → TECH LEAD`, con criterios de aceptación registrados. Análisis estructural: `ARQUITECTO (Codex) → TECH LEAD`, o `PROPIETARIO` si requiere autoridad humana.
+- Decisiones funcionales materiales: `FUNCIONAL → PROPIETARIO (aprueba) → TECH LEAD`, con criterios de aceptación registrados. Análisis estructural: `ARQUITECTO (chat ChatGPT independiente) → TECH LEAD`, o `PROPIETARIO` si requiere autoridad humana. La issue y sus comentarios registran propuesta, evidencias y handoff; la propuesta no aprueba baseline.
 - Desarrollo autorizado: `PROGRAMADOR + ejecutor → QA independiente → TECH LEAD → merge o devolución`.
 - El Programador implementa; QA revisa de forma adversarial e independiente del autor, y devuelve `APTO`, `DEFECTOS` o `BLOQUEADO`. Para PR creadas por `CODEX`, QA = chat de ChatGPT independiente; para `PROGRAMADOR-LINUX`, QA = Codex o ChatGPT independiente. La misma implementación no puede autorrevisarse. Ante defectos o bloqueo no hay merge.
 - QA nunca hace merge; Tech Lead conserva la revisión final de calidad, integración, prioridad y merge.
@@ -172,7 +172,7 @@ Política: `docs/logs/README.md`.
 
 Los logs son heartbeat e histórico auxiliar, nunca fuente de verdad.
 
-Cada rol con heartbeat **operativamente definido** cumple su política de inicio y fin de ciclo. En Whereis, la zona horaria, rama y ficheros de heartbeat están `PENDIENTE`; no fabricar registros ni dar por activada una configuración no aprobada.
+Decisión material del PROPIETARIO [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38#issuecomment-6395402627): referencia UTC con hora Atlantic/Canary adicional entre corchetes, precisión de segundos; intervenciones por issue con ID único, INICIO/FIN emparejados, ventana de 30 minutos y 100 entradas recientes por log de rol en rama `ops/logs`. Los fallos de GitHub/logs no detienen ni modifican la automatización horaria TECH LEAD; las mutaciones inseguras se suspenden si faltan precondiciones verificables. **Rama `ops/logs` y ficheros de roles activos creados y leídos** (evidencia en #38); la política aún no está integrada en `main` y siguen pendientes validación integral, concurrencia real y QA independiente. No fabricar registros. Los timers Linux siguen desactivados salvo autorización independiente.
 
 ## Regla final
 

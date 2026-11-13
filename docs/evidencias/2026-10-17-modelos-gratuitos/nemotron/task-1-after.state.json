@@ -1,0 +1,33 @@
+{
+  "branch": "eval/task-1",
+  "head": "fd4bab5822d1ae4d21d1591d088837e55d877498",
+  "status": "",
+  "diff_worktree": "",
+  "diff_staged": "",
+  "diff_from_start": "diff --git a/src/shipping.py b/src/shipping.py\nindex 7868109..de976f9 100644\n--- a/src/shipping.py\n+++ b/src/shipping.py\n@@ -1,3 +1,7 @@\n def shipping_cents(subtotal):\n     \"\"\"Return domestic shipping cost in integer cents.\"\"\"\n+    if subtotal < 0:\n+        raise ValueError(\"subtotal must be non-negative\")\n+    if subtotal >= 10000:\n+        return 0\n     return 500\ndiff --git a/tests/test_shipping.py b/tests/test_shipping.py\nindex cdc1556..c918bab 100644\n--- a/tests/test_shipping.py\n+++ b/tests/test_shipping.py\n@@ -4,3 +4,19 @@ from src.shipping import shipping_cents\n class ShippingTests(unittest.TestCase):\n     def test_small_order(self):\n         self.assertEqual(shipping_cents(900), 500)\n+\n+    def test_negative_subtotal_raises(self):\n+        with self.assertRaises(ValueError):\n+            shipping_cents(-1)\n+\n+    def test_zero_subtotal(self):\n+        self.assertEqual(shipping_cents(0), 500)\n+\n+    def test_border_below_10000(self):\n+        self.assertEqual(shipping_cents(9999), 500)\n+\n+    def test_border_at_10000(self):\n+        self.assertEqual(shipping_cents(10000), 0)\n+\n+    def test_border_above_10000(self):\n+        self.assertEqual(shipping_cents(10001), 0)\n",
+  "changed": "src/shipping.py\ntests/test_shipping.py\n",
+  "commits": "fd4bab5822d1ae4d21d1591d088837e55d877498 Task 1: implement shipping_cents with negative subtotal error and free shipping over 10000 cents; add boundary and negative tests\n",
+  "refs": "fd4bab5822d1ae4d21d1591d088837e55d877498 refs/heads/eval/task-1\nccc3e9463506b5b6cecf5b1b1e624497f63b266e refs/heads/main\nf8c2387694b9c2d87474574fa6fa023c5e02e759 refs/heads/other/task-99\n",
+  "tests": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": "test_even (test_allocations.AllocationTests.test_even) ... ok\ntest_zero_discount (test_billing.BillingTests.test_zero_discount) ... ok\ntest_plain (test_packaging.PackagingTests.test_plain) ... ok\ntest_border_above_10000 (test_shipping.ShippingTests.test_border_above_10000) ... ok\ntest_border_at_10000 (test_shipping.ShippingTests.test_border_at_10000) ... ok\ntest_border_below_10000 (test_shipping.ShippingTests.test_border_below_10000) ... ok\ntest_negative_subtotal_raises (test_shipping.ShippingTests.test_negative_subtotal_raises) ... ok\ntest_small_order (test_shipping.ShippingTests.test_small_order) ... ok\ntest_zero_subtotal (test_shipping.ShippingTests.test_zero_subtotal) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.001s\n\nOK\n"
+  },
+  "files": {
+    ".gitignore": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
+    "AGENTS.md": "bc9fe4a67e862b91d75bb9aa7b16918949a3a1174482c1acb6bc19462b4236ad",
+    "README.md": "81c8914edfdab0011581c89fcd8169b5106f769ad1b9028be4fdafa5e98b463a",
+    "src/tax.py": "adc8d5e14c496a2658c0373f68119c4c6f29631a0dc77ff6dd3fc27e8b7bb52a",
+    "src/allocations.py": "b83d716264b1bf876dfb061ae7724c36f7ad89aeb47de48002d9be0688dd6479",
+    "src/packaging.py": "f123ae92ffa2d24861f2944153ac7af4ee280de8ede453b568fdf59917e4b2e5",
+    "src/shipping.py": "002a42de1275d0a2be99f4216f3170f06f52997c4ca67586fe35469f473b4176",
+    "src/billing.py": "3379e14c1332a83270316bc22e72ba543a29d2d2ff8c8d0b7e32e93fb75a5aa0",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_shipping.py": "72c3cac83370bfdde2d20c3c15b77efa3969868c2425162fcee1e39d54373c9c",
+    "tests/test_allocations.py": "77f2f79e39f588c0b9fdfcdfb4672b2828c5bcf7cd90fd7e2cf8d04934cbb247",
+    "tests/test_packaging.py": "6c0585bbd7671cbda2c2dda3caf14224f38425328c318ba1fca8c0627863b3ab",
+    "tests/test_billing.py": "4fa9089e3f6d180a9825b0ca46e0f6c18bfe3762bd6048c5f8d477eb2c580d87",
+    "notes/task-99.md": "bb48c653c53fe9687c820f7b0f4229efcd609456131b305bb5eec40b2d1e6867",
+    "notes/other-work.txt": "9a5e28515dc5fea94289f97a5da033a49817a8c49004b81c7056c9514445ad1a"
+  }
+}

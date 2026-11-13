@@ -23,6 +23,31 @@ El RUNBOOK inspeccionado tenía 88 líneas y fecha declarada 17/10/2026. Es una 
 | Evaluación Nemotron | Ya conservada en #28 / PR #29; no se duplica. |
 | Inventario y mecanismo configure-model | Conservados abajo tras inspección; no autorizan ejecución. |
 
+## Aislamiento multiproyecto obligatorio — criterio confirmado el 23/10/2026
+
+**CONFIRMADO por el PROPIETARIO** en [#28](https://github.com/mundoinformaticacanaria/whereis/issues/28#issuecomment-6372583456): el servidor Linux **no es dedicado a WHEREIS**. A la instancia de `PROGRAMADOR-LINUX` le corresponde operar **exclusivamente** `mundoinformaticacanaria/whereis`. La unidad de operación es **una instancia de runner por proyecto**. El runner de `mundoinformaticacanaria/crm-remisiones-veterinarias` es de otro proyecto, autónomo y ajeno a los contratos funcionales y gobernanza de WHEREIS.
+
+**CRM intocable:** no cambiar, reiniciar ni detener repositorio, runner, agente, modelo, configuración, servicios/timers, locks, caché, estado ni recovery de CRM. Solo inspección técnica de lectura si es imprescindible para comprobar aislamiento, colisiones o recursos comunes. No usar scripts, tests ni decisiones CRM como si fueran de WHEREIS.
+
+**Componentes compartidos permitidos:** herramientas globales como OpenCode, Git, GitHub CLI y Python, sin compartir las **configuraciones por instancia**. Priorizar HOME/XDG/configuración propia frente a alteraciones globales. Cualquier cambio global con posibilidad de impacto cruzado es **MATERIAL** y requiere aprobación específica; no lo ejecuta la actual autorización de reconciliación local. El aislamiento no obliga a desarrollar ahora un framework común ni a copiar indiscriminadamente runners.
+
+### Matriz de validación previa a declarar WHEREIS preparado
+
+| Superficie | Evidencia necesaria, pendiente de comprobación directa |
+|---|---|
+| Repo y selección de issues | Solo WHEREIS: checkout, remoto, política de labels, ejecutor autorizado y ramas `programador-linux/`; ninguna selección cruzada |
+| Identidad/modelo/agente | `PROGRAMADOR-LINUX` estable; modelo seleccionable sin cambiar identidad, contrato, locks ni nombres de unidades; agente y protocolo model-neutral |
+| Configuración y entorno | Instancia propia, variables específicas, directorios HOME/XDG y sesión/configuración OpenCode independientes |
+| Estado, caché y recuperación | Rutas distintas por proyecto, incluidas sesiones, archivos temporales, estado, cache y recovery; sin sobrescritura cruzada |
+| Locks y concurrencia | Locks únicos por instancia; un bloqueo/recovery de WHEREIS no detiene ni desbloquea otro proyecto |
+| Servicios, timers y runtime | Nombres únicos de `systemd`, timers, `RuntimeDirectory`, entorno de unidades, procesos y puertos (si existieran), sin colisiones |
+| Aislamiento de fallo | Un fallo o cambio de modelo de WHEREIS no afecta CRM ni compromete futuras instancias |
+| Estado efectivo | Timer WHEREIS comprobado inactivo/deshabilitado mediante las unidades/planificadores aplicables; sin ejecución real ni desatendida |
+
+La referencia histórica «CRM a `:15`, WHEREIS a `:45`» solo ayuda a evitar solapamientos si algún día se autoriza operar ambos; **no** implica un runner común ni habilita el timer de WHEREIS. Añadir un tercer proyecto debería requerir crear su instancia, no modificar las existentes salvo necesidad compartida real y autorización MATERIAL.
+
+**PENDIENTE / NO VERIFICADO en servidor en este documento:** las propiedades anteriores son criterios de aceptación, **no resultados de una auditoría ya realizada**. Toda evidencia real debe registrarse de forma sanitizada en #28. No se introducen decisiones de CRM en la gobernanza de WHEREIS.
+
 ## Inventario operativo
 
 Rutas relativas a HOME, sin revelar ubicaciones de credenciales:

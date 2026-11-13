@@ -18,7 +18,7 @@ GitHub es la fuente de verdad: [repositorio](https://github.com/mundoinformatica
 | PROPIETARIO | Persona propietaria |
 | FUNCIONAL | ChatGPT conversacional |
 | TECH LEAD o issue sin label de rol | ChatGPT Tech Lead activo |
-| ARQUITECTO | Codex |
+| ARQUITECTO | ChatGPT dedicado e independiente de TECH LEAD y de QA de su propio trabajo (decisión #37) |
 | PROGRAMADOR | PROGRAMADOR-LINUX o CODEX según campo `Ejecutor autorizado` de la issue |
 | QA | Codex o ChatGPT **independiente del autor** |
 
@@ -27,8 +27,8 @@ GitHub es la fuente de verdad: [repositorio](https://github.com/mundoinformatica
 ## Guías listas para entregar
 
 - [PROGRAMADOR-LINUX](docs/orquestacion/programador-linux.md) — ejecutor Linux con modelo configurable
-- [Codex Arquitecto / Programador / QA de PROGRAMADOR-LINUX](docs/orquestacion/codex.md)
-- [Chats ChatGPT Funcional / Tech Lead / QA](docs/orquestacion/chatgpt-roles.md)
+- [Codex Programador / QA independiente cuando proceda](docs/orquestacion/codex.md)
+- [Chats ChatGPT Funcional / Tech Lead / Arquitecto dedicado / QA independiente](docs/orquestacion/chatgpt-roles.md)
 
 ## Desarrollo y calidad
 

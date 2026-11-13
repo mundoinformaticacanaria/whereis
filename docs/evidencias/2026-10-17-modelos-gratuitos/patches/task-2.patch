@@ -1,0 +1,32 @@
+diff --git a/src/packaging.py b/src/packaging.py
+index d64a132..a6134de 100644
+--- a/src/packaging.py
++++ b/src/packaging.py
+@@ -3 +3,4 @@ def package_label(name):
+-    return name
++    stripped = name.strip()
++    if not stripped:
++        raise ValueError("Input string is empty or contains only whitespace")
++    return stripped.upper()
+diff --git a/tests/test_packaging.py b/tests/test_packaging.py
+index 54162a4..b2a3165 100644
+--- a/tests/test_packaging.py
++++ b/tests/test_packaging.py
+@@ -6,0 +7,17 @@ class PackagingTests(unittest.TestCase):
++
++    def test_strip_whitespace(self):
++        self.assertEqual(package_label("  box  "), "BOX")
++
++    def test_lowercase(self):
++        self.assertEqual(package_label("box"), "BOX")
++
++    def test_mixed_case_with_whitespace(self):
++        self.assertEqual(package_label("  BoX  "), "BOX")
++
++    def test_empty_string(self):
++        with self.assertRaises(ValueError):
++            package_label("")
++
++    def test_whitespace_only(self):
++        with self.assertRaises(ValueError):
++            package_label("   ")

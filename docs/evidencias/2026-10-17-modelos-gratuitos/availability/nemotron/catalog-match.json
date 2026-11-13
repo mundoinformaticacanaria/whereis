@@ -1,0 +1,23 @@
+{
+  "found": true,
+  "model": "nvidia/nemotron-3-super-120b-a12b:free",
+  "pricing": {
+    "prompt": "0",
+    "completion": "0"
+  },
+  "context_length": 262144,
+  "supported_parameters": [
+    "include_reasoning",
+    "max_tokens",
+    "reasoning",
+    "reasoning_effort",
+    "response_format",
+    "seed",
+    "structured_outputs",
+    "temperature",
+    "tool_choice",
+    "tools",
+    "top_p"
+  ],
+  "expiration_date": null
+}

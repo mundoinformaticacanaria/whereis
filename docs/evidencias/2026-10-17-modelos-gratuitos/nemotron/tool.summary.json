@@ -1,0 +1,11 @@
+{
+  "exit": 0,
+  "seconds": 8.6,
+  "event_types": [
+    "step_finish",
+    "step_start",
+    "text",
+    "tool_use"
+  ],
+  "errors": []
+}

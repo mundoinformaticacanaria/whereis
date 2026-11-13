@@ -1,0 +1,30 @@
+diff --git a/src/shipping.py b/src/shipping.py
+index 7868109..de976f9 100644
+--- a/src/shipping.py
++++ b/src/shipping.py
+@@ -2,0 +3,4 @@ def shipping_cents(subtotal):
++    if subtotal < 0:
++        raise ValueError("subtotal must be non-negative")
++    if subtotal >= 10000:
++        return 0
+diff --git a/tests/test_shipping.py b/tests/test_shipping.py
+index cdc1556..c918bab 100644
+--- a/tests/test_shipping.py
++++ b/tests/test_shipping.py
+@@ -6,0 +7,16 @@ class ShippingTests(unittest.TestCase):
++
++    def test_negative_subtotal_raises(self):
++        with self.assertRaises(ValueError):
++            shipping_cents(-1)
++
++    def test_zero_subtotal(self):
++        self.assertEqual(shipping_cents(0), 500)
++
++    def test_border_below_10000(self):
++        self.assertEqual(shipping_cents(9999), 500)
++
++    def test_border_at_10000(self):
++        self.assertEqual(shipping_cents(10000), 0)
++
++    def test_border_above_10000(self):
++        self.assertEqual(shipping_cents(10001), 0)

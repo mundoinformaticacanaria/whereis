@@ -1,0 +1,64 @@
+{
+  "time": "2026-10-18T22:11:40.214729+00:00",
+  "inkling": {
+    "catalog": true,
+    "pricing": {
+      "prompt": "0",
+      "completion": "0"
+    },
+    "direct": {
+      "status": 403,
+      "error": {
+        "message": "thinkingmachines/inkling:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "code": 403,
+        "metadata": {
+          "routing_funnel": [
+            {
+              "step": "Initial Endpoints",
+              "endpoint_count": 1
+            }
+          ],
+          "failed_routing_step": "Gate Free Endpoints by Agentic Harness"
+        }
+      },
+      "seconds": 0.1
+    }
+  },
+  "nemotron": {
+    "catalog": true,
+    "pricing": {
+      "prompt": "0",
+      "completion": "0"
+    },
+    "direct": {
+      "status": 200,
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "provider": "Nvidia",
+      "content": "EVAL_OK",
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 41,
+        "total_tokens": 64,
+        "cost": 0,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0,
+          "upstream_inference_prompt_cost": 0,
+          "upstream_inference_completions_cost": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 35,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "seconds": 0.8
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "inkling": {
+    "gate": "FAIL_DIRECT",
+    "direct": {
+      "status": 403,
+      "error": {
+        "message": "thinkingmachines/inkling:free is only available on agentic harnesses. Try plugging it into a coding agent or productivity app listed on https://openrouter.ai/apps",
+        "code": 403,
+        "metadata": {
+          "routing_funnel": [
+            {
+              "step": "Initial Endpoints",
+              "endpoint_count": 1
+            }
+          ],
+          "failed_routing_step": "Gate Free Endpoints by Agentic Harness"
+        }
+      },
+      "seconds": 0.1
+    }
+  },
+  "nemotron": {
+    "gate": "REVIEW_TOOL",
+    "minimal": {
+      "exit": 0,
+      "seconds": 15.5,
+      "event_types": [
+        "step_finish",
+        "step_start",
+        "text"
+      ],
+      "errors": []
+    },
+    "tool": {
+      "exit": 0,
+      "seconds": 8.6,
+      "event_types": [
+        "step_finish",
+        "step_start",
+        "text",
+        "tool_use"
+      ],
+      "errors": []
+    }
+  }
+}

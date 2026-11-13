@@ -1,0 +1,15 @@
+[
+  {
+    "type": "tool_use",
+    "tool": "read",
+    "status": "completed",
+    "input": {
+      "path": "probe.txt"
+    },
+    "output": "Read file probe.txt, lines 1-1\n1: TOOL_PROBE_7D4A"
+  },
+  {
+    "type": "text",
+    "text": "TOOL_PROBE_7D4A"
+  }
+]
