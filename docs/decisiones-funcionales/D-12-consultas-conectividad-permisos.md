@@ -38,3 +38,20 @@
 
 ## PENDIENTE / técnico
 No prometer precisión, recepción de notificaciones, verificación exacta de estado remoto ni revocación instantánea offline; permisos/versiones Android, timeout, concurrencia, colas, batería, recuperación de red, accesibilidad y pruebas de error a cargo de TECH LEAD. Considerar salvaguardas y consentimiento en contexto de menores. Relacionadas #2, #6, #10, #12, #16. No se aprueba infraestructura ni implementación.
+
+
+## Aceptación de precedencia Q1→G — UX114 (casos NO EJECUTADOS)
+
+**Autoridad:** [decisión B del PROPIETARIO #114/6845631908](https://github.com/mundoinformaticacanaria/whereis/issues/114#issuecomment-6845631908). Estas son condiciones observables propuestas para QA futura, no resultados de pruebas Android ni aprobación de implementación.
+
+| Caso | Precondición y acción | Resultado exigido / negativo prohibido |
+|---|---|---|
+| **UX114-01** | A autorizado, Q1 individual pendiente; pulsar «Actualizar todos» G | G reutiliza Q1, consulta los otros elegibles; ninguna segunda Q a A ni reinicio de plazo |
+| **UX114-02** | Q1 reutilizada responde con posición legítima durante G | Posición, estado individual y resumen grupal actualizados **una vez**; el mapa no se recentra por Q1 |
+| **UX114-03** | Q1 reutilizada tiene éxito y G termina después | G no aplica centrado diferido por Q1; no duplica captura ni contabiliza dos éxitos |
+| **UX114-04** | Solo consulta individual de A, sin colisión G; éxito legítimo | Se centra la nueva posición de A; fallo o timeout no centra |
+| **UX114-05** | Existe última posición legítima conservada; pulsar «Whereis» | Centrado explícito sobre esa posición sin consulta nueva, incluso si G no había recentrado |
+| **UX114-06** | Q1 reutilizada falla, vence timeout o llega callback posterior al timeout | No se recentra ni se altera ubicación/estado terminal por callback tardío; se conserva aviso/última posición permitida |
+| **UX114-07** | Durante G cambian selección/ficha o se revoca, bloquea, borra o reinstala A | Ningún resultado concede permiso, roba foco, resucita datos ni abre una ficha; la selección por lista no consulta ni recentra |
+
+**PENDIENTE independiente:** segunda pulsación global durante G activa, [#120](https://github.com/mundoinformaticacanaria/whereis/issues/120). No adoptar por inferencia la opción A/coalescencia de [ADR-PROP-108 PR #112 §5](https://github.com/mundoinformaticacanaria/whereis/pull/112): su precedencia anterior queda **SUPERSEDED** por B, y el ADR requiere conciliación ajena a FUNCIONAL. La cancelación visual de G y los plazos siguen bajo #115/#119; no se define aquí timeout, concurrencia, transporte ni Android. Permanecen D-06/D-08/D-12/SEG y gates existentes.
