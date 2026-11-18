@@ -100,3 +100,10 @@ El contrato de D-07 sigue `CONFIRMADO`, y D-08 **añade** la vista inicial, acce
 - **TECH LEAD:** siguiente responsable de revisión documental conforme a G-02 vigente, con apoyo de ARQUITECTO activo para evaluar Android y seguridad; sin autorización de proveedores, gastos ni implementación.
 - **QA:** mantiene independencia en futuras implementaciones.
 - **Baseline funcional global / autorización de desarrollo:** `PENDIENTE`.
+
+
+## Precedencia UX en colisión individual → «Actualizar todos» (opción B CONFIRMADA, #114)
+
+**Autoridad:** decisión expresa del PROPIETARIO [#114, comentario 6845631908](https://github.com/mundoinformaticacanaria/whereis/issues/114#issuecomment-6845631908); formalización #118. Cuando una consulta individual Q1 de A sigue pendiente y se pulsa «Actualizar todos» (G), G **reutiliza** Q1: no genera una segunda consulta a A, no reinicia su plazo y no duplica resultado, captura ni cómputo. Si Q1 obtiene éxito legítimo durante G, se actualizan una sola vez posición, estado y resumen correspondientes, **sin recentrado automático por Q1**: prevalece el encuadre grupal de la pulsación posterior. Tampoco hay recentrado diferido al finalizar G por ese resultado. Una consulta exclusivamente individual conserva su centrado al tener éxito; «Whereis» puede centrar explícitamente la última posición legítima conservada sin consultar. Fallo, timeout y callback tardío tras timeout no recentran ni alteran posición/estado; revocación, bloqueo, eliminación y reinstalación mantienen las reglas fail-closed de D-06/D-10/SEG.
+
+**PENDIENTE distinto:** una segunda pulsación de «Actualizar todos» mientras G continúa activa requiere decisión del PROPIETARIO [#120](https://github.com/mundoinformaticacanaria/whereis/issues/120); no se presupone coalescencia ni G2. La propuesta A del §5 de [PR DRAFT #112](https://github.com/mundoinformaticacanaria/whereis/pull/112) queda **SUPERSEDED** exclusivamente en la precedencia Q1→G; la conciliación técnica compete a ARQUITECTO/TECH LEAD. Progreso, cancelación y timeout de G se tratan separadamente en #115/#119, sin inferir duración ni mecanismo.
