@@ -38,3 +38,40 @@
 
 ## PENDIENTE / técnico
 No prometer precisión, recepción de notificaciones, verificación exacta de estado remoto ni revocación instantánea offline; permisos/versiones Android, timeout, concurrencia, colas, batería, recuperación de red, accesibilidad y pruebas de error a cargo de TECH LEAD. Considerar salvaguardas y consentimiento en contexto de menores. Relacionadas #2, #6, #10, #12, #16. No se aprueba infraestructura ni implementación.
+
+
+## Aceptación de precedencia Q1→G — UX114 (casos NO EJECUTADOS)
+
+**Autoridad:** [decisión B del PROPIETARIO #114/6845631908](https://github.com/mundoinformaticacanaria/whereis/issues/114#issuecomment-6845631908). Estas son condiciones observables propuestas para QA futura, no resultados de pruebas Android ni aprobación de implementación.
+
+| Caso | Precondición y acción | Resultado exigido / negativo prohibido |
+|---|---|---|
+| **UX114-01** | A autorizado, Q1 individual pendiente; pulsar «Actualizar todos» G | G reutiliza Q1, consulta los otros elegibles; ninguna segunda Q a A ni reinicio de plazo |
+| **UX114-02** | Q1 reutilizada responde con posición legítima durante G | Posición, estado individual y resumen grupal actualizados **una vez**; el mapa no se recentra por Q1 |
+| **UX114-03** | Q1 reutilizada tiene éxito y G termina después | G no aplica centrado diferido por Q1; no duplica captura ni contabiliza dos éxitos |
+| **UX114-04** | Solo consulta individual de A, sin colisión G; éxito legítimo | Se centra la nueva posición de A; fallo o timeout no centra |
+| **UX114-05** | Existe última posición legítima conservada; pulsar «Whereis» | Centrado explícito sobre esa posición sin consulta nueva, incluso si G no había recentrado |
+| **UX114-06** | Q1 reutilizada falla, vence timeout o llega callback posterior al timeout | No se recentra ni se altera ubicación/estado terminal por callback tardío; se conserva aviso/última posición permitida |
+| **UX114-07** | Durante G cambian selección/ficha o se revoca, bloquea, borra o reinstala A | Ningún resultado concede permiso, roba foco, resucita datos ni abre una ficha; la selección por lista no consulta ni recentra |
+
+## Opción B CONFIRMADA — segundo toque de «Actualizar todos» (#120)
+
+**Fuente:** [decisión PROPIETARIO #6982580012](https://github.com/mundoinformaticacanaria/whereis/issues/120#issuecomment-6982580012), contrato [CA-120-01..06](https://github.com/mundoinformaticacanaria/whereis/issues/120#issuecomment-6983747096). La mención anterior a #120 como **PENDIENTE** en esta página queda **SUPERSEDED**. Durante G activa, control «Actualizar todos» deshabilitado y no accionable por toque, teclado o asistencia; **no G2, no Q duplicada, no reinicio de deadline**. Progreso accesible finalizados/total y resultados por destino; éxito, fallo y timeout cuentan como finalizados, no todos como éxitos. «Cancelar» es acción separada y accesible durante G, cancela operación grupal de UI conforme a #115 sin prometer cancelación remota de Q. Tras cierre/cancelación terminal, solo se rehabilita con permisos, conectividad y elegibilidad vigentes; nuevo lote requiere gesto manual y revalidación, sin duplicar Q activa. Mantener #114/B (encuadre grupal de Q1 reutilizada), revocación/bloqueo/eliminación/reinstalación fail-closed y callbacks tardíos descartados.
+
+**Aceptación futura, NO EJECUTADA:** CA-120-01 inicio manual único; 02 doble toque y asistencia bloqueados; 03 progreso y resultados terminales; 04 cancelación separada sin promesa remota; 05 rehabilitación condicional sin reintento automático; 06 seguridad y concurrencia, Q1, timeout y callbacks tardíos. Casos negativos: doble toque rápido, cancelación con Q pendiente, timeout+callback, cambio de permiso/red y Q1 concurrente. **PENDIENTES:** diseño UX final, duración de timeout y conciliación técnica #115/#119/PR #112 por TECH LEAD/ARQUITECTO; QA independiente del HEAD final. Sin aprobación de Android, merge, proveedores ni gastos.
+
+
+## #132/A CONFIRMADA — cancelar G conserva Q individual anterior autónoma
+
+**Autoridad:** [decisión expresa PROPIETARIO #132/7002098109](https://github.com/mundoinformaticacanaria/whereis/issues/132#issuecomment-7002098109), [#115](https://github.com/mundoinformaticacanaria/whereis/issues/115); conservar #114/B, #120/B, D-06/A y SEG. Q individual iniciada **antes** de G, reutilizada sin duplicación ni reinicio de plazo, sigue siendo individual tras cancelar G. Si su respuesta es auténtica y llega antes de su timeout terminal, con identidad de instalación y permiso direccional vigentes verificables y sin posición legítima posterior más reciente, **puede actualizar P0 como Q individual**. No recentra automáticamente (ni diferidamente), no reabre G ni altera contador, progreso o resumen terminal. Una Q nacida **solo para G** no publica nueva P0 después de cancelar G. Una Q individual aislada no deshabilita «Actualizar todos»; el bloqueo del botón global solo rige durante G. La cancelación de G no garantiza detener capturas remotas. Sin duplicados, reintentos automáticos, reinicio de deadlines ni resurrección por callbacks tardíos.
+
+### Oráculos UX-CGQ (aceptación futura — NO EJECUTADOS)
+
+| Caso | Estímulo | Resultado observable exigido |
+|---|---|---|
+| **UX-CGQ-01** | Q1 individual previa reutilizada por G; cancelar G; Q1 responde legítimamente antes de su timeout | P0 puede actualizarse **solo por Q1 autónoma** tras validar identidad, autorización y frescura; sin recentrado automático; G terminal, contador/progreso/resumen inmutables |
+| **UX-CGQ-02** | Q creada exclusivamente por G; cancelar; llega respuesta posterior | No publicar nueva P0 por esa G cancelada, no reabrir G ni alterar su resumen; no recentrar |
+| **UX-CGQ-03** | Cancelación G y callback compiten | Resultado válido aceptado antes de cancelación no se revierte solo por cancelar; después se aplican reglas de Q autónoma o descarte G; orden terminal determinista, sin duplicar efectos ni éxitos, sin recentrado por G cancelada |
+| **UX-CGQ-04** | Revocar/bloquear/eliminar/reinstalar, invalidar identidad o permiso, timeout individual o callback tardío | No exponer nueva posición ilegítima, no recentrar ni resucitar G/datos; aplicar D-06/A y SEG fail-closed |
+
+**Pendiente técnico:** correlación y resolución determinista de carreras, plazo efectivo no numérico y validación de Android por TECH LEAD/ARQUITECTO. Estos oráculos no son resultados de pruebas ni aprobación de baseline, seguridad operativa o merge.
