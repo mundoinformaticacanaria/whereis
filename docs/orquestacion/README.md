@@ -47,6 +47,14 @@ A 18/10/2026, `nvidia/nemotron-3-super-120b-a12b:free` es únicamente **CANDIDAT
 - En la fase actual **no hay programación autorizada**. Primero resolver las decisiones del PROPIETARIO y el baseline funcional/arquitectónico del incremento.
 - El Tech Lead revisa periódicamente issues sin labels: esa es su bandeja de entrada, no trabajo para los programadores.
 
+## Clasificación de trabajo y dependencias entre roles (#148)
+
+1. **Identificar acción inmediata:** contrastar issue, comentarios, SHA y autoridad. Si el rol puede ejecutar cualquier paso útil y autorizado, el trabajo es **ABORDABLE** aunque su PR no pueda fusionarse. Resolver primero las dependencias que estén bajo ese mismo rol, sin declarar autobloqueo.
+2. **Separar gates de ejecución:** QA, CI, protección de `main`, permiso material y baseline pueden impedir integración, pero no impiden automáticamente preparar fixtures, corregir documentación, verificar SHA o coordinar revisión.
+3. **Dependencia exclusivamente ajena:** cuando no queda acción propia, registrar qué rol debe hacer **qué operación exacta**, qué evidencia deja y qué evento devuelve la tarea. Cambiar a **una sola label** de ese rol; no trasladar por conveniencia trabajo propio al PROPIETARIO. Si aún queda trabajo independiente del titular, mantener la issue y crear/encaminar una hija del bloqueo ajeno.
+4. **Ejemplos genéricos:** un PR documental con QA pendiente se encamina a QA sobre HEAD exacto, sin llamar «CI verde» a la ausencia de checks; una inspección de SSH reservada a operador autorizado se transfiere con comando de solo lectura y salida sanitizada, sin que TECH LEAD opere el host; una dependencia de diseño bajo TECH LEAD se resuelve/ordena por TECH LEAD, no se marca bloqueada por sí misma.
+5. **Retorno:** verificar resultado real y labels en GitHub antes de reanudar, cerrar o elevar decisión. La transferencia nunca sustituye autorización, seguridad, segregación de roles ni gates.
+
 ## Arranque por entorno
 
 - [PROGRAMADOR-LINUX](programador-linux.md): ejecutor Linux model-neutral, requisitos de acceso y prompt reproducible.
