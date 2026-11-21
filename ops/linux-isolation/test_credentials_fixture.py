@@ -78,7 +78,7 @@ class CredentialFixtureTests(unittest.TestCase):
         original_open = os.open
 
         def replace_before_open(candidate, flags, *args, **kwargs):
-            if Path(candidate) == path:
+            if str(candidate) == path.name and kwargs.get('dir_fd') is not None:
                 path.unlink()
                 path.write_text('{"FIXTURE_KEY":"replacement"}')
                 path.chmod(0o600)
@@ -87,6 +87,34 @@ class CredentialFixtureTests(unittest.TestCase):
         with patch("engine.os.open", side_effect=replace_before_open):
             with self.assertRaises(ValueError):
                 credential_environment(VALUES, PROFILES, path)
+
+    def test_ancestor_replaced_with_symlink_during_open_is_rejected(self):
+        from unittest.mock import patch
+        original_dir = self.root / "owned"
+        original_dir.mkdir()
+        credential = original_dir / "own.json"
+        credential.write_text('{"FIXTURE_KEY":"original"}')
+        credential.chmod(0o600)
+        external_dir = self.root / "other-project"
+        external_dir.mkdir()
+        other = external_dir / "own.json"
+        other.write_text('{"FIXTURE_KEY":"different"}')
+        other.chmod(0o600)
+        original_open = os.open
+        swapped = False
+
+        def replace_directory_during_walk(candidate, flags, *args, **kwargs):
+            nonlocal swapped
+            if candidate == "owned" and kwargs.get("dir_fd") is not None and not swapped:
+                swapped = True
+                original_dir.rename(self.root / "owned-before-swap")
+                original_dir.symlink_to(external_dir, target_is_directory=True)
+            return original_open(candidate, flags, *args, **kwargs)
+
+        with patch("engine.os.open", side_effect=replace_directory_during_walk):
+            with self.assertRaises(ValueError):
+                credential_environment(VALUES, PROFILES, credential)
+        self.assertTrue(swapped)
 
     def test_hardlink_rejected(self):
         path = self.write('{"FIXTURE_KEY":"x"}')
