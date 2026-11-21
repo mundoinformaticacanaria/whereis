@@ -40,6 +40,29 @@ def registry(values, profiles, config):
     return result
 
 
+def _open_file_without_following_ancestors(path):
+    """Open a file via pinned directory FDs; reject symlink swaps in any ancestor."""
+    if not path.is_absolute() or '..' in path.parts:
+        raise ValueError("Absolute canonical credential path required")
+    directory_fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_CLOEXEC)
+    try:
+        for component in path.parts[1:-1]:
+            try:
+                next_fd = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+                                  | os.O_CLOEXEC, dir_fd=directory_fd)
+            except OSError as exc:
+                raise ValueError("Unsafe credential directory") from exc
+            os.close(directory_fd)
+            directory_fd = next_fd
+        try:
+            return os.open(path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC,
+                           dir_fd=directory_fd)
+        except OSError as exc:
+            raise ValueError("Unsafe credential file") from exc
+    finally:
+        os.close(directory_fd)
+
+
 def credential_environment(values, profiles, path):
     _, _, profile = selected(values, profiles)
     path = Path(path)
@@ -48,7 +71,7 @@ def credential_environment(values, profiles, path):
         raise ValueError("Private exclusive credential file required")
     if any(parent.is_symlink() for parent in path.parents):
         raise ValueError("Symlink credential ancestor rejected")
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    fd = _open_file_without_following_ancestors(path)
     try:
         opened = os.fstat(fd)
         if (opened.st_dev, opened.st_ino) != (meta.st_dev, meta.st_ino):
