@@ -174,6 +174,12 @@ Los logs son heartbeat e histórico auxiliar, nunca fuente de verdad.
 
 Decisión material del PROPIETARIO [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38#issuecomment-6395402627): referencia UTC con hora Atlantic/Canary adicional entre corchetes, precisión de segundos; intervenciones por issue con ID único, INICIO/FIN emparejados, ventana de 30 minutos y 100 entradas recientes por log de rol en rama `ops/logs`. Los fallos de GitHub/logs no detienen ni modifican la automatización horaria TECH LEAD; las mutaciones inseguras se suspenden si faltan precondiciones verificables. **Rama `ops/logs` y ficheros de roles activos creados y leídos** (evidencia en #38); la política aún no está integrada en `main` y siguen pendientes validación integral, concurrencia real y QA independiente. No fabricar registros. Los timers Linux siguen desactivados salvo autorización independiente.
 
+## Dependencias ejecutables y handoff por rol (#148)
+
+**ABORDABLE** significa que el rol titular aún puede ejecutar alguna acción útil, segura y autorizada, aunque falten gates de integración o actuaciones de terceros. **BLOQUEADA** solo cuando no queda trabajo ejecutable por el titular y la siguiente acción depende exclusivamente de otro rol identificado. Nunca declarar una issue bloqueada por otra issue que conserve el mismo rol: ordenar y acometer primero esa dependencia propia.
+
+Antes de transferir, separar **trabajo pendiente** de **merge/cierre pendiente**. Si solo otro rol puede actuar, dejar acción precisa, evidencia exigida y criterio de retorno; transferir la issue con **una única label de rol**. Si queda trabajo propio independiente, conservar titularidad y abrir o encaminar una hija concreta al otro rol. Las issues sin rol se tratan como bandeja TECH LEAD según G-02. Un handoff no confiere permisos, aprobación material, QA independiente, acceso al servidor ni facultad de merge; los controles existentes prevalecen.
+
 ## Regla final
 
 Al instanciar esta plantilla, el repositorio del proyecto destino debe poder responder desde GitHub:
