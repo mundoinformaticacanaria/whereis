@@ -67,6 +67,18 @@ No resolver contradicciones por intuición.
 
 **Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** Si hay dos o más labels de rol, es un error de enrutamiento: solo TECH LEAD puede inspeccionar/abordar la issue para retirar labels sobrantes y asignar un único responsable; ningún otro rol ejecuta trabajo sustantivo hasta corregirlo (decisión #38). `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
 
+## Dependencias y bloqueos por responsable — regla transversal
+
+**Decisión del PROPIETARIO (21/11/2026):** esta regla se aplica por igual a PROPIETARIO, FUNCIONAL, ARQUITECTO, TECH LEAD, PROGRAMADOR y QA. La label única de rol identifica **quién puede y debe ejecutar la siguiente acción útil**, no quién supervisa indefinidamente un bloqueo.
+
+- **ABORDABLE**: existe al menos una acción concreta, útil, segura y autorizada que puede ejecutar **el rol actual**, aunque otras dependencias impidan cerrar la issue, validar el resultado o fusionar una PR. Se ejecuta ahora; no clasificarla como «parcialmente abordable» ni usar gates futuros como excusa para no actuar.
+- **BLOQUEADA**: no queda ninguna acción ejecutable por el rol actual y el siguiente paso necesita **exclusivamente una intervención de otro rol**. Debe constar qué rol, qué issue/PR o evidencia concreta falta y qué criterio permite retomar el trabajo. No marcar bloqueada una tarea solo porque aún no pueda cerrarse o hacerse merge.
+- **Prohibido el autobloqueo**: una tarea de un rol **nunca está bloqueada por otra tarea del mismo rol**. Resolver primero la dependencia propia, reordenar el trabajo y avanzar. Esto aplica también a TECH LEAD, que no puede declararse bloqueado por trabajo pendiente de TECH LEAD.
+- **Handoff real**: si la siguiente actuación compete íntegramente a otro rol y no hay trabajo propio pendiente, documentar el requisito preciso y transferir la issue con **una sola label de rol**. Si queda trabajo independiente en el rol actual, crear o reutilizar una subtarea mínima asignada al otro rol, enlazar la dependencia y continuar la parte abordable; no duplicar issues ni transferir responsabilidades propias por comodidad.
+- **Separación de autoridad y evidencia**: decisiones reservadas al PROPIETARIO, diseño al ARQUITECTO, requisitos al FUNCIONAL, implementación al PROGRAMADOR y dictamen independiente a QA. La falta de acceso, permisos o pruebas operativas debe reflejarse y encomendarse solo a un actor autorizado; nunca implica autorización automática ni permite saltarse QA, protección de `main`, CI o aprobación individual de integración. `QA DEFECTOS` vuelve al autor competente hasta nuevo HEAD.
+
+En el informe de cada rol, indicar **ABORDABLE** o **BLOQUEADA por [rol y acción concreta]**, separando explícitamente «trabajo propio ejecutable» de «condiciones para el cierre/merge». Ver el [procedimiento común](docs/orquestacion/README.md).
+
 Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
 ## Programadores
