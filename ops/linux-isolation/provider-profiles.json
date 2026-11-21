@@ -1,0 +1,8 @@
+{
+  "openrouter": {
+    "approved": true,
+    "endpoint": "https://openrouter.ai/api/v1",
+    "credential_env": "OPENROUTER_API_KEY",
+    "package": "@opencode/ai/providers/openrouter"
+  }
+}
