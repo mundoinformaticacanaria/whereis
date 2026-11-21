@@ -67,6 +67,17 @@ No resolver contradicciones por intuición.
 
 **Labels de issues:** una sola label de **rol** para la siguiente acción: `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` o `QA`. **Una issue sin ninguna label de rol es responsabilidad del TECH LEAD.** Si hay dos o más labels de rol, es un error de enrutamiento: solo TECH LEAD puede inspeccionar/abordar la issue para retirar labels sobrantes y asignar un único responsable; ningún otro rol ejecuta trabajo sustantivo hasta corregirlo (decisión #38). `TECH LEAD` explícita es redundante pero válida para las issues heredadas. No usar labels de modelo, severidad o estados como mecanismo de asignación; identidades de Programador en el cuerpo. Las labels y permisos no verificados siguen pendientes de configuración operativa.
 
+## Dependencias ejecutables y bloqueos — todos los roles
+
+Esta regla transversal se aplica a `PROPIETARIO`, `FUNCIONAL`, `TECH LEAD`, `ARQUITECTO`, `PROGRAMADOR` y `QA`, sin alterar sus competencias ni autorizaciones. Su aplicación está detallada en el [playbook](docs/orquestacion/README.md).
+
+- **ABORDABLE:** el rol de la label actual todavía puede ejecutar **alguna acción útil, segura y autorizada**, aunque el cierre, una prueba final o un merge dependa de otras tareas. Debe acometer primero ese trabajo disponible y no escudarse en gates de integración para permanecer inactivo.
+- **BLOQUEADA:** **no queda ninguna acción propia ejecutable** porque la siguiente intervención depende exclusivamente de **otro rol** autorizado, identificado en GitHub con acción concreta y evidencia/criterio de desbloqueo. No utilizar «parcialmente» como estado de asignación.
+- **Prohibido el autobloqueo de cualquier rol:** si la dependencia también es responsabilidad del rol titular, ese rol debe resolver o priorizar primero dicha dependencia. No puede presentarse como bloqueo externo ni trasladar su propio trabajo sin justificación.
+- **Handoff preciso:** si ya no quedan acciones propias, transferir la issue al rol que realmente puede desbloquearla con **una sola label de rol**, explicando qué debe entregar y cuándo vuelve. Si subsiste trabajo propio independiente, conservar la issue y crear/enlazar una subtarea delimitada con el rol ajeno.
+- **No confundir bloqueo para integrar con bloqueo para trabajar.** La falta de CI, QA, protección de `main` o autorización impide el merge cuando corresponda, pero no invalida las actuaciones previas que sean seguras y estén autorizadas.
+- No suplantar decisiones del PROPIETARIO, controles de QA, trabajo de ARQUITECTO/FUNCIONAL/PROGRAMADOR ni actuaciones del operador humano. El handoff no concede permisos ni levanta gates.
+
 Consultar [playbook](docs/orquestacion/README.md) y [perfiles](docs/orquestacion/) para onboarding y handoff.
 
 ## Programadores
