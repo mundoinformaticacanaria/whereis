@@ -13,6 +13,16 @@ python3 scripts/check-documentation.py "$BASE"
 
 Requiere únicamente **Git y Python 3 estándar**, sin dependencias, secretos, acceso a red, nube ni instalaciones. Devuelve 0 al pasar, 1 al fallar, 2 si falta el argumento. No escribe en el repositorio.
 
+## Batería de regresión sintética (PR #46, revisión nueva)
+
+`scripts/test_check_documentation.py` utiliza repositorios Git efímeros bajo un directorio temporal y valores ficticios. No exige acceso a GitHub, API, secretos, Android ni Actions:
+
+```sh
+python3 -m unittest discover -s scripts -p 'test_check_documentation.py' -v
+```
+
+Los 12 casos cubren documentos limpios, marcadores sintéticos de secretos en `.env.local` y archivo sin extensión, ocultación de rutas/valores en salida, whitespace, conflictos, UTF-8 inválido, NUL, archivo vacío, divergencia HEAD/working tree, base inexistente y argumento ausente. **Son pruebas propuestas en código, no resultados ejecutados ni QA independiente en el HEAD nuevo**; registrar comando, exit y cantidad real antes de afirmar PASS. No sustituyen checks nativos, protección real de `main`, la auditoría del scanner ni autorizan integración aplazada por #111.
+
 ## Cobertura exacta
 
 - `git diff --check` del rango `BASE...HEAD`: errores de whitespace y marcadores de conflicto detectados por Git.
