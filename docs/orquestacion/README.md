@@ -16,6 +16,20 @@
 
 Si una issue presenta **dos o más labels de rol**, solo TECH LEAD puede inspeccionarla/abordarla para resolver el error de enrutamiento; ningún otro rol ejecuta trabajo sustantivo hasta dejar una sola label (decisión #38). Solo **una label de rol** por issue ejecutable; no añadir labels `PROGRAMADOR-LINUX`, `QWEN`, `CODEX`, `PENDIENTE`, etc. Para los cambios de responsable: quitar la label anterior y añadir la nueva; para devolver al TECH LEAD basta quitar todas las labels de rol. La label `TECH LEAD` ya existente equivale a sin label. No asumir que las labels están todas creadas: comprobar la configuración real antes de depender de ella.
 
+## Dependencias y asignación de la siguiente acción — todos los roles
+
+**Clasificar por capacidad de actuar, no por posibilidad de cerrar o fusionar:**
+
+| Estado de trabajo | Criterio operativo | Actuación obligatoria |
+|---|---|---|
+| **ABORDABLE** | El rol titular tiene al menos una acción útil, segura y autorizada pendiente, aunque falten otros gates para cerrar. | Ejecutar esa acción y comprobar el resultado; no informar como bloqueada por CI, QA o una aprobación de integración futura. |
+| **BLOQUEADA** | No existe ninguna acción propia ejecutable y la siguiente acción depende exclusivamente de otro rol concreto. | Documentar la dependencia externa, la evidencia requerida y transferir la siguiente acción al rol competente. |
+
+- **Ningún rol se bloquea a sí mismo.** Si la dependencia también corresponde a la label actual, resolverla o priorizarla antes de declarar impedimento: por ejemplo, una issue TECH LEAD dependiente de otra TECH LEAD sigue **ABORDABLE** para TECH LEAD.
+- **Handoff sin perder trabajo propio:** si existen pasos independientes propios, mantener la issue con su rol y crear/enlazar una subtarea concreta para el otro rol. Si no queda trabajo propio, cambiar la única label de rol de la issue al que desbloquea. Registrar acción exacta, criterios de aceptación/evidencia y condición de retorno; no dejar «bloqueado por X» como único contenido.
+- **Separar ejecución e integración.** Un PR documental con QA APTO puede seguir sin merge por gates; el trabajo previo seguro continúa siendo abordable. Inversamente, no integrar hasta cumplir controles y autoridad específicos.
+- **Conservar límites:** no asignar tareas que otro rol no pueda ejecutar con permisos/autoridad reales; no hacer trabajo reservado a PROPIETARIO, QA independiente u operador humano. El cambio de responsable no autoriza saltarse QA, CI, reglas de `main`, condiciones de seguridad o restricciones de programación.
+
 ## Heartbeat y coordinación (#38)
 
 Antes de abordar una issue, el rol consulta **su propio** log en `ops/logs` para esa issue, verifica el ID de intervención y la ventana desde INICIO: <30 minutos sin FIN bloquea, ≥30 minutos permite nueva intervención sin cierre retroactivo; FIN emparejado permite otra inmediatamente. UTC + hora Atlantic/Canary entre corchetes, segundos y 100 entradas recientes por rol. El log no es un lock atómico ni autorización. Ante errores de GitHub no se modifica la automatización horaria TECH LEAD; no se ejecutan mutaciones inseguras con estado desconocido. **Implantación pendiente**, véase [política](../logs/README.md) y [#38](https://github.com/mundoinformaticacanaria/whereis/issues/38).
