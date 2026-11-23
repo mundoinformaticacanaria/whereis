@@ -166,6 +166,19 @@ class CredentialFixtureTests(unittest.TestCase):
         self.assertNotIn('"--ro-bind", str(CONFIG / "auth")', source)
         self.assertNotIn('"--bind", str(CONFIG / "auth")', source)
 
+    def test_offline_namespace_does_not_forward_credential_environment(self):
+        # Static negative gate: no credential is delivered to offline probes.
+        # This is not a runtime namespace or same-UID security certification.
+        source = Path(__file__).with_name("sandbox.py").read_text()
+        self.assertIn('"--clearenv"', source)
+        self.assertIn('"GH_CONFIG_DIR": str(CONFIG / "gh")', source)
+        self.assertNotIn('"GH_TOKEN":', source)
+        self.assertNotIn('"GITHUB_TOKEN":', source)
+        self.assertNotIn('"OPENROUTER_API_KEY":', source)
+        self.assertNotIn('"FIXTURE_KEY":', source)
+        self.assertIn('Credentials remain absent in offline modes.', source)
+        self.assertIn('Deliberately do not bind these files', source)
+
     def test_real_execution_stays_explicitly_blocked(self):
         # This is a source-level guard only; it does not replace host integration QA.
         source = Path(__file__).with_name("sandbox.py").read_text()
