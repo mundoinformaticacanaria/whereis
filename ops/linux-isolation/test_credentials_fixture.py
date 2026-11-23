@@ -126,6 +126,14 @@ class CredentialFixtureTests(unittest.TestCase):
         with self.assertRaises(json.JSONDecodeError):
             credential_environment(VALUES, PROFILES, self.write("{broken"))
 
+    def test_non_string_credential_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":123}'))
+
+    def test_null_credential_rejected(self):
+        with self.assertRaises(ValueError):
+            credential_environment(VALUES, PROFILES, self.write('{"FIXTURE_KEY":null}'))
+
     def test_other_provider_key_rejected(self):
         with self.assertRaises(ValueError):
             credential_environment(VALUES, PROFILES, self.write('{"SHARED_KEY":"x"}'))
