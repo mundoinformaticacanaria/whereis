@@ -1,3 +1,4 @@
+2026-11-25T06:57:19Z [Atlantic/Canary 2026-11-25T06:57:19+00:00] FUNCIONAL #166 intervencion=funcional-166-20261125-r1 INICIO
 2026-11-21T12:45:22Z [Atlantic/Canary 2026-11-21T12:45:22+00:00] FUNCIONAL #157 intervencion=funcional-157-20261121124413-gpt6 FIN microcopy A2/B1/C1 y matriz publicada; fallback normal condicionado; handoff TECH LEAD
 2026-11-21T12:44:13Z [Atlantic/Canary 2026-11-21T12:44:13+00:00] FUNCIONAL #157 intervencion=funcional-157-20261121124413-gpt6 INICIO
 2026-11-20T18:11:52Z [Atlantic/Canary 2026-11-20T18:11:52+00:00] FUNCIONAL #14 intervencion=funcional-14-20261120181026-gpt6 FIN alternativas A/B y pruebas D07-COV publicadas; decision PROPIETARIO pendiente
